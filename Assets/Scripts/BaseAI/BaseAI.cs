@@ -19,6 +19,8 @@ public class BaseAI : MonoBehaviour
 
     [SerializeField]
     private Vector2 direction;
+        // direction.x = steering;
+        // direction.y = speed;
 
     [Header("Pathfinding")]
     public Transform path;
@@ -38,8 +40,8 @@ public class BaseAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //set speed based on input
-        currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed * direction.y, speedAcceleration * Time.fixedDeltaTime);
+        //set speed based on input (input = direction.y);
+        currentSpeed = Mathf.Lerp(currentSpeed, Mathf.Clamp(direction.y, -1f, 1f) * maxSpeed, speedAcceleration * Time.fixedDeltaTime);
 
         //add speed to velocity (we don't actually modify the rigidbody's velocity here so we can set the x and y to 0)
         velocity = new Vector3(0, 0, currentSpeed * Time.fixedDeltaTime);
