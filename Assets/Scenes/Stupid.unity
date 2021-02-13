@@ -226,7 +226,6 @@ GameObject:
   m_Component:
   - component: {fileID: 384704336}
   - component: {fileID: 384704334}
-  - component: {fileID: 384704337}
   - component: {fileID: 384704335}
   m_Layer: 0
   m_Name: Player
@@ -242,7 +241,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 384704333}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0d003beea3a2bc47b6f1fb1dea8795b, type: 3}
   m_Name: 
@@ -285,24 +284,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &384704337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 384704333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2953f3a7d8c7f614fb05695b1cefb41f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSpeed: 1000
-  speedAcceleration: 4
-  maxSteeringAngle: 90
-  steeringAcceleration: 4
-  direction: {x: 0, y: 0}
-  path: {fileID: 0}
 --- !u!1 &411210576
 GameObject:
   m_ObjectHideFlags: 0
