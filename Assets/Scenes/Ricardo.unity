@@ -9496,6 +9496,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: roadCornerLarger
       objectReference: {fileID: 0}
+    - target: {fileID: 5628776025090389599, guid: a19e3fbdf0d16d44c9f695253699cb87,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 19.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5628776025090389599, guid: a19e3fbdf0d16d44c9f695253699cb87,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979312416109304509, guid: a19e3fbdf0d16d44c9f695253699cb87,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 19.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979312416109304509, guid: a19e3fbdf0d16d44c9f695253699cb87,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a19e3fbdf0d16d44c9f695253699cb87, type: 3}
 --- !u!4 &1224866246 stripped
