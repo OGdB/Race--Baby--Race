@@ -19,16 +19,33 @@ public class BaseAI : MonoBehaviour
 
     [SerializeField]
     private Vector2 direction;
-        // direction.x = steering;
-        // direction.y = speed;
+    // direction.x = steering;
+    // direction.y = speed;
 
-    [Header("Pathfinding")]
-    public Transform path;
+    [SerializeField]
+    private float uprightForce;
+
+    [Header("State")]
+    [SerializeField]
+    private bool isGrounded;
+    [SerializeField]
+    private Transform groundedCheckPos;
+    [SerializeField]
+    private float checkDistance;
+    [SerializeField]
+    private LayerMask groundMask;
+
+    [Header("Misc")]
+    [SerializeField]
+    private bool overrideControl;
 
     //fully private
     private float currentSpeed;
     private float currentSteeringAngle;
     private Vector3 velocity;
+
+    private Transform path;
+
 
     //references
     private Rigidbody rb;
@@ -38,10 +55,22 @@ public class BaseAI : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    private void Update()
+    {
+        if (overrideControl)
+        {
+            direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+    }
+
     private void FixedUpdate()
     {
+        //check if grounded
+        Collider[] colliders = Physics.OverlapSphere(groundedCheckPos.position, checkDistance, groundMask, QueryTriggerInteraction.Ignore);
+        isGrounded = colliders.Length > 0;
+
         //set speed based on input (input = direction.y);
-        currentSpeed = Mathf.Lerp(currentSpeed, Mathf.Clamp(direction.y, -1f, 1f) * maxSpeed, speedAcceleration * Time.fixedDeltaTime);
+        currentSpeed = Mathf.Lerp(currentSpeed, isGrounded ? (Mathf.Clamp(direction.y, -1f, 1f) * maxSpeed) : 0, speedAcceleration * Time.fixedDeltaTime);
 
         //add speed to velocity (we don't actually modify the rigidbody's velocity here so we can set the x and y to 0)
         velocity = new Vector3(0, 0, currentSpeed * Time.fixedDeltaTime);
@@ -53,8 +82,13 @@ public class BaseAI : MonoBehaviour
         rb.MovePosition(transform.position + (rb.rotation * velocity) * Time.fixedDeltaTime);
 
         //steer
-        float actualSteeringAngle = Mathf.Lerp(0, currentSteeringAngle, Mathf.Abs(direction.y)); //only steer when driving
+        float actualSteeringAngle = Mathf.Lerp(0, currentSteeringAngle, Mathf.Abs(currentSpeed / maxSpeed)); //only steer when driving
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, actualSteeringAngle * Time.fixedDeltaTime, 0));
+
+        //stay upright
+        Quaternion deltaUpward = Quaternion.FromToRotation(transform.up, Vector3.up);
+        rb.AddTorque(new Vector3(deltaUpward.x, deltaUpward.y, deltaUpward.z) * uprightForce * Time.fixedDeltaTime);
+
     }
 
     public void SetDirection(Vector2 newDirection)
@@ -69,6 +103,13 @@ public class BaseAI : MonoBehaviour
 
     public Vector3[] GetNodes()
     {
+        //if no path, found path
+        if(path == null)
+        {
+            path = GameObject.FindGameObjectWithTag("Path").transform;
+        }
+
+        //collect node positions
         Vector3[] nodes = new Vector3[path.childCount];
 
         for(int n = 0; n < nodes.Length; n++)
@@ -77,5 +118,23 @@ public class BaseAI : MonoBehaviour
         }
 
         return nodes;
+    }
+
+    public Vector3[] GetPlayerPositions()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        List<Vector3> playerPositions = new List<Vector3>();
+
+        for (int p = 0; p < players.Length; p++)
+        {
+            if(players[p].transform.position == transform.position)
+            {
+                continue;
+            }
+
+            playerPositions.Add(players[p].transform.position);
+        }
+
+        return playerPositions.ToArray();
     }
 }
