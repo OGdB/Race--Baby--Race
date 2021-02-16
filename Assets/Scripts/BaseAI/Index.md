@@ -1,4 +1,4 @@
-# BaseAI Development Guide (v0.1)
+# BaseAI Development Guide (v0.1.1)
 
 This document is a short guide on the usage of the BaseAI component for the development of competitive racing AI within Race Baby Race.
 
@@ -17,6 +17,10 @@ This document is a short guide on the usage of the BaseAI component for the deve
   > Gets an array of nodes in the BaseAI path in a sequential manner.
   >
   > (***Warning*** GetNodes() only returns sequential nodes provided they are also sequentially set up in the editor.)
+  
+- **Vector3** GetPlayerPositions()
+
+  > Gets an array of player positions.
 
 ## Variables
 
@@ -24,6 +28,4 @@ This document is a short guide on the usage of the BaseAI component for the deve
 
 ## Todo
 
-- Consider the decrease of the steering angle as speed increases.
-- Player finding.
-- Map nodes.
+- Empty
