@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class PlayerTracker : MonoBehaviour
 {
-    List<GameObject> cameras = new List<GameObject>();
-    List<GameObject> players = new List<GameObject>();
-
     public Transform trackedObject;
-    public float maxDistance = 10;
-    public float updateSpeed = 10;
+    public float maxDistance = 8;
+    public float updateSpeed = 20;
     [Range(0, 10)]
     public float currentDistance = 5;
     private GameObject ahead;
-    public float hideDistance = 1.5f;
     // Start is called before the first frame update
     void Start()
     {
+        transform.position = trackedObject.position - Vector3.back * 3 + Vector3.up;
         ahead = new GameObject("ahead");
     }
 
