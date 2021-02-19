@@ -21,6 +21,16 @@ This document is a short guide on the usage of the BaseAI component for the deve
 - **Vector3** GetPlayerPositions()
 
   > Gets an array of player positions.
+  
+- **Item** GetCurrentItem()
+
+  > Gets the current item the player is holding.
+
+- **Void** UseItem()
+
+  > Uses the current item
+  >
+  > (***Warning*** Not yet finished.)
 
 ## Variables
 
@@ -28,4 +38,6 @@ This document is a short guide on the usage of the BaseAI component for the deve
 
 ## Todo
 
-- Empty
+- Method for using items (finish)
+- Visual for items
+

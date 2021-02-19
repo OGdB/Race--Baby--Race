@@ -25,15 +25,25 @@ public class BaseAI : MonoBehaviour
     [SerializeField]
     private float uprightForce;
 
+
     [Header("State")]
     [SerializeField]
     private bool isGrounded;
     [SerializeField]
     private Transform groundedCheckPos;
     [SerializeField]
-    private float checkDistance;
+    private float groundCheckDistance;
     [SerializeField]
     private LayerMask groundMask;
+
+
+    [Header("Items")]
+    [SerializeField]
+    private Item currentItem = Item.None;
+    [SerializeField]
+    private Transform itemCheckPos;
+    [SerializeField]
+    private float itemCheckDistance;
 
     [Header("Misc")]
     [SerializeField]
@@ -65,8 +75,17 @@ public class BaseAI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //move and shit
+        Locomotion();
+
+        //shoot and shit
+        Items();
+    }
+
+    private void Locomotion()
+    {
         //check if grounded
-        Collider[] colliders = Physics.OverlapSphere(groundedCheckPos.position, checkDistance, groundMask, QueryTriggerInteraction.Ignore);
+        Collider[] colliders = Physics.OverlapSphere(groundedCheckPos.position, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
         isGrounded = colliders.Length > 0;
 
         //set speed based on input (input = direction.y);
@@ -88,7 +107,24 @@ public class BaseAI : MonoBehaviour
         //stay upright
         Quaternion deltaUpward = Quaternion.FromToRotation(transform.up, Vector3.up);
         rb.AddTorque(new Vector3(deltaUpward.x, deltaUpward.y, deltaUpward.z) * uprightForce * Time.fixedDeltaTime);
+    }
 
+    private void Items()
+    {
+        //check for items
+        Collider[] colliders = Physics.OverlapSphere(itemCheckPos.position, itemCheckDistance, ~0, QueryTriggerInteraction.Collide);
+
+        if (colliders.Length > 0)
+        {
+            foreach (Collider collider in colliders)
+            {
+                if (collider.CompareTag("ItemBox"))
+                {
+                    Item newItem = collider.GetComponent<ItemBox>().GetItem();
+                    currentItem = (currentItem == Item.None) ? newItem : currentItem;
+                }
+            }
+        }
     }
 
     public void SetDirection(Vector2 newDirection)
@@ -136,5 +172,15 @@ public class BaseAI : MonoBehaviour
         }
 
         return playerPositions.ToArray();
+    }
+
+    public Item GetCurrentItem()
+    {
+        return currentItem;
+    }
+
+    public void UseItem()
+    {
+        currentItem = Item.None;
     }
 }
