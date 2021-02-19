@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Path
+  - ItemBox
   layers:
   - Default
   - TransparentFX
@@ -19,8 +20,6 @@ TagManager:
   - 
   - Environment
   - Road
-  - 
-  - 
   - 
   - 
   - 
