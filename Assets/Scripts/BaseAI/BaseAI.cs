@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -44,6 +45,12 @@ public class BaseAI : MonoBehaviour
     private Transform itemCheckPos;
     [SerializeField]
     private float itemCheckDistance;
+    [SerializeField]
+    private bool aimBack = false;
+    [SerializeField]
+    private List<GameObject> itemModels = new List<GameObject>();
+    [SerializeField]
+    private List<GameObject> altModels = new List<GameObject>();
 
     [Header("Misc")]
     [SerializeField]
@@ -80,6 +87,20 @@ public class BaseAI : MonoBehaviour
 
         //shoot and shit
         Items();
+
+        if(Input.GetKey(KeyCode.K))
+        {
+            StartCoroutine(UseItem());
+        }
+        if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            AimBack(true);
+            Debug.Log("Aiming back");
+        }    
+        if(Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            AimBack(false);
+        }    
     }
 
     private void Locomotion()
@@ -120,8 +141,12 @@ public class BaseAI : MonoBehaviour
             {
                 if (collider.CompareTag("ItemBox"))
                 {
-                    Item newItem = collider.GetComponent<ItemBox>().GetItem();
-                    currentItem = (currentItem == Item.None) ? newItem : currentItem;
+                    if (currentItem == Item.None)
+                    {
+                        Item newItem = collider.GetComponent<ItemBox>().GetItem();
+                        currentItem = newItem;
+                        RenderItem();
+                    }
                 }
             }
         }
@@ -140,7 +165,7 @@ public class BaseAI : MonoBehaviour
     public Vector3[] GetNodes()
     {
         //if no path, found path
-        if(path == null)
+        if (path == null)
         {
             path = GameObject.FindGameObjectWithTag("Path").transform;
         }
@@ -148,7 +173,7 @@ public class BaseAI : MonoBehaviour
         //collect node positions
         Vector3[] nodes = new Vector3[path.childCount];
 
-        for(int n = 0; n < nodes.Length; n++)
+        for (int n = 0; n < nodes.Length; n++)
         {
             nodes[n] = path.GetChild(n).position;
         }
@@ -163,7 +188,7 @@ public class BaseAI : MonoBehaviour
 
         for (int p = 0; p < players.Length; p++)
         {
-            if(players[p].transform.position == transform.position)
+            if (players[p].transform.position == transform.position)
             {
                 continue;
             }
@@ -179,8 +204,68 @@ public class BaseAI : MonoBehaviour
         return currentItem;
     }
 
-    public void UseItem()
+    public void AimBack(bool a)
+    {
+        aimBack = a;
+        RenderItem();
+    }
+
+    // Item models need to be named corresponding to their name in the Item enum
+    GameObject renderItem;
+    private void RenderItem()
+    {
+        if (renderItem != null)
+        {
+            renderItem.SetActive(false);
+        }
+        if (currentItem == Item.None)
+        {
+            return;
+        }
+        List<GameObject> models = (aimBack) ? altModels : itemModels;
+        // Takes the current item and renders the corresponding model
+        foreach(GameObject model in models)
+        {
+            if(model.name == currentItem.ToString())
+            {
+                renderItem = model;
+                break;
+            }
+        }
+        renderItem.SetActive(true);
+    }
+
+    public IEnumerator UseItem()
+    {
+        yield return Attack();
+        yield return LoseItem();
+    }
+
+    private IEnumerator Attack()
+    {
+        switch(currentItem)
+        {
+            case Item.RLauncher:
+                Debug.Log("Fire the rocket launcher");
+                break;
+            case Item.MachineGun:
+                Debug.Log("Fire the machine gun");
+                break;
+            case Item.GLauncher:
+                Debug.Log("Fire the guided rocket launcher");
+                break;
+        }
+        //for(int i = 0; i < 100; i++)
+        //{
+        //    yield return new WaitForFixedUpdate();
+        //}
+        yield return new WaitForSeconds(10f);
+    }
+
+    private IEnumerator LoseItem()
     {
         currentItem = Item.None;
+        RenderItem();
+        yield return null;
     }
 }
