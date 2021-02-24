@@ -54,6 +54,7 @@ public class ItemBox : MonoBehaviour
 public enum Item
 {
     None,
-    Banana,
-
+    RLauncher,
+    GLauncher,
+    MachineGun
 }
