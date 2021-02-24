@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BaseAI : MonoBehaviour
@@ -52,6 +53,11 @@ public class BaseAI : MonoBehaviour
     [SerializeField]
     private List<GameObject> altModels = new List<GameObject>();
 
+    [Header("Scoring")]
+    public int position;
+    [SerializeField]
+    private Text positionText;
+
     [Header("Misc")]
     [SerializeField]
     private bool overrideControl;
@@ -88,19 +94,8 @@ public class BaseAI : MonoBehaviour
         //shoot and shit
         Items();
 
-        if(Input.GetKey(KeyCode.K))
-        {
-            StartCoroutine(UseItem());
-        }
-        if(Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            AimBack(true);
-            Debug.Log("Aiming back");
-        }    
-        if(Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            AimBack(false);
-        }    
+        //display the AI's position
+        positionText.text = BaseAIHelper.AddOrdinal(position);
     }
 
     private void Locomotion()
@@ -267,5 +262,38 @@ public class BaseAI : MonoBehaviour
         currentItem = Item.None;
         RenderItem();
         yield return null;
+    }
+
+    public int GetPosition()
+    {
+        return position;
+    }
+}
+
+public static class BaseAIHelper
+{
+    public static string AddOrdinal(int num)
+    {
+        if (num <= 0) return num.ToString();
+
+        switch (num % 100)
+        {
+            case 11:
+            case 12:
+            case 13:
+                return num + "th";
+        }
+
+        switch (num % 10)
+        {
+            case 1:
+                return num + "st";
+            case 2:
+                return num + "nd";
+            case 3:
+                return num + "rd";
+            default:
+                return num + "th";
+        }
     }
 }
