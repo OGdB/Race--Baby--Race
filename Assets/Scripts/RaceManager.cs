@@ -41,8 +41,6 @@ public class RaceManager : MonoBehaviour
             {
                 foreach (Collider collider in colliders)
                 {
-                    Debug.Log(collider.name);
-
                     //if a collider in range of one of the checkpoints is a player
                     if (collider.CompareTag("Player"))
                     {

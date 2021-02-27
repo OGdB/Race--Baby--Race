@@ -47,11 +47,17 @@ public class BaseAI : MonoBehaviour
     [SerializeField]
     private float itemCheckDistance;
     [SerializeField]
-    private bool aimBack = false;
+    private bool aimBack = true;
     [SerializeField]
-    private List<GameObject> itemModels = new List<GameObject>();
+    private GameObject[] itemModels;
     [SerializeField]
-    private List<GameObject> altModels = new List<GameObject>();
+    private Transform forwardItemPos;
+    [SerializeField]
+    private Transform backwardItemPos;
+    [SerializeField]
+    private GameObject[] itemPrefabs;
+    [SerializeField]
+    private float itemSpawnDistance;
 
     [Header("Scoring")]
     public int position;
@@ -83,6 +89,21 @@ public class BaseAI : MonoBehaviour
         if (overrideControl)
         {
             direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                UseItem();
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                AimBack(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                AimBack(false);
+            }
         }
     }
 
@@ -140,10 +161,20 @@ public class BaseAI : MonoBehaviour
                     {
                         Item newItem = collider.GetComponent<ItemBox>().GetItem();
                         currentItem = newItem;
-                        RenderItem();
                     }
                 }
             }
+        }
+
+        //visualize items
+        foreach (GameObject item in itemModels)
+        {
+            item.SetActive(false);
+        }
+
+        if (currentItem != Item.None)
+        {
+            itemModels[(int)currentItem - 1].SetActive(true);
         }
     }
 
@@ -202,66 +233,21 @@ public class BaseAI : MonoBehaviour
     public void AimBack(bool a)
     {
         aimBack = a;
-        RenderItem();
     }
 
-    // Item models need to be named corresponding to their name in the Item enum
-    GameObject renderItem;
-    private void RenderItem()
+    public void UseItem()
     {
-        if (renderItem != null)
+        if(currentItem != Item.None)
         {
-            renderItem.SetActive(false);
-        }
-        if (currentItem == Item.None)
-        {
-            return;
-        }
-        List<GameObject> models = (aimBack) ? altModels : itemModels;
-        // Takes the current item and renders the corresponding model
-        foreach(GameObject model in models)
-        {
-            if(model.name == currentItem.ToString())
+            switch (currentItem)
             {
-                renderItem = model;
-                break;
+                default:
+                    Instantiate(itemPrefabs[(int)currentItem - 1], transform.position + transform.forward * itemSpawnDistance * (aimBack ? -1 : 1), Quaternion.identity);
+                    break;
             }
+
+            currentItem = Item.None;
         }
-        renderItem.SetActive(true);
-    }
-
-    public IEnumerator UseItem()
-    {
-        yield return Attack();
-        yield return LoseItem();
-    }
-
-    private IEnumerator Attack()
-    {
-        switch(currentItem)
-        {
-            case Item.RLauncher:
-                Debug.Log("Fire the rocket launcher");
-                break;
-            case Item.MachineGun:
-                Debug.Log("Fire the machine gun");
-                break;
-            case Item.GLauncher:
-                Debug.Log("Fire the guided rocket launcher");
-                break;
-        }
-        //for(int i = 0; i < 100; i++)
-        //{
-        //    yield return new WaitForFixedUpdate();
-        //}
-        yield return new WaitForSeconds(10f);
-    }
-
-    private IEnumerator LoseItem()
-    {
-        currentItem = Item.None;
-        RenderItem();
-        yield return null;
     }
 
     public int GetPosition()
