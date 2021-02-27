@@ -30,7 +30,6 @@ This document is a short guide on the usage of the BaseAI component for the deve
 
   > Uses the current item
   >
-  > (***Warning*** Not yet finished.)
   
 
 ## Variables
