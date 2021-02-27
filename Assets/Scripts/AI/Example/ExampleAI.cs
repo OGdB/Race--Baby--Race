@@ -30,5 +30,10 @@ public class ExampleAI : MonoBehaviour
         Debug.DrawRay(transform.position, transform.TransformDirection(dir) * 3, Color.red);
 
         baseAI.SetDirection(new Vector2(dir.x, 1));
+
+        if(baseAI.GetCurrentItem() != Item.None)
+        {
+            baseAI.UseItem();
+        }
     }
 }

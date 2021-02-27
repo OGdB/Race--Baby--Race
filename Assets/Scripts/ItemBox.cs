@@ -54,6 +54,6 @@ public class ItemBox : MonoBehaviour
 public enum Item
 {
     None,
-    Banana,
-
+    Pylon,
+    Grenade
 }

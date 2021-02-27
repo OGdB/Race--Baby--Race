@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BaseAI : MonoBehaviour
@@ -44,6 +46,23 @@ public class BaseAI : MonoBehaviour
     private Transform itemCheckPos;
     [SerializeField]
     private float itemCheckDistance;
+    [SerializeField]
+    private bool aimBack = true;
+    [SerializeField]
+    private GameObject[] itemModels;
+    [SerializeField]
+    private Transform forwardItemPos;
+    [SerializeField]
+    private Transform backwardItemPos;
+    [SerializeField]
+    private GameObject[] itemPrefabs;
+    [SerializeField]
+    private float itemSpawnDistance;
+
+    [Header("Scoring")]
+    public int position;
+    [SerializeField]
+    private Text positionText;
 
     [Header("Misc")]
     [SerializeField]
@@ -70,6 +89,21 @@ public class BaseAI : MonoBehaviour
         if (overrideControl)
         {
             direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                UseItem();
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                AimBack(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                AimBack(false);
+            }
         }
     }
 
@@ -80,6 +114,9 @@ public class BaseAI : MonoBehaviour
 
         //shoot and shit
         Items();
+
+        //display the AI's position
+        positionText.text = BaseAIHelper.AddOrdinal(position);
     }
 
     private void Locomotion()
@@ -120,10 +157,24 @@ public class BaseAI : MonoBehaviour
             {
                 if (collider.CompareTag("ItemBox"))
                 {
-                    Item newItem = collider.GetComponent<ItemBox>().GetItem();
-                    currentItem = (currentItem == Item.None) ? newItem : currentItem;
+                    if (currentItem == Item.None)
+                    {
+                        Item newItem = collider.GetComponent<ItemBox>().GetItem();
+                        currentItem = newItem;
+                    }
                 }
             }
+        }
+
+        //visualize items
+        foreach (GameObject item in itemModels)
+        {
+            item.SetActive(false);
+        }
+
+        if (currentItem != Item.None)
+        {
+            itemModels[(int)currentItem - 1].SetActive(true);
         }
     }
 
@@ -140,7 +191,7 @@ public class BaseAI : MonoBehaviour
     public Vector3[] GetNodes()
     {
         //if no path, found path
-        if(path == null)
+        if (path == null)
         {
             path = GameObject.FindGameObjectWithTag("Path").transform;
         }
@@ -148,7 +199,7 @@ public class BaseAI : MonoBehaviour
         //collect node positions
         Vector3[] nodes = new Vector3[path.childCount];
 
-        for(int n = 0; n < nodes.Length; n++)
+        for (int n = 0; n < nodes.Length; n++)
         {
             nodes[n] = path.GetChild(n).position;
         }
@@ -163,7 +214,7 @@ public class BaseAI : MonoBehaviour
 
         for (int p = 0; p < players.Length; p++)
         {
-            if(players[p].transform.position == transform.position)
+            if (players[p].transform.position == transform.position)
             {
                 continue;
             }
@@ -179,8 +230,56 @@ public class BaseAI : MonoBehaviour
         return currentItem;
     }
 
+    public void AimBack(bool a)
+    {
+        aimBack = a;
+    }
+
     public void UseItem()
     {
-        currentItem = Item.None;
+        if(currentItem != Item.None)
+        {
+            switch (currentItem)
+            {
+                default:
+                    Instantiate(itemPrefabs[(int)currentItem - 1], transform.position + transform.forward * itemSpawnDistance * (aimBack ? -1 : 1), Quaternion.identity);
+                    break;
+            }
+
+            currentItem = Item.None;
+        }
+    }
+
+    public int GetPosition()
+    {
+        return position;
+    }
+}
+
+public static class BaseAIHelper
+{
+    public static string AddOrdinal(int num)
+    {
+        if (num <= 0) return num.ToString();
+
+        switch (num % 100)
+        {
+            case 11:
+            case 12:
+            case 13:
+                return num + "th";
+        }
+
+        switch (num % 10)
+        {
+            case 1:
+                return num + "st";
+            case 2:
+                return num + "nd";
+            case 3:
+                return num + "rd";
+            default:
+                return num + "th";
+        }
     }
 }
