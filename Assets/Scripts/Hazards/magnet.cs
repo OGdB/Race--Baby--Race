@@ -9,9 +9,18 @@ public class magnet : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         float forceFactor = speed * Time.deltaTime;
-        var player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<Rigidbody>().AddForce((this.transform.position - player.transform.position) * speed * Time.smoothDeltaTime);
-        //player.transform.position = Vector3.MoveTowards(player.transform.position, -this.transform.position, forceFactor);
+        var player = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < player.Length; i++)
+        {
+            if(other.gameObject == player[i])
+            {
+                player[i].GetComponent<Rigidbody>().AddForce((this.transform.position - player[i].transform.position) * speed * Time.smoothDeltaTime);
+                //player[i].transform.position = Vector3.MoveTowards(player[i].transform.position, -this.transform.position, forceFactor);
+            }
+
+        }
+
+        
     }
 
 }

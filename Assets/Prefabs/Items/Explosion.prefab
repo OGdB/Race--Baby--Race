@@ -48,7 +48,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   blastRadius: 10
-  explosionForce: 1000
+  explosionForce: 500
   upRatio: 1
 --- !u!1 &3298947171712604158
 GameObject:
