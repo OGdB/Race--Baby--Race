@@ -30,6 +30,11 @@ This document is a short guide on the usage of the BaseAI component for the deve
 
   > Uses the current item
   >
+
+- **Void** Respawn()
+
+  > Respawns the player to the most recent checkpoint
+  >
   
 
 ## Variables

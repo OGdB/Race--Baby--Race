@@ -60,9 +60,14 @@ public class BaseAI : MonoBehaviour
     private float itemSpawnDistance;
 
     [Header("Scoring")]
+    public Transform checkpoint;
     public int position;
     [SerializeField]
     private Text positionText;
+
+    [Header("Respawning")]
+    [SerializeField]
+    private GameObject explosionPrefab;
 
     [Header("Misc")]
     [SerializeField]
@@ -237,7 +242,7 @@ public class BaseAI : MonoBehaviour
 
     public void UseItem()
     {
-        if(currentItem != Item.None)
+        if (currentItem != Item.None)
         {
             switch (currentItem)
             {
@@ -253,6 +258,18 @@ public class BaseAI : MonoBehaviour
     public int GetPosition()
     {
         return position;
+    }
+
+    public void Respawn()
+    {
+        //"Explode" when respawning
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+        transform.position = checkpoint.position + Vector3.up;
+        transform.rotation = checkpoint.rotation;
+
+        direction = Vector2.zero;
+        rb.velocity = Vector3.zero;
     }
 }
 
