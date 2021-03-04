@@ -76,6 +76,12 @@ public class RaceManager : MonoBehaviour
 
     private void Update()
     {
+        //assign checkpoint
+        for (int p = 0; p < players.Count; p++)
+        {
+            players[p].AI.checkpoint = checkpoints[Mathf.RoundToInt(Mathf.Repeat(players[p].currentCheckPoint - 1, checkpoints.Length))];
+        }
+
         //sort list of players based on lap, checkpoint and distance to next checkpoint
         players = players.OrderByDescending(x => x.currentLap).ThenByDescending(y => y.currentCheckPoint).ThenBy(z => z.distanceToNextCheckPoint).ToList();
 
