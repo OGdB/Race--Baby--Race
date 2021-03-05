@@ -80,7 +80,6 @@ public class BaseAI : MonoBehaviour
 
     private Transform path;
 
-
     //references
     private Rigidbody rb;
 
@@ -193,23 +192,25 @@ public class BaseAI : MonoBehaviour
             );
     }
 
-    public Vector3[] GetNodes()
+    public Node GetFirstNode()
     {
-        //if no path, found path
+        // There is a path of nodes
+        // We provide you the first node to start with.
+        // Each node has a 'NextNode' component, which you'll get the transforms of as well.
+        // Whatever node your AI chooses to go to is up to you. You get the nodes' transforms. GL.
+        //if no path, find path
         if (path == null)
         {
             path = GameObject.FindGameObjectWithTag("Path").transform;
         }
-
+        Node firstNode = path.GetChild(0).GetComponent<Node>();
         //collect node positions
-        Vector3[] nodes = new Vector3[path.childCount];
-
-        for (int n = 0; n < nodes.Length; n++)
+/*        for (int n = 0; n < nodes.Length; n++)
         {
             nodes[n] = path.GetChild(n).position;
-        }
+        }*/
 
-        return nodes;
+        return firstNode;
     }
 
     public Vector3[] GetPlayerPositions()
