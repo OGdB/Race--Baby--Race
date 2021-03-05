@@ -30,7 +30,7 @@ public class StupidAI : MonoBehaviour
         baseAI = GetComponent<BaseAI>();
 
         //generate smoothed path
-        nodes = baseAI.GetNodes();
+        // nodes = baseAI.GetNodes();
 
         for(int p = 0; p < smoothingPasses; p++)
         {

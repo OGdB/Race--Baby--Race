@@ -32,7 +32,7 @@ public class RaceManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //check all checkpoints
+        //check all checkpoints using an overlapbox ==('collider')
         for (int c = 0; c < checkpoints.Length; c++)
         {
             Collider[] colliders = Physics.OverlapBox(checkpoints[c].position, checkpoints[c].localScale, checkpoints[c].rotation, checkpointLayerMask, QueryTriggerInteraction.Collide);
