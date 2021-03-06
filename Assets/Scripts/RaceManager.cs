@@ -89,6 +89,7 @@ public class RaceManager : MonoBehaviour
         for(int p = 0; p < players.Count; p++)
         {
             players[p].AI.position = p + 1;
+            players[p].AI.lap = players[p].currentLap;
         }
     }
 

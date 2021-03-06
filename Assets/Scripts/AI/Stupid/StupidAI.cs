@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [RequireComponent(typeof(BaseAI))]
 public class StupidAI : MonoBehaviour
@@ -10,11 +11,19 @@ public class StupidAI : MonoBehaviour
     public bool sendIt;
 
     [Header("Steering")]
-    public SteerMode steerMode;
+    public StupidSteerMode steerMode;
+    public AnimationCurve steeringCurve;
+    public bool useCurve;
     public Vector3 steerProjectionOffset;
+    public int nearestNodeOffset;
+    public int sampleSize;
+    public int spread;
+
+    [Header("Pathfinding")]
+    public StupidSearchMode searchMode;
+    private int maxLoops = 10000;
 
     [Header("Bezier path")]
-    public int nearestNodeOffset;
     public Color pathColor = Color.cyan;
     public float visibleRange;
     [Range(1, 16)]
@@ -22,7 +31,8 @@ public class StupidAI : MonoBehaviour
 
     private BaseAI baseAI;
     private Vector3[] nodes;
-    private List<Vector3> bezierPoints;
+    private Vector3 targetPos;
+    private int lastLap;
 
 
     private void Start()
@@ -30,9 +40,98 @@ public class StupidAI : MonoBehaviour
         baseAI = GetComponent<BaseAI>();
 
         //generate smoothed path
-        // nodes = baseAI.GetNodes();
+        ReconstructPath();
+    }
 
-        for(int p = 0; p < smoothingPasses; p++)
+    //Simple A* to convert the node system to a vector3[]
+    private void ReconstructPath()
+    {
+        Node startNode = baseAI.GetFirstNode();
+
+        //start sets
+        List<Node> openSet = new List<Node>();
+        List<Node> closedSet = new List<Node>();
+
+        //add start to the open set
+        openSet.Add(startNode);
+
+        int loops = 0;
+        while(openSet.Count > 0)
+        {
+            //sort
+            switch (searchMode)
+            {
+                case StupidSearchMode.BestFirst:
+                    openSet = openSet.OrderBy(r => r.cost).ToList();
+                    break;
+
+                case StupidSearchMode.Random:
+                    openSet = openSet.OrderBy(r => Random.value).ToList();
+                    break;
+            }
+
+            //get current node and make closed
+            Node currentNode = openSet[0];
+            openSet.Remove(currentNode);
+            closedSet.Add(currentNode);
+
+            //We've found the path!!! Now retrace it.
+            if (currentNode == startNode && loops > 0)
+            {
+                List<Vector3> newPath = new List<Vector3>();
+                newPath.Add(currentNode.transform.position);
+
+                Node currentRetraceNode = currentNode.parent;
+
+                while (currentRetraceNode != startNode)
+                {
+                    newPath.Add(currentRetraceNode.transform.position);
+                    currentRetraceNode = currentRetraceNode.parent;
+                }
+
+                newPath.Reverse();
+                nodes = newPath.ToArray();
+                break;
+            }
+
+            //scroll through all neighbouring nodes
+            for (int n = 0; n < currentNode.nextNodes.Length; n++)
+            {
+                Node neighbour = currentNode.nextNodes[n];
+
+                //if we've seen it, ignore it.
+                if ((closedSet.Contains(neighbour) && neighbour != startNode) || neighbour == null)
+                {
+                    continue;
+                }
+
+                //calculate the gcost from the current node to the neighbour + the current nodes gcost
+                float newMovementCostToNeighbour = currentNode.cost + Vector3.Distance(currentNode.transform.position, neighbour.transform.position);
+
+                //if the open set doesn't yet contain the neighbour then use it (or if newmovement gcost is less than the neighbours gcost
+                if (newMovementCostToNeighbour < neighbour.cost || !openSet.Contains(neighbour))
+                {
+                    neighbour.cost = newMovementCostToNeighbour;
+                    neighbour.parent = currentNode;
+
+                    if (!openSet.Contains(neighbour))
+                    {
+                        openSet.Add(neighbour);
+                    }
+                }
+            }
+
+            //ensure we don't fail
+            loops++;
+            if(loops > maxLoops)
+            {
+                Debug.LogWarning("Exceeded max loops! Aborting...");
+                return;
+            }
+        }
+
+        //apply smoothing
+        for (int p = 0; p < smoothingPasses; p++)
         {
             nodes = Chaikin(nodes);
         }
@@ -44,38 +143,51 @@ public class StupidAI : MonoBehaviour
             GetNearestNode(transform.position + transform.InverseTransformDirection(steerProjectionOffset)) + nearestNodeOffset,
             nodes.Length));
 
-        Debug.DrawLine(transform.position, nodes[targetNode], pathColor);
+        targetPos = nodes[targetNode];
+        for(int s = 0; s < sampleSize; s++)
+        {
+            targetPos += nodes[Mathf.RoundToInt(Mathf.Repeat(targetNode + s * spread, nodes.Length))];
+        }
+        targetPos = new Vector3(
+            targetPos.x / ((float)sampleSize + 1),
+            targetPos.y / ((float)sampleSize + 1),
+            targetPos.z / ((float)sampleSize + 1)
+            );
 
         //calculate direction
-        Vector3 dir = transform.InverseTransformDirection((nodes[targetNode] - transform.position).normalized);
+        Vector3 dir = transform.InverseTransformDirection((targetPos - transform.position).normalized);
 
         //steer
-        float steer = 0;
+        float steer = dir.x;
+
+        if (useCurve)
+        {
+            steer = steer * steeringCurve.Evaluate(Mathf.Abs(steer));
+        }
 
         switch (steerMode)
         {
-            case SteerMode.Binary:
-                steer = (dir.x < 0) ? -1 : 1;
+            case StupidSteerMode.Binary:
+                steer = (steer < 0) ? -1 : 1;
                 break;
 
-            case SteerMode.Half:
-                steer = dir.x * .5f;
+            case StupidSteerMode.Half:
+                steer = steer * .5f;
                 break;
 
-            case SteerMode.Full:
-                steer = dir.x;
+            case StupidSteerMode.Full:
                 break;
 
-            case SteerMode.Double:
-                steer = dir.x * 2f;
+            case StupidSteerMode.Double:
+                steer = steer * 2f;
                 break;
 
-            case SteerMode.Triple:
-                steer = dir.x * 3f;
+            case StupidSteerMode.Triple:
+                steer = steer * 3f;
                 break;
 
-            case SteerMode.Quadruple:
-                steer = dir.x * 4f;
+            case StupidSteerMode.Quadruple:
+                steer = steer * 4f;
                 break;
         }
 
@@ -89,6 +201,13 @@ public class StupidAI : MonoBehaviour
         if (baseAI.GetCurrentItem() != Item.None)
         {
             baseAI.UseItem();
+        }
+
+        //regenerate path each lap
+        if(baseAI.lap != lastLap)
+        {
+            lastLap = baseAI.lap;
+            ReconstructPath();
         }
     }
 
@@ -128,6 +247,10 @@ public class StupidAI : MonoBehaviour
                         );
                 }
             }
+
+            Gizmos.color = new Color(1f - pathColor.r, 1f - pathColor.g, 1f - pathColor.b);
+
+            Gizmos.DrawSphere(targetPos, 1f);
         }
     }
 
@@ -148,7 +271,7 @@ public class StupidAI : MonoBehaviour
     }
 }
 
-public enum SteerMode
+public enum StupidSteerMode
 {
     Binary,
     Half,
@@ -156,4 +279,10 @@ public enum SteerMode
     Double,
     Triple,
     Quadruple
+}
+
+public enum StupidSearchMode
+{
+    BestFirst,
+    Random
 }
