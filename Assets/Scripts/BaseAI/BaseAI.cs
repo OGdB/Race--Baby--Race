@@ -62,6 +62,7 @@ public class BaseAI : MonoBehaviour
     [Header("Scoring")]
     public Transform checkpoint;
     public int position;
+    public int lap;
     [SerializeField]
     private Text positionText;
 
