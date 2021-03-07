@@ -65,6 +65,10 @@ public class StupidAI : MonoBehaviour
                     openSet = openSet.OrderBy(r => r.cost).ToList();
                     break;
 
+                case StupidSearchMode.WorstFirst:
+                    openSet = openSet.OrderByDescending(r => r.cost).ToList();
+                    break;
+
                 case StupidSearchMode.Random:
                     openSet = openSet.OrderBy(r => Random.value).ToList();
                     break;
@@ -155,7 +159,7 @@ public class StupidAI : MonoBehaviour
             );
 
         //calculate direction
-        Vector3 dir = transform.InverseTransformDirection((targetPos - transform.position).normalized);
+        Vector3 dir = transform.InverseTransformDirection((targetPos - transform.position));
 
         //steer
         float steer = dir.x;
@@ -284,5 +288,6 @@ public enum StupidSteerMode
 public enum StupidSearchMode
 {
     BestFirst,
+    WorstFirst,
     Random
 }
