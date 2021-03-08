@@ -19889,7 +19889,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   sendIt: 1
-  steerMode: 3
+  normalizeSteeringDir: 1
+  steerMode: 5
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -19904,21 +19905,21 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   useCurve: 1
   steerProjectionOffset: {x: 0, y: 0, z: 0}
-  nearestNodeOffset: 2
-  sampleSize: 0
-  spread: 0
+  nearestNodeOffset: 1
+  sampleSize: 3
+  spread: 2
   searchMode: 2
   pathColor: {r: 1, g: 0, b: 0.33333334, a: 1}
   visibleRange: 25

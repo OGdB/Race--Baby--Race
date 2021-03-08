@@ -11,6 +11,7 @@ public class StupidAI : MonoBehaviour
     public bool sendIt;
 
     [Header("Steering")]
+    public bool normalizeSteeringDir;
     public StupidSteerMode steerMode;
     public AnimationCurve steeringCurve;
     public bool useCurve;
@@ -141,7 +142,7 @@ public class StupidAI : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         int targetNode = Mathf.RoundToInt(Mathf.Repeat(
             GetNearestNode(transform.position + transform.InverseTransformDirection(steerProjectionOffset)) + nearestNodeOffset,
@@ -160,6 +161,7 @@ public class StupidAI : MonoBehaviour
 
         //calculate direction
         Vector3 dir = transform.InverseTransformDirection((targetPos - transform.position));
+        dir = normalizeSteeringDir ? dir.normalized : new Vector3(dir.x, 0, 0).normalized;
 
         //steer
         float steer = dir.x;
