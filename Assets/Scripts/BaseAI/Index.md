@@ -12,11 +12,9 @@ This document is a short guide on the usage of the BaseAI component for the deve
   >
   > newDirection.y Specifies the desired speed and may range from -1 to 1.
 
-- **Vector3** GetNodes()
+- **Vector3** GetFirstNode()
 
-  > Gets an array of nodes in the BaseAI path in a sequential manner.
-  >
-  > (***Warning*** GetNodes() only returns sequential nodes provided they are also sequentially set up in the editor.)
+  > Returns the First node at the startline. Each node contains a variable containing its adjacent node(s).
   
 - **Vector3** GetPlayerPositions()
 
@@ -42,6 +40,12 @@ This document is a short guide on the usage of the BaseAI component for the deve
 - **int** position
 
   > Contains the current position of the AI in the race. This int is assigned by the RaceManager.
+
+  **Node** nextNodes
+
+  > A Node's subsequent node(s).
+  >
+  > **You may only read the next node's position**
 
 ## Todo
 
