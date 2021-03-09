@@ -184,8 +184,6 @@ public class BaseAI : MonoBehaviour
 
     public void SetDirection(Vector2 newDirection)
     {
-        //we need to make sure that the new directions don't exeed a magnitude of 1 per axis...
-        //otherwise you can exeed max speed and steering angles
         direction = new Vector2(
             Mathf.Clamp(newDirection.x, -1, 1),
             Mathf.Clamp(newDirection.y, -1, 1)
