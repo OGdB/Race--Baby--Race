@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Path
   - ItemBox
+  - Hazard
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - 
   - Environment
   - Road
-  - 
+  - Walls
   - 
   - 
   - 
