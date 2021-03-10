@@ -19888,7 +19888,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  sendIt: 1
+  sendIt: 0
   normalizeSteeringDir: 1
   steerMode: 5
   steeringCurve:
@@ -19920,7 +19920,7 @@ MonoBehaviour:
   nearestNodeOffset: 1
   sampleSize: 3
   spread: 2
-  searchMode: 2
+  searchMode: 0
   pathColor: {r: 1, g: 0, b: 0.33333334, a: 1}
   visibleRange: 25
   smoothingPasses: 2
