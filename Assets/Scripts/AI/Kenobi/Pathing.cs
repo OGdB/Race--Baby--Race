@@ -10,8 +10,7 @@ using UnityEngine;
 public class Pathing : MonoBehaviour
 {
     private BaseAI baseAI;
-    [SerializeField]
-    private Vector3[] shortestPath;
+    public Vector3[] shortestPath;
     private Vector3[] smoothPath;
 
     private Vector3 forwardDirection;
