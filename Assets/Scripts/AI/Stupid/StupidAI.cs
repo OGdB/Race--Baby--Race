@@ -20,6 +20,26 @@ public class StupidAI : MonoBehaviour
     public int sampleSize;
     public int spread;
 
+    [Header("Non-navigational steering")]
+    public Vector3 navRaycastOffset;
+    public Vector3[] pushRaycasts;
+    public LayerMask pushLayermask;
+    public float pushAmount;
+    public bool normalizePush;
+    public Color pushColor = Color.blue;
+
+    public Vector3[] pullRaycasts;
+    public LayerMask pullLayermask;
+    public float pullAmount;
+    public bool normalizePull;
+    public Color pullColor = Color.magenta;
+
+    [Header("Items")]
+    public Vector3 itemRaycastOffset;
+    public Vector3[] itemRaycasts;
+    public LayerMask itemLayermask;
+    public Color itemColor = Color.green;
+
     [Header("Pathfinding")]
     public StupidSearchMode searchMode;
     private int maxLoops = 10000;
@@ -29,11 +49,20 @@ public class StupidAI : MonoBehaviour
     public float visibleRange;
     [Range(1, 16)]
     public int smoothingPasses;
+    [Range(0f, 1f)]
+    public float cutAmt;
+
+    [Header("Debug")]
+    [SerializeField, Range(-1f, 1f)]
+    private float steeringDir;
+    [SerializeField, Range(0f, 1f)]
+    private float steeringMag;
 
     private BaseAI baseAI;
     private Vector3[] nodes;
     private Vector3 targetPos;
     private int lastLap;
+    private Transform lastCheckPoint;
 
 
     private void Start()
@@ -161,6 +190,31 @@ public class StupidAI : MonoBehaviour
 
         //calculate direction
         Vector3 dir = transform.InverseTransformDirection((targetPos - transform.position));
+
+        //non-directional steering
+        Vector3 pushSteer = Vector3.zero;
+        foreach (Vector3 push in pushRaycasts)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + navRaycastOffset, (transform.rotation * push), out hit, push.magnitude, pushLayermask, QueryTriggerInteraction.Ignore))
+            {
+                pushSteer -= push * ((transform.position - push) - (transform.position - hit.point)).magnitude;
+            }
+        }
+
+        Vector3 pullSteer = Vector3.zero;
+        foreach (Vector3 pull in pullRaycasts)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + navRaycastOffset, (transform.rotation * pull), out hit, pull.magnitude, pullLayermask, QueryTriggerInteraction.Ignore))
+            {
+                pullSteer += pull * ((transform.position - pull) - (transform.position - hit.point)).magnitude;
+            }
+        }
+
+        dir += (normalizePush ? new Vector3(pushSteer.x, 0, 0).normalized : pushSteer) / (float)pushRaycasts.Length * pushAmount + (normalizePull ? new Vector3(pullSteer.x, 0, 0).normalized : pullSteer) / (float)pullRaycasts.Length * pullAmount;
+
+        //normalize direction
         dir = normalizeSteeringDir ? dir.normalized : new Vector3(dir.x, 0, 0).normalized;
 
         //steer
@@ -202,19 +256,39 @@ public class StupidAI : MonoBehaviour
 
         //drive
         baseAI.SetDirection(new Vector2(steer, intendedSpeed));
-
+        
         //use item
         if (baseAI.GetCurrentItem() != Item.None)
         {
-            baseAI.UseItem();
+            foreach (Vector3 itemDir in pushRaycasts)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position + itemRaycastOffset, (transform.rotation * itemDir), out hit, itemDir.magnitude, itemLayermask, QueryTriggerInteraction.Ignore))
+                {
+                    baseAI.UseItem();
+                }
+            }
+        }
+
+        if (baseAI.checkpoint != lastCheckPoint)
+        {
+            lastCheckPoint = baseAI.checkpoint;
+            if (baseAI.GetCurrentItem() != Item.None)
+            {
+                baseAI.UseItem();
+            }
         }
 
         //regenerate path each lap
-        if(baseAI.lap != lastLap)
+        if (baseAI.lap != lastLap)
         {
             lastLap = baseAI.lap;
             ReconstructPath();
         }
+
+        //debug
+        steeringDir = Mathf.Clamp(steer, -1f, 1f);
+        steeringMag = Mathf.Clamp01(Mathf.Abs(steer));
     }
 
     private int GetNearestNode(Vector3 position)
@@ -258,6 +332,25 @@ public class StupidAI : MonoBehaviour
 
             Gizmos.DrawSphere(targetPos, 1f);
         }
+
+        //draw push and pull steering
+        Gizmos.color = pushColor;
+        foreach (Vector3 push in pushRaycasts)
+        {
+            Gizmos.DrawRay(transform.position + navRaycastOffset, transform.rotation * push);
+        }
+
+        Gizmos.color = pullColor;
+        foreach (Vector3 pull in pullRaycasts)
+        {
+            Gizmos.DrawRay(transform.position + navRaycastOffset, transform.rotation * pull);
+        }
+
+        Gizmos.color = itemColor;
+        foreach (Vector3 itemDir in itemRaycasts)
+        {
+            Gizmos.DrawRay(transform.position + itemRaycastOffset, transform.rotation * itemDir);
+        }
     }
 
     public Vector3[] Chaikin(Vector3[] pts)
@@ -269,8 +362,8 @@ public class StupidAI : MonoBehaviour
         int j = 1;
         for (int i = 0; i < pts.Length - 2; i++)
         {
-            newPts[j] = pts[i] + (pts[i + 1] - pts[i]) * 0.75f;
-            newPts[j + 1] = pts[i + 1] + (pts[i + 2] - pts[i + 1]) * 0.25f;
+            newPts[j] = pts[i] + (pts[i + 1] - pts[i]) * (1 - cutAmt);
+            newPts[j + 1] = pts[i + 1] + (pts[i + 2] - pts[i + 1]) * cutAmt;
             j += 2;
         }
         return newPts;
