@@ -58,6 +58,8 @@ public class BaseAI : MonoBehaviour
     private GameObject[] itemPrefabs;
     [SerializeField]
     private float itemSpawnDistance;
+    [SerializeField]
+    private Vector3 throwForce;
 
     [Header("Scoring")]
     public Transform checkpoint;
@@ -256,7 +258,12 @@ public class BaseAI : MonoBehaviour
             switch (currentItem)
             {
                 default:
-                    Instantiate(itemPrefabs[(int)currentItem - 1], transform.position + transform.forward * itemSpawnDistance * (aimBack ? -1 : 1), Quaternion.identity);
+                    Rigidbody itemBody = Instantiate(itemPrefabs[(int)currentItem - 1], transform.position + transform.forward * itemSpawnDistance * (aimBack ? -1 : 1), Quaternion.identity).GetComponent<Rigidbody>();
+                    if (!aimBack)
+                    {
+                        itemBody.AddForce(transform.rotation * throwForce, ForceMode.Acceleration);
+                    }
+
                     break;
             }
 
