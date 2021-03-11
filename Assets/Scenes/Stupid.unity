@@ -16764,11 +16764,112 @@ MonoBehaviour:
   m_GameObject: {fileID: 1048478416}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 618e0fe7063b45c4184a87a5abd87ce7, type: 3}
+  m_Script: {fileID: 11500000, guid: 04cfb7e9226cc504bb021abc559b5779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confirmationDistance: 6
-  currentNode: {fileID: 0}
+  sMagToSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -4.999999
+      outSlope: -4.999999
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sendIt: 1
+  normalizeSteeringDir: 1
+  steerMode: 5
+  steeringCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useCurve: 1
+  steerProjectionOffset: {x: 0, y: 0, z: 0}
+  nearestNodeOffset: 2
+  sampleSize: 0
+  spread: 0
+  navRaycastOffset: {x: 0, y: 0, z: 0}
+  pushRaycasts:
+  - {x: -2, y: 0, z: 1}
+  - {x: 2, y: 0, z: 1}
+  - {x: -0.5, y: 0, z: 4}
+  - {x: 0.5, y: 0, z: 4}
+  - {x: -2, y: 0, z: 0}
+  - {x: 2, y: 0, z: 0}
+  - {x: -2.5, y: 0, z: 3}
+  - {x: 2.5, y: 0, z: 3}
+  pushLayermask:
+    serializedVersion: 2
+    m_Bits: 24576
+  pushAmount: 0
+  normalizePush: 1
+  pushColor: {r: 1, g: 0, b: 0, a: 1}
+  pullRaycasts:
+  - {x: -3.5, y: 0, z: 0}
+  - {x: 3.5, y: 0, z: 0}
+  pullLayermask:
+    serializedVersion: 2
+    m_Bits: 8448
+  pullAmount: 0
+  normalizePull: 1
+  pullColor: {r: 0, g: 0, b: 1, a: 1}
+  itemRaycastOffset: {x: 0, y: 0, z: 0}
+  itemRaycasts: []
+  itemLayermask:
+    serializedVersion: 2
+    m_Bits: 0
+  itemColor: {r: 0, g: 0, b: 0, a: 0}
+  searchMode: 1
+  pathColor: {r: 1, g: 0, b: 0.33333334, a: 1}
+  visibleRange: 25
+  smoothingPasses: 2
+  cutAmt: 0.25
+  steeringDir: 0
+  steeringMag: 0
 --- !u!1001 &1049719405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19888,7 +19989,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  sendIt: 0
+  sendIt: 1
   normalizeSteeringDir: 1
   steerMode: 5
   steeringCurve:
@@ -19920,10 +20021,48 @@ MonoBehaviour:
   nearestNodeOffset: 1
   sampleSize: 3
   spread: 2
+  navRaycastOffset: {x: 0, y: 0.4, z: 0}
+  pushRaycasts:
+  - {x: -2, y: 0, z: 1}
+  - {x: 2, y: 0, z: 1}
+  - {x: -0.5, y: 0, z: 6}
+  - {x: 0.5, y: 0, z: 6}
+  - {x: -2, y: 0, z: 0}
+  - {x: 2, y: 0, z: 0}
+  - {x: -2.5, y: 0, z: 4}
+  - {x: 2.5, y: 0, z: 4}
+  pushLayermask:
+    serializedVersion: 2
+    m_Bits: 24576
+  pushAmount: 3
+  normalizePush: 1
+  pushColor: {r: 1, g: 0, b: 0, a: 1}
+  pullRaycasts:
+  - {x: -3.5, y: 0, z: 0}
+  - {x: 3.5, y: 0, z: 0}
+  pullLayermask:
+    serializedVersion: 2
+    m_Bits: 8448
+  pullAmount: 1.5
+  normalizePull: 1
+  pullColor: {r: 0, g: 0, b: 1, a: 1}
+  itemRaycastOffset: {x: 0, y: 0.5, z: 0}
+  itemRaycasts:
+  - {x: -0.5, y: -0.25, z: -6}
+  - {x: 0.5, y: -0.25, z: -6}
+  - {x: -2.5, y: -0.25, z: -4}
+  - {x: 2.5, y: -0.25, z: -4}
+  itemLayermask:
+    serializedVersion: 2
+    m_Bits: 256
+  itemColor: {r: 0, g: 1, b: 0, a: 1}
   searchMode: 0
   pathColor: {r: 1, g: 0, b: 0.33333334, a: 1}
   visibleRange: 25
   smoothingPasses: 2
+  cutAmt: 0.25
+  steeringDir: 0
+  steeringMag: 0
 --- !u!1 &1220477245
 GameObject:
   m_ObjectHideFlags: 0

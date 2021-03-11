@@ -912,7 +912,7 @@ MonoBehaviour:
   uprightForce: 500
   isGrounded: 0
   groundedCheckPos: {fileID: 7500577264836820317}
-  groundCheckDistance: 0.25
+  groundCheckDistance: 0.5
   groundMask:
     serializedVersion: 2
     m_Bits: 6199
@@ -931,6 +931,7 @@ MonoBehaviour:
   itemSpawnDistance: 2
   checkpoint: {fileID: 0}
   position: 0
+  lap: 0
   positionText: {fileID: 832945213808793184}
   explosionPrefab: {fileID: 2719894469046659529, guid: eda54cc2b2bff134d89e35f5378b50fd,
     type: 3}
