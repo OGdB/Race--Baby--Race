@@ -54,10 +54,14 @@ public class StupidAI : MonoBehaviour
     public float cutAmt;
 
     [Header("Cosmetic")]
+    public int carBody;
     public string carName;
     public float nameHueSpeed;
     public float hueLetterSpace;
+    public int speedBarSize;
+
     private float currentNameHue;
+    private Vector3 lastPos;
 
     [Header("Debug")]
     [SerializeField, Range(-1f, 1f)]
@@ -75,7 +79,8 @@ public class StupidAI : MonoBehaviour
     private void Start()
     {
         baseAI = GetComponent<BaseAI>();
-        baseAI.SetBody(1);
+        baseAI.SetBody(carBody);
+        lastPos = transform.position;
 
         //generate smoothed path
         ReconstructPath();
@@ -322,7 +327,16 @@ public class StupidAI : MonoBehaviour
             newName += "<color=#" + ColorUtility.ToHtmlStringRGB(col) + ">" + carName[c] + "</color>";
         }
 
+        newName += "\n[";
+        float deltaSpeed = Mathf.Clamp01(Vector3.Distance(lastPos, transform.position) * Time.deltaTime * 100);
+        for (int b = 0; b < speedBarSize; b++)
+        {
+            newName += (deltaSpeed > 1f / (float)speedBarSize * (float)b) ? "#" : "-";
+        }
+        newName += "]";
+
         baseAI.SetName(newName);
+        lastPos = transform.position;
 
         //debug
         steeringDir = Mathf.Clamp(steer, -1f, 1f);
