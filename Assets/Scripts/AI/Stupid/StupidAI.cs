@@ -41,6 +41,7 @@ public class StupidAI : MonoBehaviour
     public Color itemColor = Color.green;
 
     [Header("Pathfinding")]
+    public StupidPathfindingMode pathfindingMode;
     public StupidSearchMode searchMode;
     private int maxLoops = 10000;
 
@@ -51,6 +52,12 @@ public class StupidAI : MonoBehaviour
     public int smoothingPasses;
     [Range(0f, 1f)]
     public float cutAmt;
+
+    [Header("Cosmetic")]
+    public string carName;
+    public float nameHueSpeed;
+    public float hueLetterSpace;
+    private float currentNameHue;
 
     [Header("Debug")]
     [SerializeField, Range(-1f, 1f)]
@@ -68,6 +75,7 @@ public class StupidAI : MonoBehaviour
     private void Start()
     {
         baseAI = GetComponent<BaseAI>();
+        baseAI.SetBody(1);
 
         //generate smoothed path
         ReconstructPath();
@@ -78,91 +86,109 @@ public class StupidAI : MonoBehaviour
     {
         Node startNode = baseAI.GetFirstNode();
 
-        //start sets
-        List<Node> openSet = new List<Node>();
-        List<Node> closedSet = new List<Node>();
-
-        //add start to the open set
-        openSet.Add(startNode);
-
-        int loops = 0;
-        while(openSet.Count > 0)
+        switch (pathfindingMode)
         {
-            //sort
-            switch (searchMode)
-            {
-                case StupidSearchMode.BestFirst:
-                    openSet = openSet.OrderBy(r => r.cost).ToList();
-                    break;
-
-                case StupidSearchMode.WorstFirst:
-                    openSet = openSet.OrderByDescending(r => r.cost).ToList();
-                    break;
-
-                case StupidSearchMode.Random:
-                    openSet = openSet.OrderBy(r => Random.value).ToList();
-                    break;
-            }
-
-            //get current node and make closed
-            Node currentNode = openSet[0];
-            openSet.Remove(currentNode);
-            closedSet.Add(currentNode);
-
-            //We've found the path!!! Now retrace it.
-            if (currentNode == startNode && loops > 0)
-            {
-                List<Vector3> newPath = new List<Vector3>();
-                newPath.Add(currentNode.transform.position);
-
-                Node currentRetraceNode = currentNode.parent;
-
-                while (currentRetraceNode != startNode)
+            case StupidPathfindingMode.Greedy:
                 {
-                    newPath.Add(currentRetraceNode.transform.position);
-                    currentRetraceNode = currentRetraceNode.parent;
-                }
+                    //start sets
+                    List<Node> openSet = new List<Node>();
+                    List<Node> closedSet = new List<Node>();
 
-                newPath.Reverse();
-                nodes = newPath.ToArray();
-                break;
-            }
+                    //add start to the open set
+                    openSet.Add(startNode);
 
-            //scroll through all neighbouring nodes
-            for (int n = 0; n < currentNode.nextNodes.Length; n++)
-            {
-                Node neighbour = currentNode.nextNodes[n];
-
-                //if we've seen it, ignore it.
-                if ((closedSet.Contains(neighbour) && neighbour != startNode) || neighbour == null)
-                {
-                    continue;
-                }
-
-                //calculate the gcost from the current node to the neighbour + the current nodes gcost
-                float newMovementCostToNeighbour = currentNode.cost + Vector3.Distance(currentNode.transform.position, neighbour.transform.position);
-
-                //if the open set doesn't yet contain the neighbour then use it (or if newmovement gcost is less than the neighbours gcost
-                if (newMovementCostToNeighbour < neighbour.cost || !openSet.Contains(neighbour))
-                {
-                    neighbour.cost = newMovementCostToNeighbour;
-                    neighbour.parent = currentNode;
-
-                    if (!openSet.Contains(neighbour))
+                    int loops = 0;
+                    while (openSet.Count > 0)
                     {
-                        openSet.Add(neighbour);
+                        //sort
+                        switch (searchMode)
+                        {
+                            case StupidSearchMode.Random:
+                                openSet = openSet.OrderBy(r => Random.value).ToList();
+                                break;
+
+                            default:
+                                openSet = openSet.OrderBy(r => r.cost).ToList();
+                                break;
+                        }
+
+                        //get current node and make closed
+                        Node currentNode = openSet[0];
+                        openSet.Remove(currentNode);
+                        closedSet.Add(currentNode);
+
+                        //We've found the path!!! Now retrace it.
+                        if (currentNode == startNode && loops > 0)
+                        {
+                            List<Vector3> newPath = new List<Vector3>();
+                            newPath.Add(currentNode.transform.position);
+
+                            Node currentRetraceNode = currentNode.parent;
+
+                            while (currentRetraceNode != startNode)
+                            {
+                                newPath.Add(currentRetraceNode.transform.position);
+                                currentRetraceNode = currentRetraceNode.parent;
+                            }
+
+                            newPath.Reverse();
+                            nodes = newPath.ToArray();
+                            break;
+                        }
+
+                        //scroll through all neighbouring nodes
+                        for (int n = 0; n < currentNode.nextNodes.Length; n++)
+                        {
+                            Node neighbour = currentNode.nextNodes[n];
+
+                            //if we've seen it, ignore it.
+                            if ((closedSet.Contains(neighbour) && neighbour != startNode) || neighbour == null)
+                            {
+                                continue;
+                            }
+
+                            //calculate the gcost from the current node to the neighbour + the current nodes gcost
+                            float newMovementCostToNeighbour = currentNode.cost + Vector3.Distance(currentNode.transform.position, neighbour.transform.position);
+
+                            //if the open set doesn't yet contain the neighbour then use it (or if newmovement gcost is less than the neighbours gcost
+                            if (newMovementCostToNeighbour < neighbour.cost || !openSet.Contains(neighbour))
+                            {
+                                switch (searchMode)
+                                {
+                                    case StupidSearchMode.WorstFirst:
+                                        neighbour.cost = -newMovementCostToNeighbour;
+                                        break;
+
+                                    case StupidSearchMode.BestFirstVertical:
+                                        neighbour.cost = newMovementCostToNeighbour - Vector3.Distance(new Vector3(0, currentNode.transform.position.y, 0), new Vector3(0, neighbour.transform.position.y, 0)) * 10;
+                                        break;
+
+                                    default:
+                                        neighbour.cost = newMovementCostToNeighbour;
+                                        break;
+                                }
+
+                                neighbour.parent = currentNode;
+
+                                if (!openSet.Contains(neighbour))
+                                {
+                                    openSet.Add(neighbour);
+                                }
+                            }
+                        }
+
+                        //ensure we don't fail
+                        loops++;
+                        if (loops > maxLoops)
+                        {
+                            Debug.LogWarning("Exceeded max loops! Aborting...");
+                            return;
+                        }
                     }
                 }
-            }
-
-            //ensure we don't fail
-            loops++;
-            if(loops > maxLoops)
-            {
-                Debug.LogWarning("Exceeded max loops! Aborting...");
-                return;
-            }
+                break;
         }
+
 
         //apply smoothing
         for (int p = 0; p < smoothingPasses; p++)
@@ -196,7 +222,7 @@ public class StupidAI : MonoBehaviour
         foreach (Vector3 push in pushRaycasts)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position + navRaycastOffset, (transform.rotation * push), out hit, push.magnitude, pushLayermask, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(transform.position + (transform.rotation * navRaycastOffset), (transform.rotation * push), out hit, push.magnitude, pushLayermask, QueryTriggerInteraction.Ignore))
             {
                 pushSteer -= push * ((transform.position - push) - (transform.position - hit.point)).magnitude;
             }
@@ -206,7 +232,7 @@ public class StupidAI : MonoBehaviour
         foreach (Vector3 pull in pullRaycasts)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position + navRaycastOffset, (transform.rotation * pull), out hit, pull.magnitude, pullLayermask, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(transform.position + (transform.rotation * navRaycastOffset), (transform.rotation * pull), out hit, pull.magnitude, pullLayermask, QueryTriggerInteraction.Ignore))
             {
                 pullSteer += pull * ((transform.position - pull) - (transform.position - hit.point)).magnitude;
             }
@@ -263,7 +289,7 @@ public class StupidAI : MonoBehaviour
             foreach (Vector3 itemDir in pushRaycasts)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position + itemRaycastOffset, (transform.rotation * itemDir), out hit, itemDir.magnitude, itemLayermask, QueryTriggerInteraction.Ignore))
+                if (Physics.Raycast(transform.position + (transform.rotation * -itemRaycastOffset), (transform.rotation * itemDir), out hit, itemDir.magnitude, itemLayermask, QueryTriggerInteraction.Ignore))
                 {
                     baseAI.UseItem();
                 }
@@ -285,6 +311,18 @@ public class StupidAI : MonoBehaviour
             lastLap = baseAI.lap;
             ReconstructPath();
         }
+
+        //do some cosmetic stuff
+        currentNameHue = Mathf.Repeat(currentNameHue + nameHueSpeed * Time.deltaTime, 1);
+
+        string newName = "";
+        for(int c = 0; c < carName.Length; c++)
+        {
+            Color col = Color.HSVToRGB(Mathf.Repeat(currentNameHue + hueLetterSpace * c, 1), 1, 1);
+            newName += "<color=#" + ColorUtility.ToHtmlStringRGB(col) + ">" + carName[c] + "</color>";
+        }
+
+        baseAI.SetName(newName);
 
         //debug
         steeringDir = Mathf.Clamp(steer, -1f, 1f);
@@ -346,10 +384,21 @@ public class StupidAI : MonoBehaviour
             Gizmos.DrawRay(transform.position + navRaycastOffset, transform.rotation * pull);
         }
 
-        Gizmos.color = itemColor;
-        foreach (Vector3 itemDir in itemRaycasts)
+        if(!Application.isPlaying)
         {
-            Gizmos.DrawRay(transform.position + itemRaycastOffset, transform.rotation * itemDir);
+            Gizmos.color = itemColor;
+            foreach (Vector3 itemDir in itemRaycasts)
+            {
+                Gizmos.DrawRay(transform.position + (transform.rotation * itemRaycastOffset), transform.rotation * itemDir);
+            }
+        }
+        else if(baseAI.GetCurrentItem() != Item.None)
+        {
+            Gizmos.color = itemColor;
+            foreach (Vector3 itemDir in itemRaycasts)
+            {
+                Gizmos.DrawRay(transform.position + (transform.rotation * itemRaycastOffset), transform.rotation * itemDir);
+            }
         }
     }
 
@@ -380,9 +429,15 @@ public enum StupidSteerMode
     Quadruple
 }
 
+public enum StupidPathfindingMode
+{
+    Greedy
+}
+
 public enum StupidSearchMode
 {
     BestFirst,
+    BestFirstVertical, //prefers vertical paths (significantly)
     WorstFirst,
     Random
 }

@@ -42,5 +42,7 @@ public class ExampleAI : MonoBehaviour
         {
             baseAI.UseItem();
         }
+
+        baseAI.SetName(this.GetType().ToString());
     }
 }

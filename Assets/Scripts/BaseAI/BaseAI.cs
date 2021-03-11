@@ -70,6 +70,12 @@ public class BaseAI : MonoBehaviour
     [SerializeField]
     private GameObject explosionPrefab;
 
+    [Header("Cosmetics")]
+    [SerializeField]
+    private Text nameText;
+    [SerializeField]
+    private GameObject[] bodies;
+
     [Header("Misc")]
     [SerializeField]
     private bool overrideControl;
@@ -87,6 +93,7 @@ public class BaseAI : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        SetBody(Random.Range(0, bodies.Length));
     }
 
     private void Update()
@@ -272,6 +279,21 @@ public class BaseAI : MonoBehaviour
 
         direction = Vector2.zero;
         rb.velocity = Vector3.zero;
+    }
+
+    public void SetName(string name)
+    {
+        nameText.text = name;
+    }
+    
+    public void SetBody(int newBody)
+    {
+        foreach (GameObject body in bodies)
+        {
+            body.SetActive(false);
+        }
+
+        bodies[newBody].SetActive(true);
     }
 }
 

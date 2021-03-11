@@ -239,7 +239,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: steerProjectionOffset.y
-    value: 0
+    value: -4
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: steerProjectionOffset.z
@@ -459,11 +459,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycastOffset.y
-    value: 0.5
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycastOffset.z
-    value: 0
+    value: -1.5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.size
@@ -475,7 +475,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.data[0].y
-    value: -0.25
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.data[0].z
@@ -487,7 +487,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.data[1].y
-    value: -0.25
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.data[1].z
@@ -499,7 +499,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.data[2].y
-    value: -0.25
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.data[2].z
@@ -511,7 +511,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.data[3].y
-    value: -0.25
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: itemRaycasts.Array.data[3].z
@@ -538,8 +538,12 @@ Preset:
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: searchMode
+    propertyPath: pathfindingMode
     value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: searchMode
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: pathColor.r

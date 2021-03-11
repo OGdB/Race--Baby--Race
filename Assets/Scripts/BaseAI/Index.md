@@ -31,9 +31,13 @@ This document is a short guide on the usage of the BaseAI component for the deve
 
 - **Void** Respawn()
 
-  > Respawns the player to the most recent checkpoint
+  > Respawns the player to the most recent checkpoint.
   >
   
+- **Void** SetName()
+
+  > Sets the name of the player.
+  >
 
 ## Variables
 
