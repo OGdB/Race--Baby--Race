@@ -5,6 +5,11 @@ public class Node : MonoBehaviour
 {
     public Node[] nextNodes;
 
+    [HideInInspector]
+    public Node parent; //required for pathfinding reverse iteration
+    [HideInInspector]
+    public float cost;
+
     private void OnValidate()
     {
         if (nextNodes.Length == 0)

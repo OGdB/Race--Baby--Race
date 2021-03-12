@@ -12,13 +12,13 @@ public class Bezier : MonoBehaviour
 
     private void Start()
     {
-        /*foreach (Transform trans in GetComponentsInChildren<Transform>())
+        foreach (Transform trans in GetComponentsInChildren<Transform>())
         {
             if (trans != this.transform)
             {
                 nodeList.Add(trans.position);
             }
-        }*/
+        }
     }
     private void OnValidate()
     {
@@ -34,15 +34,15 @@ public class Bezier : MonoBehaviour
         if (Application.isPlaying)
         {
             // Each Array is connected to the previous one.
-            // Vector3[] nodes = nodeList.ToArray();
-            Vector3[] nodes = GetComponent<Pathing>().shortestPath;
-            Vector3[] previousArray = nodes;
+            Vector3[] nodes = nodeList.ToArray();
+/*            Vector3[] nodes = GetComponent<Pathing>().shortestPath;
+*/            Vector3[] previousArray = nodes;
             Vector3[] nextArray;
             for (int i = 0; i < nodes.Length - 1; i++)
             {
                 if (i != nodes.Length - 2)
                 {
-                    nextArray = DrawPath(previousArray, false, false) ;
+                    nextArray = DrawPath(previousArray, true, true) ;
                     previousArray = nextArray;
                 }
                 else

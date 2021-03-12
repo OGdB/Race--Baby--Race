@@ -21,6 +21,12 @@ public class Explosion : MonoBehaviour
             {
                 targetRigidbody.AddForce(direction * explosionForce + (Vector3.up * explosionForce * upRatio));
             }
+
+            Grenade grenade = target.GetComponent<Grenade>();
+            if(grenade != null)
+            {
+                grenade.Explode();
+            }
         }
 
         Destroy(gameObject, 60f);

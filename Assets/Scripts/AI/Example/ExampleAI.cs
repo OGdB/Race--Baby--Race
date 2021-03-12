@@ -15,6 +15,7 @@ public class ExampleAI : MonoBehaviour
     {
         baseAI = GetComponent<BaseAI>();
         currentNode = baseAI.GetFirstNode();
+        baseAI.AimBack(false);
     }
 
     private void Update()
@@ -40,5 +41,7 @@ public class ExampleAI : MonoBehaviour
         {
             baseAI.UseItem();
         }
+
+        baseAI.SetName(this.GetType().ToString());
     }
 }
