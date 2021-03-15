@@ -1656,7 +1656,7 @@ PrefabInstance:
     - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_Name
-      value: Magnet
+      value: PushMechanism
       objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -1731,7 +1731,7 @@ PrefabInstance:
     - target: {fileID: 778059271491752136, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: force
-      value: 50
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 412052053ee5aee4db03e31a829ea36d, type: 3}
@@ -13385,7 +13385,7 @@ PrefabInstance:
     - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_Name
-      value: Magnet
+      value: PushMechanism
       objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -13466,6 +13466,11 @@ PrefabInstance:
         type: 3}
       propertyPath: angle
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752136, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: force
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 412052053ee5aee4db03e31a829ea36d, type: 3}
@@ -19610,7 +19615,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 57
+      value: 59.4
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -19620,7 +19625,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 175
+      value: 201
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -21260,7 +21265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1039786594}
   m_Layer: 0
-  m_Name: Magnets
+  m_Name: Pushes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35509,7 +35514,7 @@ PrefabInstance:
     - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_Name
-      value: Magnet
+      value: PushMechanism
       objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -35566,10 +35571,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752135, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.3941135
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752135, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.00000023509527
+      objectReference: {fileID: 0}
     - target: {fileID: 778059271491752136, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: force
-      value: 50
+      value: 130
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 412052053ee5aee4db03e31a829ea36d, type: 3}
@@ -37345,7 +37360,7 @@ PrefabInstance:
     - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_Name
-      value: Magnet
+      value: PushMechanism
       objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -37401,6 +37416,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752136, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: force
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 412052053ee5aee4db03e31a829ea36d, type: 3}
@@ -40807,7 +40827,7 @@ PrefabInstance:
     - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_Name
-      value: Magnet
+      value: PushMechanism
       objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -40863,6 +40883,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752135, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.3999996
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752136, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: force
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 412052053ee5aee4db03e31a829ea36d, type: 3}
