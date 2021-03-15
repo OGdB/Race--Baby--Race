@@ -318,7 +318,7 @@ public class StupidAI : MonoBehaviour
         }
 
         //do some cosmetic stuff
-        currentNameHue = Mathf.Repeat(currentNameHue + nameHueSpeed * Time.deltaTime, 1);
+        currentNameHue = Mathf.Repeat(currentNameHue + nameHueSpeed * Time.fixedDeltaTime, 1);
 
         string newName = "";
         for(int c = 0; c < carName.Length; c++)
@@ -328,7 +328,7 @@ public class StupidAI : MonoBehaviour
         }
 
         newName += "\n[";
-        float deltaSpeed = Mathf.Clamp01(Vector3.Distance(lastPos, transform.position) * Time.deltaTime * 100);
+        float deltaSpeed = Mathf.Clamp01(Vector3.Distance(lastPos, transform.position) * Time.fixedDeltaTime * 100);
         for (int b = 0; b < speedBarSize; b++)
         {
             newName += (deltaSpeed > 1f / (float)speedBarSize * (float)b) ? "#" : "-";
