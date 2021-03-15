@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Path
   - ItemBox
+  - Hazard
   layers:
   - Default
   - TransparentFX
