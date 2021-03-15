@@ -58,6 +58,8 @@ public class BaseAI : MonoBehaviour
     private GameObject[] itemPrefabs;
     [SerializeField]
     private float itemSpawnDistance;
+    [SerializeField]
+    private Vector3 throwForce;
 
     [Header("Scoring")]
     public Transform checkpoint;
@@ -69,6 +71,12 @@ public class BaseAI : MonoBehaviour
     [Header("Respawning")]
     [SerializeField]
     private GameObject explosionPrefab;
+
+    [Header("Cosmetics")]
+    [SerializeField]
+    private Text nameText;
+    [SerializeField]
+    private GameObject[] bodies;
 
     [Header("Misc")]
     [SerializeField]
@@ -87,6 +95,7 @@ public class BaseAI : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        SetBody(Random.Range(0, bodies.Length));
     }
 
     private void Update()
@@ -249,7 +258,12 @@ public class BaseAI : MonoBehaviour
             switch (currentItem)
             {
                 default:
-                    Instantiate(itemPrefabs[(int)currentItem - 1], transform.position + transform.forward * itemSpawnDistance * (aimBack ? -1 : 1), Quaternion.identity);
+                    Rigidbody itemBody = Instantiate(itemPrefabs[(int)currentItem - 1], transform.position + transform.forward * itemSpawnDistance * (aimBack ? -1 : 1), Quaternion.identity).GetComponent<Rigidbody>();
+                    if (!aimBack)
+                    {
+                        itemBody.AddForce(transform.rotation * throwForce, ForceMode.Acceleration);
+                    }
+
                     break;
             }
 
@@ -272,6 +286,21 @@ public class BaseAI : MonoBehaviour
 
         direction = Vector2.zero;
         rb.velocity = Vector3.zero;
+    }
+
+    public void SetName(string name)
+    {
+        nameText.text = name;
+    }
+    
+    public void SetBody(int newBody)
+    {
+        foreach (GameObject body in bodies)
+        {
+            body.SetActive(false);
+        }
+
+        bodies[newBody].SetActive(true);
     }
 }
 
