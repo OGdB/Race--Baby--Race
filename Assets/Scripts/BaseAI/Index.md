@@ -24,6 +24,10 @@ This document is a short guide on the usage of the BaseAI component for the deve
 
   > Gets the current item the player is holding.
 
+- **Void** AimBack(bool a)
+
+  > Sets the direction for the car to aim in.
+
 - **Void** UseItem()
 
   > Uses the current item
@@ -36,7 +40,12 @@ This document is a short guide on the usage of the BaseAI component for the deve
   
 - **Void** SetName()
 
-  > Sets the name of the player.
+  > Sets the name of the AI.
+  >
+
+- **Void** SetBody(CarBody newBody)
+
+  > Sets the body of the AI.
   >
 
 ## Variables

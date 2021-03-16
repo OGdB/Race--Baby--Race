@@ -6,67 +6,103 @@ using System.Linq;
 [RequireComponent(typeof(BaseAI))]
 public class StupidAI : MonoBehaviour
 {
+    #region Variables
+
     [Header("Speed")]
+    [Tooltip("Converts the steering magnitude to a max speed cap.")]
     public AnimationCurve sMagToSpeedCurve;
+    [Tooltip("When true, the AI will attempt to drive forward at maximum speed.")]
     public bool sendIt;
 
     [Header("Steering")]
+    [Tooltip("When true, the calculated steering direction is normalized.")]
     public bool normalizeSteeringDir;
+    [Tooltip("The steering mode.")]
     public StupidSteerMode steerMode;
+    [Tooltip("Dictates how steering magnitude amplifies itself.")]
     public AnimationCurve steeringCurve;
+    [Tooltip("When true, the steering curve is used.")]
     public bool useCurve;
+    [Tooltip("The offset added when finding the closest node.")]
     public Vector3 steerProjectionOffset;
+    [Tooltip("The offset added to the closest node when deciding on the target position.")]
     public int nearestNodeOffset;
+    [Tooltip("How many nodes should be sampled when calculating the target position.")]
     public int sampleSize;
+    [Tooltip("How far the samples should be spread apart.")]
     public int spread;
 
     [Header("Non-navigational steering")]
+    [Tooltip("The offset from which the push and pull raycasts should start.")]
     public Vector3 navRaycastOffset;
+    [Tooltip("The push raycast directions.")]
     public Vector3[] pushRaycasts;
+    [Tooltip("The layers that the push raycasts should hit.")]
     public LayerMask pushLayermask;
+    [Tooltip("How much the push direction should be added to the steering direction.")]
     public float pushAmount;
+    [Tooltip("HWhen true, the push direction is normalized.")]
     public bool normalizePush;
+    [Tooltip("The color of the push raycast gizmos.")]
     public Color pushColor = Color.blue;
 
+    [Tooltip("The pull raycast directions.")]
     public Vector3[] pullRaycasts;
+    [Tooltip("The layers that the pull raycasts should hit.")]
     public LayerMask pullLayermask;
+    [Tooltip("How much the pull direction should be added to the steering direction.")]
     public float pullAmount;
+    [Tooltip("HWhen true, the pull direction is normalized.")]
     public bool normalizePull;
+    [Tooltip("The color of the pull raycast gizmos.")]
     public Color pullColor = Color.magenta;
 
     [Header("Items")]
+    [Tooltip("The offset from which the item raycasts should start.")]
     public Vector3 itemRaycastOffset;
+    [Tooltip("The item raycast directions.")]
     public Vector3[] itemRaycasts;
+    [Tooltip("The layers that the item raycasts should hit.")]
     public LayerMask itemLayermask;
+    [Tooltip("The color of the item raycast gizmos.")]
     public Color itemColor = Color.green;
 
     [Header("Pathfinding")]
+    [Tooltip("The pathfinding mode.")]
     public StupidPathfindingMode pathfindingMode;
+    [Tooltip("The search mode.")]
     public StupidSearchMode searchMode;
     private int maxLoops = 10000;
 
     [Header("Bezier path")]
+    [Tooltip("The color of the path gizmos.")]
     public Color pathColor = Color.cyan;
+    [Tooltip("The range from the car where the path is visible.")]
     public float visibleRange;
-    [Range(1, 16)]
+    [Range(1, 16), Tooltip("Amount of times we should smooth the path.")]
     public int smoothingPasses;
-    [Range(0f, 1f)]
+    [Range(0f, 1f), Tooltip("How much of the path we should cut off.")]
     public float cutAmt;
 
     [Header("Cosmetic")]
-    public int carBody;
+    [Tooltip("The AI's body.")]
+    public CarBody carBody;
+    [Tooltip("The AI's name.")]
     public string carName;
+    [Tooltip("The name's rainbow movement speed.")]
     public float nameHueSpeed;
+    [Tooltip("The hue space inbetween letters.")]
     public float hueLetterSpace;
+    [Tooltip("The size of the speed bar.")]
     public int speedBarSize;
 
     private float currentNameHue;
     private Vector3 lastPos;
 
     [Header("Debug")]
-    [SerializeField, Range(-1f, 1f)]
+    [SerializeField, Range(-1f, 1f), Tooltip("The current steering direction.")]
     private float steeringDir;
-    [SerializeField, Range(0f, 1f)]
+    [SerializeField, Range(0f, 1f), Tooltip("The current steering magnitude.")]
     private float steeringMag;
 
     private BaseAI baseAI;
@@ -75,16 +111,9 @@ public class StupidAI : MonoBehaviour
     private int lastLap;
     private Transform lastCheckPoint;
 
+    #endregion
 
-    private void Start()
-    {
-        baseAI = GetComponent<BaseAI>();
-        baseAI.SetBody(carBody);
-        lastPos = transform.position;
-
-        //generate smoothed path
-        ReconstructPath();
-    }
+    #region PathFinding
 
     //Simple A* to convert the node system to a vector3[]
     private void ReconstructPath()
@@ -200,6 +229,36 @@ public class StupidAI : MonoBehaviour
         {
             nodes = Chaikin(nodes);
         }
+    }
+
+    public Vector3[] Chaikin(Vector3[] pts)
+    {
+        Vector3[] newPts = new Vector3[(pts.Length - 2) * 2 + 2];
+        newPts[0] = pts[0];
+        newPts[newPts.Length - 1] = pts[pts.Length - 1];
+
+        int j = 1;
+        for (int i = 0; i < pts.Length - 2; i++)
+        {
+            newPts[j] = pts[i] + (pts[i + 1] - pts[i]) * (1 - cutAmt);
+            newPts[j + 1] = pts[i + 1] + (pts[i + 2] - pts[i + 1]) * cutAmt;
+            j += 2;
+        }
+        return newPts;
+    }
+
+    #endregion
+
+    #region Unity Functions
+
+    private void Start()
+    {
+        baseAI = GetComponent<BaseAI>();
+        baseAI.SetBody(carBody);
+        lastPos = transform.position;
+
+        //generate smoothed path
+        ReconstructPath();
     }
 
     private void FixedUpdate()
@@ -318,7 +377,7 @@ public class StupidAI : MonoBehaviour
         }
 
         //do some cosmetic stuff
-        currentNameHue = Mathf.Repeat(currentNameHue + nameHueSpeed * Time.deltaTime, 1);
+        currentNameHue = Mathf.Repeat(currentNameHue + nameHueSpeed * Time.fixedDeltaTime, 1);
 
         string newName = "";
         for(int c = 0; c < carName.Length; c++)
@@ -328,7 +387,7 @@ public class StupidAI : MonoBehaviour
         }
 
         newName += "\n[";
-        float deltaSpeed = Mathf.Clamp01(Vector3.Distance(lastPos, transform.position) * Time.deltaTime * 100);
+        float deltaSpeed = Mathf.Clamp01(Vector3.Distance(lastPos, transform.position) * Time.fixedDeltaTime * 100);
         for (int b = 0; b < speedBarSize; b++)
         {
             newName += (deltaSpeed > 1f / (float)speedBarSize * (float)b) ? "#" : "-";
@@ -343,24 +402,6 @@ public class StupidAI : MonoBehaviour
         steeringMag = Mathf.Clamp01(Mathf.Abs(steer));
     }
 
-    private int GetNearestNode(Vector3 position)
-    {
-        int nearest = 0;
-        float distance = float.MaxValue;
-
-        for(int n = 0; n < nodes.Length; n++)
-        {
-            float thisDist = Vector3.Distance(position, nodes[n]);
-            if (thisDist < distance)
-            {
-                distance = thisDist;
-                nearest = n;
-            }
-        }
-
-        return nearest;
-    }
-
     private void OnDrawGizmosSelected()
     {
         if (Application.isPlaying)
@@ -369,7 +410,7 @@ public class StupidAI : MonoBehaviour
 
             for (int n = 0; n < nodes.Length; n++)
             {
-                if(Vector3.Distance(nodes[n], transform.position) < visibleRange)
+                if (Vector3.Distance(nodes[n], transform.position) < visibleRange)
                 {
                     Gizmos.DrawSphere(nodes[n], 0.25f);
 
@@ -398,7 +439,7 @@ public class StupidAI : MonoBehaviour
             Gizmos.DrawRay(transform.position + navRaycastOffset, transform.rotation * pull);
         }
 
-        if(!Application.isPlaying)
+        if (!Application.isPlaying)
         {
             Gizmos.color = itemColor;
             foreach (Vector3 itemDir in itemRaycasts)
@@ -406,7 +447,7 @@ public class StupidAI : MonoBehaviour
                 Gizmos.DrawRay(transform.position + (transform.rotation * itemRaycastOffset), transform.rotation * itemDir);
             }
         }
-        else if(baseAI.GetCurrentItem() != Item.None)
+        else if (baseAI.GetCurrentItem() != Item.None)
         {
             Gizmos.color = itemColor;
             foreach (Vector3 itemDir in itemRaycasts)
@@ -416,22 +457,32 @@ public class StupidAI : MonoBehaviour
         }
     }
 
-    public Vector3[] Chaikin(Vector3[] pts)
+    #endregion
+
+    #region Misc
+
+    private int GetNearestNode(Vector3 position)
     {
-        Vector3[] newPts = new Vector3[(pts.Length - 2) * 2 + 2];
-        newPts[0] = pts[0];
-        newPts[newPts.Length - 1] = pts[pts.Length - 1];
+        int nearest = 0;
+        float distance = float.MaxValue;
 
-        int j = 1;
-        for (int i = 0; i < pts.Length - 2; i++)
+        for(int n = 0; n < nodes.Length; n++)
         {
-            newPts[j] = pts[i] + (pts[i + 1] - pts[i]) * (1 - cutAmt);
-            newPts[j + 1] = pts[i + 1] + (pts[i + 2] - pts[i + 1]) * cutAmt;
-            j += 2;
+            float thisDist = Vector3.Distance(position, nodes[n]);
+            if (thisDist < distance)
+            {
+                distance = thisDist;
+                nearest = n;
+            }
         }
-        return newPts;
+
+        return nearest;
     }
+
+    #endregion
 }
+
+#region Enums
 
 public enum StupidSteerMode
 {
@@ -455,3 +506,5 @@ public enum StupidSearchMode
     WorstFirst,
     Random
 }
+
+#endregion
