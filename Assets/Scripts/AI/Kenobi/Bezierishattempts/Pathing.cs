@@ -20,8 +20,6 @@ public class Pathing : MonoBehaviour
 
     [SerializeField]
     private int directionInt = 0;
-    [SerializeField]
-    private int curveSmoothness = 1;
   
     // There are 5 branching paths
     private void Start()

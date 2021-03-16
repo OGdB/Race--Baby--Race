@@ -7,103 +7,124 @@ using UnityEngine;
 public class HelloThereAI : MonoBehaviour
 {
     private BaseAI baseAI;
-    private Node firstNode;
-
     [SerializeField]
-    private int smoothingStrength = 1;
+    private Node currentTargetNode;
     [SerializeField]
-    private int forwardCalcNodesAmount = 3;
+    private Node upcomingTargetNode;
     [SerializeField]
-    private List<Node> nextNodes;
-    private int currentNodeInt;
-    private Vector3 currentTargetNode;
-    [SerializeField]    
-    private Vector3[] curvedPoints;
-    [SerializeField]
+    private float maxConfirmationDistance = 3f;
     private float confirmationDistance = 2f;
-    private Vector3 playerPosCheck;
-
+    [SerializeField]
+    private List<Node> allNodes = new List<Node>();
+    [SerializeField]
+    private float waitingTime = 1f;
+    private bool timerRunning = false;
+    [Header("Cosmetic")]
+    public int body;
     void Start()
     {
         baseAI = GetComponent<BaseAI>();
-        firstNode = baseAI.GetFirstNode();
-        InvokeRepeating("UpdatePos", 0, 0.3f);  //1s delay, repeat every 1s
+        baseAI.SetBody(body);
+        currentTargetNode = baseAI.GetFirstNode();
+        upcomingTargetNode = currentTargetNode.GetComponent<Node>().nextNodes[0];
 
-        currentTargetNode = curvedPoints[currentNodeInt];
-    }
-
-    private Vector3[] GetNextNodes(int amountOfNodes)
-    {
-        Node nodeCheck = firstNode;
-        List<Vector3> nodeVectors = new List<Vector3>();
-
-        // Add the upcoming nodes to a temporary list, then take the first node out of the NextNodes
-        for (int i = 0; i < amountOfNodes; i++)
+        foreach (Transform child in currentTargetNode.transform.parent)
         {
-            nextNodes.Add(nodeCheck);
-            nodeVectors.Add(nodeCheck.transform.position);
-            nodeCheck = nodeCheck.nextNodes[0];
+            if (child.TryGetComponent(out Node node))
+            {
+                allNodes.Add(node);
+            }
         }
-
-        return nodeVectors.ToArray();
     }
 
     private void Update()
     {
+        StandardMovement();
+        CheckForCol();
+        Debug.DrawLine(currentTargetNode.transform.position, upcomingTargetNode.transform.position, Color.red);
+
+        Debug.DrawLine(transform.position, currentTargetNode.transform.position, Color.blue);
+        Debug.DrawLine(transform.position, upcomingTargetNode.transform.position, Color.yellow);
+
+    }
+
+    private void StandardMovement()
+    {
         // if nearing the last node in the calculated curved points
-        if (Vector3.Distance(transform.position, currentTargetNode) < confirmationDistance)
+/*        if (Vector3.Distance(transform.position, currentTargetNode.transform.position) < confirmationDistance)
         {
-            currentNodeInt += 1;
-            if (currentNodeInt < curvedPoints.Length) // if the current nodeInt is still within the calculated curvedPoints
+            if (currentTargetNode.nextNodes.Length > 1)
             {
-                currentTargetNode = curvedPoints[currentNodeInt];
+                int randomPath = Random.Range(0, currentTargetNode.nextNodes.Length);
+                currentTargetNode = currentTargetNode.nextNodes[randomPath];
+                upcomingTargetNode = currentTargetNode.nextNodes[0];
             }
             else
             {
-                currentNodeInt = 0;
-                firstNode = nextNodes[nextNodes.Count - 1];
+                currentTargetNode = currentTargetNode.nextNodes[0];
+                upcomingTargetNode = currentTargetNode.nextNodes[0];
+            }
+        }
+*/
+        // If the car can draw a line between itself and the upcoming node > Set that node as the current node
+        if (LineCastNextTarget(upcomingTargetNode.transform.position, 1 << 13))
+        {
+            if (!timerRunning)
+            {
+                StartCoroutine(WaitForTurn());
             }
         }
 
-        Vector2 dir = transform.InverseTransformDirection((currentTargetNode - transform.position).normalized);
+        Vector3 dir = transform.InverseTransformDirection((currentTargetNode.transform.position - transform.position).normalized);
         Debug.DrawRay(transform.position, transform.TransformDirection(dir) * 3, Color.red);
         baseAI.SetDirection(new Vector2(dir.x, 1));
-
-        if (Vector3.Distance(transform.position, playerPosCheck) > 10f)
+    }
+    private void CheckForCol()
+    {
+        if (!LineCastNextTarget(currentTargetNode.transform.position, 1 << 13)) // If there's no direct line between the AI and its target
         {
-            print("AI DIED");
-            Vector3 frontOfPlayer = new Vector3(transform.position.x, transform.position.y, transform.position.z + 15f);
+            ResetTarget();
         }
     }
-    private void UpdatePos()
-    {
-            playerPosCheck = transform.position;
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
 
-        foreach (Vector3 curvedPoint in curvedPoints)
+    private void ResetTarget()
+    {
+        print("reset target!");
+        float closestNodeDistance = Mathf.Infinity;
+        Node closestNode = null;
+        for (int i = 0; i < allNodes.Count; i++)
         {
-            DrawCurvedPoints(curvedPoint);
-        }
-
-        for (int i = 0; i < curvedPoints.Length; i++)
-        {
-            if (i + 1 < curvedPoints.Length)
+            float currentNodeDistance = Vector3.Distance(transform.position, allNodes[i].transform.position);
+            if (currentNodeDistance < closestNodeDistance) // if the currently checked node is closer than the currently registered closest node, set that node as the closest.
             {
-                foreach (Vector3 nextNode in curvedPoints)
-                {
-                    Gizmos.DrawLine(
-                        curvedPoints[i],
-                        curvedPoints[i + 1]
-                        );
-                }
+                closestNodeDistance = currentNodeDistance;
+                closestNode = allNodes[i];
             }
         }
+        currentTargetNode = closestNode;
+        upcomingTargetNode = closestNode.nextNodes[0];
     }
-    private void DrawCurvedPoints(Vector3 curvedPoint)
+
+    private bool LineCastNextTarget(Vector3 target, int layer)
     {
-            Gizmos.DrawSphere(curvedPoint, 0.25f);
+        // Bit shift the index of the layer (8) to get a bit mask
+        if (!Physics.Linecast(transform.position, target, layer))     
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    IEnumerator WaitForTurn()
+    {
+        timerRunning = true;
+        yield return new WaitForSeconds(waitingTime);
+        currentTargetNode = upcomingTargetNode;
+        upcomingTargetNode = currentTargetNode.nextNodes[0];
+        timerRunning = false;
+
     }
 }
