@@ -10,7 +10,6 @@ public class magnet : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         Vector3 dir = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;
-        float forceFactor = force * Time.deltaTime;
         var player = GameObject.FindGameObjectsWithTag("Player");
         for (int i = 0; i < player.Length; i++)
         {
