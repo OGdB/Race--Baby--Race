@@ -95,7 +95,7 @@ public class BaseAI : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        SetBody((CarBody)Random.Range(0, bodies.Length));
+        //SetBody((CarBody)Random.Range(0, bodies.Length));
     }
 
     private void Update()
@@ -336,7 +336,8 @@ public enum CarBody
     FireTruck,
     GarbageTruck,
     Ambulance,
-    DripCar
+    DripCar,
+    Kenobi
 }
 
 /// <summary>

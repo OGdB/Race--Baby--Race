@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,24 +6,19 @@ using UnityEngine;
 public class HelloThereAI : MonoBehaviour
 {
     private BaseAI baseAI;
-    [SerializeField]
-    private Node currentTargetNode;
-    [SerializeField]
-    private Node upcomingTargetNode;
-    [SerializeField]
-    private float maxConfirmationDistance = 3f;
+    [SerializeField] private Node currentTargetNode;
+    [SerializeField] private Node upcomingTargetNode;
+    [SerializeField] private float maxConfirmationDistance = 3f;
     private float confirmationDistance = 2f;
-    [SerializeField]
-    private List<Node> allNodes = new List<Node>();
-    [SerializeField]
-    private float waitingTime = 1f;
+    [SerializeField] private List<Node> allNodes = new List<Node>();
+    [SerializeField] private float waitingTime = 1f;
     private bool timerRunning = false;
     [Header("Cosmetic")]
-    public int body;
+    [SerializeField] private CarBody carBody;
     void Start()
     {
         baseAI = GetComponent<BaseAI>();
-        baseAI.SetBody(body);
+        baseAI.SetBody(carBody);
         currentTargetNode = baseAI.GetFirstNode();
         upcomingTargetNode = currentTargetNode.GetComponent<Node>().nextNodes[0];
 
