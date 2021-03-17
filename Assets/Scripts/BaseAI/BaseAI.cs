@@ -95,7 +95,7 @@ public class BaseAI : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        SetBody(Random.Range(0, bodies.Length));
+        //SetBody((CarBody)Random.Range(0, bodies.Length));
     }
 
     private void Update()
@@ -192,6 +192,14 @@ public class BaseAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets a new direction for the BaseAI to head in.
+    /// </summary>
+    /// 
+    /// <param name="newDirection"> 
+    /// newDirection.x Specifies the desired steering angle and may range from -1 to 1.
+    /// newDirection.y Specifies the desired speed and may range from -1 to 1.
+    /// </param>
     public void SetDirection(Vector2 newDirection)
     {
         //we need to make sure that the new directions don't exeed a magnitude of 1 per axis...
@@ -202,27 +210,24 @@ public class BaseAI : MonoBehaviour
             );
     }
 
+    /// <summary>
+    /// Gets the first node on the track.
+    /// </summary>
+    /// <returns>The First node at the startline. Each node contains a variable containing its adjacent node(s).</returns>
     public Node GetFirstNode()
     {
-        // There is a path of nodes
-        // We provide you the first node to start with.
-        // Each node has a 'NextNode' component, which you'll get the transforms of as well.
-        // Whatever node your AI chooses to go to is up to you. You get the nodes' transforms. GL.
-        //if no path, find path
         if (path == null)
         {
             path = GameObject.FindGameObjectWithTag("Path").transform;
         }
         Node firstNode = path.GetChild(0).GetComponent<Node>();
-        //collect node positions
-/*        for (int n = 0; n < nodes.Length; n++)
-        {
-            nodes[n] = path.GetChild(n).position;
-        }*/
-
         return firstNode;
     }
 
+    /// <summary>
+    /// Gets an array of player positions.
+    /// </summary>
+    /// <returns>An array of player positions as a Vector3[].</returns>
     public Vector3[] GetPlayerPositions()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -241,16 +246,27 @@ public class BaseAI : MonoBehaviour
         return playerPositions.ToArray();
     }
 
+    /// <summary>
+    /// Gets the current item the player is holding.
+    /// </summary>
+    /// <returns>The current item the player is holding.</returns>
     public Item GetCurrentItem()
     {
         return currentItem;
     }
 
+    /// <summary>
+    /// Sets the direction for the car to aim in.
+    /// </summary>
+    /// <param name="a">When true, the car is aiming backwards.</param>
     public void AimBack(bool a)
     {
         aimBack = a;
     }
 
+    /// <summary>
+    /// Uses the current item.
+    /// </summary>
     public void UseItem()
     {
         if (currentItem != Item.None)
@@ -271,11 +287,9 @@ public class BaseAI : MonoBehaviour
         }
     }
 
-    public int GetPosition()
-    {
-        return position;
-    }
-
+    /// <summary>
+    /// Respawns the player to the most recent checkpoint.
+    /// </summary>
     public void Respawn()
     {
         //"Explode" when respawning
@@ -288,24 +302,55 @@ public class BaseAI : MonoBehaviour
         rb.velocity = Vector3.zero;
     }
 
+    /// <summary>
+    /// Sets the name of the AI.
+    /// </summary>
+    /// <param name="name">The name of the AI.</param>
     public void SetName(string name)
     {
         nameText.text = name;
     }
-    
-    public void SetBody(int newBody)
+
+    /// <summary>
+    /// Sets the body of the AI.
+    /// </summary>
+    /// <param name="newBody">The body of the AI.</param>
+    public void SetBody(CarBody newBody)
     {
         foreach (GameObject body in bodies)
         {
             body.SetActive(false);
         }
 
-        bodies[newBody].SetActive(true);
+        bodies[(int)newBody].SetActive(true);
     }
 }
 
+/// <summary>
+/// All the car bodies available.
+/// </summary>
+public enum CarBody
+{
+    F1Car,
+    PoliceTractor,
+    Sedan,
+    PoliceCar,
+    FireTruck,
+    GarbageTruck,
+    Ambulance,
+    DripCar
+}
+
+/// <summary>
+/// A static helper class for the BaseAI.
+/// </summary>
 public static class BaseAIHelper
 {
+    /// <summary>
+    /// Converts an int to a string with an added ordinal.
+    /// </summary>
+    /// <param name="num">The integer to add an ordinal to.</param>
+    /// <returns></returns>
     public static string AddOrdinal(int num)
     {
         if (num <= 0) return num.ToString();
