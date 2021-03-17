@@ -2537,7 +2537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813c645edf85c1d45b091ea006f06d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 200
+  force: 50
   angle: 90
 --- !u!65 &138661998
 BoxCollider:
@@ -2547,7 +2547,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 138661995}
   m_Material: {fileID: 13400000, guid: 642ff8f1a1b38f54cb892772323ef266, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 12.047081, y: 12.009882, z: 3.369603}
@@ -5108,7 +5108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &278724823
 Transform:
   m_ObjectHideFlags: 0
@@ -6024,7 +6024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813c645edf85c1d45b091ea006f06d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 200
+  force: 50
   angle: 90
 --- !u!114 &334142708
 MonoBehaviour:
@@ -6050,7 +6050,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 334142706}
   m_Material: {fileID: 13400000, guid: 642ff8f1a1b38f54cb892772323ef266, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 12.047081, y: 12.009882, z: 3.369603}
@@ -11147,7 +11147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &599563378
 Transform:
   m_ObjectHideFlags: 0
@@ -23217,7 +23217,7 @@ MonoBehaviour:
     m_Bits: 256
   itemColor: {r: 0, g: 1, b: 0, a: 1}
   pathfindingMode: 0
-  searchMode: 0
+  searchMode: 1
   pathColor: {r: 1, g: 0, b: 0.33333334, a: 1}
   visibleRange: 25
   smoothingPasses: 2
@@ -28903,7 +28903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1492514923
 Transform:
   m_ObjectHideFlags: 0
@@ -31429,7 +31429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1621450707
 Transform:
   m_ObjectHideFlags: 0
@@ -33104,7 +33104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1698496859
 Transform:
   m_ObjectHideFlags: 0
@@ -38304,7 +38304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813c645edf85c1d45b091ea006f06d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 200
+  force: 50
   angle: 90
 --- !u!65 &1942639546
 BoxCollider:
@@ -38314,7 +38314,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942639543}
   m_Material: {fileID: 13400000, guid: 642ff8f1a1b38f54cb892772323ef266, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 12.047081, y: 12.009882, z: 3.369603}
