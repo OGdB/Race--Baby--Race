@@ -200,5 +200,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813c645edf85c1d45b091ea006f06d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 50
+  force: 10
   angle: -180
