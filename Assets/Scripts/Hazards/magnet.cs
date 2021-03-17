@@ -6,7 +6,6 @@ public class magnet : MonoBehaviour
 {
     public float force;
     public float angle;
-
     private void OnTriggerStay(Collider other)
     {
         Vector3 dir = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;
@@ -16,7 +15,8 @@ public class magnet : MonoBehaviour
             if(other.gameObject == player[i])
             {
                 player[i].GetComponent<Rigidbody>().AddForce(force * dir);
-               // player[i].GetComponent<Rigidbody>().AddForce((this.transform.position - player[i].transform.position) * force * Time.smoothDeltaTime);
+
+                // player[i].GetComponent<Rigidbody>().AddForce((this.transform.position - player[i].transform.position) * force * Time.smoothDeltaTime);
                 //player[i].transform.position = Vector3.MoveTowards(player[i].transform.position, -this.transform.position, forceFactor);
             }
 
