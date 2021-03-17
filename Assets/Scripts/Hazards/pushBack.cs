@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class magnet : MonoBehaviour
+public class pushBack : MonoBehaviour
 {
     public float force;
     public float angle;
+    public ForceMode forceMode = ForceMode.Impulse;
 
     private void OnTriggerStay(Collider other)
     {
@@ -15,9 +16,9 @@ public class magnet : MonoBehaviour
         {
             if(other.gameObject == player[i])
             {
-                player[i].GetComponent<Rigidbody>().AddForce(force * dir);
-               // player[i].GetComponent<Rigidbody>().AddForce((this.transform.position - player[i].transform.position) * force * Time.smoothDeltaTime);
-                //player[i].transform.position = Vector3.MoveTowards(player[i].transform.position, -this.transform.position, forceFactor);
+                player[i].GetComponent<Rigidbody>().AddForce(-player[i].transform.forward * force * Time.deltaTime, forceMode);
+               // player[i].GetComponent<Rigidbody>().AddForce(force * dir  * Time.deltaTime , ForceMode.VelocityChange);
+
             }
 
         }
