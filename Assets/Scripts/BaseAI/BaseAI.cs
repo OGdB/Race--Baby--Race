@@ -26,6 +26,8 @@ public class BaseAI : MonoBehaviour
 
     [SerializeField]
     private float uprightForce;
+    [SerializeField]
+    private float maxDownForce;
 
 
     [Header("State")]
@@ -86,6 +88,7 @@ public class BaseAI : MonoBehaviour
     private float currentSpeed;
     private float currentSteeringAngle;
     private Vector3 velocity;
+    private float currentDownForce;
 
     private Transform path;
 
@@ -158,6 +161,10 @@ public class BaseAI : MonoBehaviour
         //stay upright
         Quaternion deltaUpward = Quaternion.FromToRotation(transform.up, Vector3.up);
         rb.AddTorque(new Vector3(deltaUpward.x, deltaUpward.y, deltaUpward.z) * uprightForce * Time.fixedDeltaTime);
+
+        //add downforce
+        currentDownForce = Mathf.Lerp(currentDownForce, isGrounded ? (Mathf.Clamp(direction.y, -1f, 1f) * maxDownForce) : 0, speedAcceleration * Time.fixedDeltaTime);
+        rb.AddForce(-transform.up * currentDownForce * Time.fixedDeltaTime, ForceMode.Acceleration);
     }
 
     private void Items()
