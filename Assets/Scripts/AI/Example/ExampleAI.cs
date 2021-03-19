@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(BaseAI))]
 public class ExampleAI : MonoBehaviour
@@ -34,9 +32,7 @@ public class ExampleAI : MonoBehaviour
         }
 
         Vector3 dir = transform.InverseTransformDirection((currentNode.transform.position - transform.position).normalized);
-
         Debug.DrawRay(transform.position, transform.TransformDirection(dir) * 3, Color.red);
-
         baseAI.SetDirection(new Vector2(dir.x, 1));
 
         if(baseAI.GetCurrentItem() != Item.None)
