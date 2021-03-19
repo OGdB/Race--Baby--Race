@@ -744,6 +744,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PushMechanism
       objectReference: {fileID: 0}
+    - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_RootOrder
@@ -808,6 +813,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752134, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 778059271491752135, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -1188,6 +1198,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boostpad (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
@@ -2093,6 +2108,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PushMechanism
       objectReference: {fileID: 0}
+    - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_RootOrder
@@ -2148,6 +2168,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752134, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 778059271491752135, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2184,7 +2209,7 @@ GameObject:
   - component: {fileID: 118313253}
   - component: {fileID: 118313252}
   - component: {fileID: 118313251}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (5)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -2497,7 +2522,7 @@ GameObject:
   - component: {fileID: 128333022}
   - component: {fileID: 128333021}
   - component: {fileID: 128333020}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -3052,6 +3077,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boostpad (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
       propertyPath: m_RootOrder
@@ -3335,7 +3365,7 @@ GameObject:
   - component: {fileID: 155575753}
   - component: {fileID: 155575752}
   - component: {fileID: 155575751}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (3)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -4204,6 +4234,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boostpad (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
       propertyPath: m_RootOrder
@@ -4522,6 +4557,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boostpad (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
@@ -5024,7 +5064,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 230347523}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Blockers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5700,7 +5740,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 265190510}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Up&Down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6797,7 +6837,7 @@ GameObject:
   - component: {fileID: 328798738}
   - component: {fileID: 328798737}
   - component: {fileID: 328798736}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (3)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -7119,7 +7159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 076923bf697b5774887cfef5bb989b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedObject: {fileID: 1212289999}
+  trackedObject: {fileID: 1048478421}
   maxDistance: 5
   updateSpeed: 20
   currentDistance: 4
@@ -7240,7 +7280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c8d76155f53cfc45b4f02922de468b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pointOfFocus: {fileID: 1212289999}
+  _pointOfFocus: {fileID: 1048478421}
   _focusDistance: 7.5
   _fNumber: 0.15
   _useCameraFov: 1
@@ -8195,7 +8235,7 @@ GameObject:
   - component: {fileID: 375886571}
   - component: {fileID: 375886570}
   - component: {fileID: 375886569}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (2)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -8615,12 +8655,12 @@ PrefabInstance:
     - target: {fileID: 4814671471415095559, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5723152155160319482, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85453d31453f27341970a4612523c98a, type: 3}
@@ -8686,7 +8726,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 388063005}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Moving Hazards
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -10996,7 +11036,7 @@ GameObject:
   - component: {fileID: 499040856}
   - component: {fileID: 499040855}
   - component: {fileID: 499040854}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (9)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -11592,6 +11632,116 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 532765131}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &533644577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 533644581}
+  - component: {fileID: 533644580}
+  - component: {fileID: 533644579}
+  - component: {fileID: 533644578}
+  - component: {fileID: 533644582}
+  m_Layer: 15
+  m_Name: TestHazardCube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &533644578
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533644577}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &533644579
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533644577}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &533644580
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533644577}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &533644581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533644577}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 55.92, y: 0.74, z: 173.951}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &533644582
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533644577}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &537024219
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11845,7 +11995,7 @@ GameObject:
   - component: {fileID: 544702846}
   - component: {fileID: 544702845}
   - component: {fileID: 544702844}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (2)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -12714,12 +12864,12 @@ PrefabInstance:
     - target: {fileID: 4814671471415095559, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5723152155160319482, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85453d31453f27341970a4612523c98a, type: 3}
@@ -13966,6 +14116,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boostpad (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
       propertyPath: m_RootOrder
@@ -14293,7 +14448,7 @@ GameObject:
   - component: {fileID: 674092865}
   - component: {fileID: 674092864}
   - component: {fileID: 674092863}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (2)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -14967,6 +15122,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ramp
       objectReference: {fileID: 0}
+    - target: {fileID: 8476372867776514231, guid: 86ced70d5851caa4abbc8835f973fe70,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 9145105063593923085, guid: 86ced70d5851caa4abbc8835f973fe70,
         type: 3}
       propertyPath: m_RootOrder
@@ -15043,7 +15203,7 @@ GameObject:
   - component: {fileID: 707295292}
   - component: {fileID: 707295291}
   - component: {fileID: 707295290}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (3)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -17340,7 +17500,7 @@ GameObject:
   - component: {fileID: 778245393}
   - component: {fileID: 778245392}
   - component: {fileID: 778245391}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (3)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -17641,7 +17801,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 793756634}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Blockers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17774,7 +17934,7 @@ GameObject:
   - component: {fileID: 801817601}
   - component: {fileID: 801817600}
   - component: {fileID: 801817599}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (4)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -17938,6 +18098,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Trampouline
+      objectReference: {fileID: 0}
+    - target: {fileID: 8950861413321419279, guid: 6672e03b76c30554e99b04b66cb62562,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6672e03b76c30554e99b04b66cb62562, type: 3}
@@ -18683,6 +18848,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boostpad (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
       propertyPath: m_RootOrder
@@ -18759,7 +18929,7 @@ GameObject:
   - component: {fileID: 871603926}
   - component: {fileID: 871603925}
   - component: {fileID: 871603924}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (2)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -19153,7 +19323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 883328727}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Smol Moving objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19737,7 +19907,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 920999737}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Hazards
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -19952,7 +20122,7 @@ GameObject:
   - component: {fileID: 930731051}
   - component: {fileID: 930731050}
   - component: {fileID: 930731049}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -20133,7 +20303,7 @@ GameObject:
   - component: {fileID: 945123407}
   - component: {fileID: 945123406}
   - component: {fileID: 945123405}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (6)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -20243,7 +20413,7 @@ GameObject:
   - component: {fileID: 946341923}
   - component: {fileID: 946341922}
   - component: {fileID: 946341921}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -21367,6 +21537,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PushMechanism
       objectReference: {fileID: 0}
+    - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_RootOrder
@@ -21421,6 +21596,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752134, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 778059271491752135, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -21630,12 +21810,12 @@ PrefabInstance:
     - target: {fileID: 4814671471415095559, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5723152155160319482, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85453d31453f27341970a4612523c98a, type: 3}
@@ -21658,7 +21838,7 @@ GameObject:
   - component: {fileID: 1004317377}
   - component: {fileID: 1004317376}
   - component: {fileID: 1004317375}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (2)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -21769,7 +21949,7 @@ GameObject:
   - component: {fileID: 1006063515}
   - component: {fileID: 1006063514}
   - component: {fileID: 1006063513}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (3)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -22641,7 +22821,7 @@ GameObject:
   - component: {fileID: 1030778213}
   - component: {fileID: 1030778212}
   - component: {fileID: 1030778211}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (1)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -23076,7 +23256,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.125
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -23128,6 +23308,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7528923958841352991, guid: c165e8129062fcb4094bb5d42cb19194,
+        type: 3}
+      propertyPath: maxSpeed
+      value: 1000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c165e8129062fcb4094bb5d42cb19194, type: 3}
 --- !u!1 &1048478416 stripped
@@ -23159,26 +23344,26 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.19246145
+      outSlope: -0.19246145
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.8
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: 0.24999696
+      value: 0.9518852
+      inSlope: -0.02739531
+      outSlope: -0.02739531
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 1
       outWeight: 1
     - serializedVersion: 3
       time: 1
       value: 0.4
-      inSlope: -3.0000002
-      outSlope: -3.0000002
+      inSlope: -0.735844
+      outSlope: -0.735844
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -23187,6 +23372,22 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   carBody: 8
+  walls:
+    serializedVersion: 2
+    m_Bits: 0
+  hazards:
+    serializedVersion: 2
+    m_Bits: 0
+  items:
+    serializedVersion: 2
+    m_Bits: 0
+  debug: 0
+--- !u!4 &1048478421 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
+    type: 3}
+  m_PrefabInstance: {fileID: 1048478414}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1049109278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23257,12 +23458,12 @@ PrefabInstance:
     - target: {fileID: 4814671471415095559, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5723152155160319482, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85453d31453f27341970a4612523c98a, type: 3}
@@ -23362,12 +23563,12 @@ PrefabInstance:
     - target: {fileID: 4814671471415095559, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5723152155160319482, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85453d31453f27341970a4612523c98a, type: 3}
@@ -23583,7 +23784,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1056119574}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pushes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25692,7 +25893,7 @@ GameObject:
   - component: {fileID: 1149628383}
   - component: {fileID: 1149628382}
   - component: {fileID: 1149628381}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (4)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -26729,7 +26930,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1192431207}
-  m_Layer: 13
+  m_Layer: 15
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27397,6 +27598,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
+    - target: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352991, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: overrideControl
@@ -27409,12 +27615,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c165e8129062fcb4094bb5d42cb19194, type: 3}
---- !u!4 &1212289999 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
-    type: 3}
-  m_PrefabInstance: {fileID: 1212289998}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1212290000 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
@@ -28618,7 +28818,7 @@ GameObject:
   - component: {fileID: 1267828320}
   - component: {fileID: 1267828319}
   - component: {fileID: 1267828318}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (4)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -29140,7 +29340,7 @@ GameObject:
   - component: {fileID: 1306205639}
   - component: {fileID: 1306205638}
   - component: {fileID: 1306205637}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (8)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -29340,7 +29540,7 @@ GameObject:
   - component: {fileID: 1308037745}
   - component: {fileID: 1308037744}
   - component: {fileID: 1308037743}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (2)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -29526,7 +29726,7 @@ GameObject:
   - component: {fileID: 1311742263}
   - component: {fileID: 1311742262}
   - component: {fileID: 1311742261}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -29980,6 +30180,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boostpad (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
@@ -30966,6 +31171,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -31418,6 +31628,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trampouline
       objectReference: {fileID: 0}
+    - target: {fileID: 8950861413321419279, guid: 6672e03b76c30554e99b04b66cb62562,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6672e03b76c30554e99b04b66cb62562, type: 3}
 --- !u!4 &1373203483 stripped
@@ -31437,6 +31652,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boostpad (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
@@ -31844,7 +32064,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1388508898}
-  m_Layer: 13
+  m_Layer: 15
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31923,7 +32143,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1393055715}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Blockers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34002,6 +34222,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boostpad (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
       propertyPath: m_RootOrder
@@ -34613,12 +34838,12 @@ PrefabInstance:
     - target: {fileID: 4814671471415095559, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5723152155160319482, guid: 85453d31453f27341970a4612523c98a,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85453d31453f27341970a4612523c98a, type: 3}
@@ -35053,7 +35278,7 @@ GameObject:
   - component: {fileID: 1533164346}
   - component: {fileID: 1533164345}
   - component: {fileID: 1533164344}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (3)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -35248,6 +35473,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ramp (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8476372867776514231, guid: 86ced70d5851caa4abbc8835f973fe70,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 9145105063593923085, guid: 86ced70d5851caa4abbc8835f973fe70,
         type: 3}
       propertyPath: m_RootOrder
@@ -35399,7 +35629,7 @@ GameObject:
   - component: {fileID: 1546285777}
   - component: {fileID: 1546285776}
   - component: {fileID: 1546285775}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (1)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -35610,7 +35840,7 @@ GameObject:
   - component: {fileID: 1549628708}
   - component: {fileID: 1549628707}
   - component: {fileID: 1549628706}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -36378,7 +36608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16254a9b8982493448d7ac65de4ecd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alwaysVisible: 1
+  alwaysVisible: 0
   lineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1594840815
 GameObject:
@@ -36389,7 +36619,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1594840816}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Trampoulines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36426,7 +36656,7 @@ GameObject:
   - component: {fileID: 1600241721}
   - component: {fileID: 1600241720}
   - component: {fileID: 1600241719}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (3)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -36704,6 +36934,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boostpad (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1160479717569834536, guid: edb73e8308114294bb058a95d40d96df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1968366104463799442, guid: edb73e8308114294bb058a95d40d96df,
         type: 3}
@@ -37790,7 +38025,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1677919096}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Blockers (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38154,7 +38389,7 @@ GameObject:
   - component: {fileID: 1692591822}
   - component: {fileID: 1692591821}
   - component: {fileID: 1692591820}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -38425,7 +38660,7 @@ GameObject:
   - component: {fileID: 1694991275}
   - component: {fileID: 1694991274}
   - component: {fileID: 1694991273}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (1)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -38953,7 +39188,7 @@ GameObject:
   - component: {fileID: 1714844749}
   - component: {fileID: 1714844748}
   - component: {fileID: 1714844747}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (1)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -39513,7 +39748,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1733093595}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Blockers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40225,7 +40460,7 @@ GameObject:
   - component: {fileID: 1747821681}
   - component: {fileID: 1747821680}
   - component: {fileID: 1747821679}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (1)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -41671,7 +41906,7 @@ GameObject:
   - component: {fileID: 1792022643}
   - component: {fileID: 1792022642}
   - component: {fileID: 1792022641}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (5)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -41782,7 +42017,7 @@ GameObject:
   - component: {fileID: 1795790060}
   - component: {fileID: 1795790059}
   - component: {fileID: 1795790058}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (6)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -42355,7 +42590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1813366446}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Blockers (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43696,7 +43931,7 @@ GameObject:
   - component: {fileID: 1855846569}
   - component: {fileID: 1855846568}
   - component: {fileID: 1855846567}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (1)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -44312,7 +44547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1883817171}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Boosters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44534,6 +44769,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trampouline
       objectReference: {fileID: 0}
+    - target: {fileID: 8950861413321419279, guid: 6672e03b76c30554e99b04b66cb62562,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6672e03b76c30554e99b04b66cb62562, type: 3}
 --- !u!4 &1890677951 stripped
@@ -44666,6 +44906,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -44723,6 +44968,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752134, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 778059271491752136, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -45690,7 +45940,7 @@ GameObject:
   - component: {fileID: 1941959276}
   - component: {fileID: 1941959275}
   - component: {fileID: 1941959274}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (2)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -45800,6 +46050,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PushMechanism
       objectReference: {fileID: 0}
+    - target: {fileID: 778059271449484643, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 778059271449484644, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
       propertyPath: m_RootOrder
@@ -45854,6 +46109,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778059271491752134, guid: 412052053ee5aee4db03e31a829ea36d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 778059271491752135, guid: 412052053ee5aee4db03e31a829ea36d,
         type: 3}
@@ -46636,7 +46896,7 @@ GameObject:
   - component: {fileID: 1965975771}
   - component: {fileID: 1965975770}
   - component: {fileID: 1965975769}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (5)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
@@ -48351,7 +48611,7 @@ GameObject:
   - component: {fileID: 2046165145}
   - component: {fileID: 2046165144}
   - component: {fileID: 2046165143}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (7)
   m_TagString: Hazard
   m_Icon: {fileID: 0}
