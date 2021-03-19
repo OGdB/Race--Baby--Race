@@ -6,23 +6,26 @@ using UnityEngine;
 public class HelloThereAI : MonoBehaviour
 {
     private BaseAI baseAI;
-    [SerializeField] private Node currentTargetNode;
-    [SerializeField] private Node upcomingTargetNode;
-    [SerializeField] private float maxConfirmationDistance = 3f;
-    private float confirmationDistance = 2f;
+    public Node currentTarget;
+    public Node nextTarget;
+    [SerializeField] private float confirmationDistance = 2f;
     [SerializeField] private List<Node> allNodes = new List<Node>();
-    [SerializeField] private float waitingTime = 1f;
-    private bool timerRunning = false;
+    [SerializeField] private float waitingTime = 0.2f;
+    private bool TurnWaiting = false;
+    private bool timerWaiting = false;
+    [SerializeField] private AnimationCurve sMagToSpeedCurve;
+
     [Header("Cosmetic")]
     [SerializeField] private CarBody carBody;
     void Start()
     {
         baseAI = GetComponent<BaseAI>();
         baseAI.SetBody(carBody);
-        currentTargetNode = baseAI.GetFirstNode();
-        upcomingTargetNode = currentTargetNode.GetComponent<Node>().nextNodes[0];
+        baseAI.SetName("Kenobi");
+        currentTarget = baseAI.GetFirstNode();
+        nextTarget = currentTarget.GetComponent<Node>().nextNodes[0];
 
-        foreach (Transform child in currentTargetNode.transform.parent)
+        foreach (Transform child in currentTarget.transform.parent)
         {
             if (child.TryGetComponent(out Node node))
             {
@@ -35,47 +38,54 @@ public class HelloThereAI : MonoBehaviour
     {
         StandardMovement();
         CheckForCol();
-        Debug.DrawLine(currentTargetNode.transform.position, upcomingTargetNode.transform.position, Color.red);
 
-        Debug.DrawLine(transform.position, currentTargetNode.transform.position, Color.blue);
-        Debug.DrawLine(transform.position, upcomingTargetNode.transform.position, Color.yellow);
-
+        //debug lines
+        Debug.DrawLine(currentTarget.transform.position, nextTarget.transform.position, Color.red);
+        Debug.DrawLine(transform.position, currentTarget.transform.position, Color.blue);
+        Debug.DrawLine(transform.position, nextTarget.transform.position, Color.yellow);
     }
 
     private void StandardMovement()
     {
-        // if nearing the last node in the calculated curved points
-/*        if (Vector3.Distance(transform.position, currentTargetNode.transform.position) < confirmationDistance)
-        {
-            if (currentTargetNode.nextNodes.Length > 1)
-            {
-                int randomPath = Random.Range(0, currentTargetNode.nextNodes.Length);
-                currentTargetNode = currentTargetNode.nextNodes[randomPath];
-                upcomingTargetNode = currentTargetNode.nextNodes[0];
-            }
-            else
-            {
-                currentTargetNode = currentTargetNode.nextNodes[0];
-                upcomingTargetNode = currentTargetNode.nextNodes[0];
-            }
-        }
-*/
         // If the car can draw a line between itself and the upcoming node > Set that node as the current node
-        if (LineCastNextTarget(upcomingTargetNode.transform.position, 1 << 13))
+        if (LineCastNextTarget(nextTarget.transform.position, 1 << LayerMask.NameToLayer("Walls")))
         {
-            if (!timerRunning)
+            if (!TurnWaiting)
             {
                 StartCoroutine(WaitForTurn());
             }
         }
+        else if (Vector3.Distance(transform.position, currentTarget.transform.position) < confirmationDistance && !timerWaiting)
+        {
+            print("within distance");
+            StartCoroutine(Timer(0.75f));
+            if (currentTarget.nextNodes.Length > 1)
+            {
+                int randomPath = Random.Range(0, currentTarget.nextNodes.Length);
+                currentTarget = currentTarget.nextNodes[randomPath];
+                nextTarget = currentTarget.nextNodes[0];
+            }
+            else
+            {
+                currentTarget = currentTarget.nextNodes[0];
+                nextTarget = currentTarget.nextNodes[0];
+            }
+        }
 
-        Vector3 dir = transform.InverseTransformDirection((currentTargetNode.transform.position - transform.position).normalized);
+        Vector3 dir = transform.InverseTransformDirection((currentTarget.transform.position - transform.position).normalized);
         Debug.DrawRay(transform.position, transform.TransformDirection(dir) * 3, Color.red);
-        baseAI.SetDirection(new Vector2(dir.x, 1));
+        float dirY = sMagToSpeedCurve.Evaluate(Mathf.Clamp01(Mathf.Abs(dir.x)));
+        baseAI.SetDirection(new Vector2(dir.x, dirY));
+    }
+    IEnumerator Timer(float time)
+    {
+        timerWaiting = true;
+        yield return new WaitForSeconds(time);
+        timerWaiting = false;
     }
     private void CheckForCol()
     {
-        if (!LineCastNextTarget(currentTargetNode.transform.position, 1 << 13)) // If there's no direct line between the AI and its target
+        if (!LineCastNextTarget(currentTarget.transform.position, 1 << 13)) // If there's no direct line between the AI and its target
         {
             ResetTarget();
         }
@@ -83,7 +93,7 @@ public class HelloThereAI : MonoBehaviour
 
     private void ResetTarget()
     {
-        print("reset target!");
+        // print("reset target!");
         float closestNodeDistance = Mathf.Infinity;
         Node closestNode = null;
         for (int i = 0; i < allNodes.Count; i++)
@@ -95,8 +105,8 @@ public class HelloThereAI : MonoBehaviour
                 closestNode = allNodes[i];
             }
         }
-        currentTargetNode = closestNode;
-        upcomingTargetNode = closestNode.nextNodes[0];
+        currentTarget = closestNode;
+        nextTarget = closestNode.nextNodes[0];
     }
 
     private bool LineCastNextTarget(Vector3 target, int layer)
@@ -114,11 +124,10 @@ public class HelloThereAI : MonoBehaviour
 
     IEnumerator WaitForTurn()
     {
-        timerRunning = true;
+        TurnWaiting = true;
         yield return new WaitForSeconds(waitingTime);
-        currentTargetNode = upcomingTargetNode;
-        upcomingTargetNode = currentTargetNode.nextNodes[0];
-        timerRunning = false;
-
+        currentTarget = nextTarget;
+        nextTarget = currentTarget.nextNodes[0];
+        TurnWaiting = false;
     }
 }

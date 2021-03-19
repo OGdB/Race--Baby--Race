@@ -11106,6 +11106,11 @@ PrefabInstance:
       propertyPath: maxSpeed
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 7528923958841352991, guid: c165e8129062fcb4094bb5d42cb19194,
+        type: 3}
+      propertyPath: overrideControl
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8155542094359487990, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_Layer
@@ -31257,9 +31262,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTargetNode: {fileID: 0}
   upcomingTargetNode: {fileID: 0}
-  maxConfirmationDistance: 3
+  maxConfirmationDistance: 0.15
   allNodes: []
-  waitingTime: 0.2
+  waitingTime: 0.3
+  sMagToSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.21523896
+      outSlope: -0.21523896
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.28679433
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -0.9077668
+      outSlope: -0.9077668
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12511307
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   carBody: 8
 --- !u!4 &1920428142 stripped
 Transform:
@@ -31267,6 +31296,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 658342726}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1920428143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920428137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb4f91efb9f96f4c973efadf25c4a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1923391477
 GameObject:
   m_ObjectHideFlags: 0
