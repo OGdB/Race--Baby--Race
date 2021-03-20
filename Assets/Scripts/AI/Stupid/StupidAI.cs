@@ -41,10 +41,10 @@ public class StupidAI : MonoBehaviour
     public LayerMask pushLayermask;
     [Tooltip("How much the push direction should be added to the steering direction.")]
     public float pushAmount;
-    [Tooltip("HWhen true, the push direction is normalized.")]
+    [Tooltip("When true, the push direction is normalized.")]
     public bool normalizePush;
     [Tooltip("The color of the push raycast gizmos.")]
-    public Color pushColor = Color.blue;
+    public Color pushColor = Color.red;
 
     [Tooltip("The pull raycast directions.")]
     public Vector3[] pullRaycasts;
@@ -52,10 +52,26 @@ public class StupidAI : MonoBehaviour
     public LayerMask pullLayermask;
     [Tooltip("How much the pull direction should be added to the steering direction.")]
     public float pullAmount;
-    [Tooltip("HWhen true, the pull direction is normalized.")]
+    [Tooltip("When true, the pull direction is normalized.")]
     public bool normalizePull;
     [Tooltip("The color of the pull raycast gizmos.")]
-    public Color pullColor = Color.magenta;
+    public Color pullColor = Color.blue;
+
+    [Header("Hazard and item avoidance")]
+    [Tooltip("The point from which the avoidance box should start.")]
+    public Vector3 avoidanceBoxOffset;
+    [Tooltip("The size of the avoidance box.")]
+    public Vector3 avoidanceBoxSize;
+    [Tooltip("The layers that the avoidance box should hit.")]
+    public LayerMask avoidanceBoxLayermask;
+    [Tooltip("How much the avoidance direction should be added to the steering direction.")]
+    public float avoidanceAmount;
+    [Tooltip("When true, the avoidance direction is normalized.")]
+    public bool normalizeAvoidance;
+    [Tooltip("The color of the avoidance box gizmos.")]
+    public Color avoidanceColor = Color.magenta;
+
+    private Collider[] avoidanceTargets;
 
     [Header("Items")]
     [Tooltip("The offset from which the item raycasts should start.")]
@@ -98,6 +114,9 @@ public class StupidAI : MonoBehaviour
 
     private float currentNameHue;
     private Vector3 lastPos;
+
+    [Header("Misc")]
+    public bool backwardsBaller = false;
 
     [Header("Debug")]
     [SerializeField, Range(-1f, 1f), Tooltip("The current steering direction.")]
@@ -291,6 +310,7 @@ public class StupidAI : MonoBehaviour
                 pushSteer -= push * ((transform.position - push) - (transform.position - hit.point)).magnitude;
             }
         }
+        dir += (normalizePush ? new Vector3(pushSteer.x, 0, 0).normalized : pushSteer) / (float)pushRaycasts.Length * pushAmount;
 
         Vector3 pullSteer = Vector3.zero;
         foreach (Vector3 pull in pullRaycasts)
@@ -301,8 +321,18 @@ public class StupidAI : MonoBehaviour
                 pullSteer += pull * ((transform.position - pull) - (transform.position - hit.point)).magnitude;
             }
         }
+        dir += (normalizePull ? new Vector3(pullSteer.x, 0, 0).normalized : pullSteer) / (float)pullRaycasts.Length * pullAmount;
 
-        dir += (normalizePush ? new Vector3(pushSteer.x, 0, 0).normalized : pushSteer) / (float)pushRaycasts.Length * pushAmount + (normalizePull ? new Vector3(pullSteer.x, 0, 0).normalized : pullSteer) / (float)pullRaycasts.Length * pullAmount;
+        //hazard and item avoidance
+        Vector3 avoidanceSteer = Vector3.zero;
+        avoidanceTargets = Physics.OverlapBox(transform.position + (transform.rotation * avoidanceBoxOffset), avoidanceBoxSize, transform.rotation, avoidanceBoxLayermask);
+
+        foreach (Collider target in avoidanceTargets)
+        {
+            avoidanceSteer += (transform.position - target.transform.position);
+        }
+        dir += (normalizeAvoidance ? new Vector3(avoidanceSteer.x, 0, 0).normalized : avoidanceSteer) * avoidanceAmount;
+        Debug.DrawRay(transform.position, transform.rotation * (normalizeAvoidance ? new Vector3(avoidanceSteer.x, 0, 0).normalized : avoidanceSteer) * avoidanceAmount * 2, Color.white);
 
         //normalize direction
         dir = normalizeSteeringDir ? dir.normalized : new Vector3(dir.x, 0, 0).normalized;
@@ -346,7 +376,18 @@ public class StupidAI : MonoBehaviour
 
         //drive
         baseAI.SetDirection(new Vector2(steer, intendedSpeed));
-        
+
+        //override if backwards ballin
+        if (backwardsBaller)
+        {
+            baseAI.SetDirection(new Vector2(-steer, -intendedSpeed));
+            if (baseAI.GetCurrentItem() != Item.None)
+            {
+                baseAI.AimBack(false);
+                baseAI.UseItem();
+            }
+        }
+
         //use item
         if (baseAI.GetCurrentItem() != Item.None)
         {
@@ -439,6 +480,26 @@ public class StupidAI : MonoBehaviour
             Gizmos.DrawRay(transform.position + navRaycastOffset, transform.rotation * pull);
         }
 
+        //draw hazard and item avoidance
+        Gizmos.color = avoidanceColor;
+        Matrix4x4 originalMatrix = Gizmos.matrix;
+
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(avoidanceBoxOffset, avoidanceBoxSize * 2);
+
+        Gizmos.matrix = originalMatrix;
+        if(avoidanceTargets != null)
+        {
+            foreach (Collider target in avoidanceTargets)
+            {
+                if (target != null)
+                {
+                    Gizmos.DrawCube(target.transform.position, target.bounds.size);
+                }
+            }
+        }
+
+        //draw items
         if (!Application.isPlaying)
         {
             Gizmos.color = itemColor;
