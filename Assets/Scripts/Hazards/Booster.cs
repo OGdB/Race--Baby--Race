@@ -10,7 +10,7 @@ public class Booster : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<Rigidbody>().AddForce(other.transform.forward * force * Time.deltaTime, ForceMode.Acceleration);
+            other.gameObject.GetComponent<Rigidbody>().AddForce(other.transform.forward * force * Time.fixedDeltaTime * other.GetComponent<BaseAI>().GetDirection().y, ForceMode.Acceleration);
         }
     }
 }

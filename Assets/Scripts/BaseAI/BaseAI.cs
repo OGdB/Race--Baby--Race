@@ -163,7 +163,7 @@ public class BaseAI : MonoBehaviour
         rb.AddTorque(new Vector3(deltaUpward.x, deltaUpward.y, deltaUpward.z) * uprightForce * Time.fixedDeltaTime);
 
         //add downforce
-        currentDownForce = Mathf.Lerp(currentDownForce, isGrounded ? (Mathf.Clamp(direction.y, -1f, 1f) * maxDownForce) : 0, speedAcceleration * Time.fixedDeltaTime);
+        currentDownForce = Mathf.Lerp(currentDownForce, isGrounded ? (Mathf.Clamp01(Mathf.Abs(direction.y)) * maxDownForce) : 0, speedAcceleration * Time.fixedDeltaTime);
         rb.AddForce(-transform.up * currentDownForce * Time.fixedDeltaTime, ForceMode.Acceleration);
     }
 
@@ -213,6 +213,14 @@ public class BaseAI : MonoBehaviour
             Mathf.Clamp(newDirection.x, -1, 1),
             Mathf.Clamp(newDirection.y, -1, 1)
             );
+    }
+
+    /// <summary>
+    /// Gets the current direction the AI is heading in.
+    /// </summary>
+    public Vector2 GetDirection()
+    {
+        return direction;
     }
 
     /// <summary>
