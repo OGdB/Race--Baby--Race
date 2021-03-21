@@ -4,7 +4,7 @@ using UnityEngine;
 public class LookAtAI : MonoBehaviour
 {
     [SerializeField] private BaseAI baseAI;
-    [SerializeField] private AudioSource audioSource;
+    private AudioSource audioSource;
     [SerializeField] private float rotationSpeed = 5f;
     private bool isPlaying = false;
     private Vector3[] playerPositions;
@@ -45,5 +45,10 @@ public class LookAtAI : MonoBehaviour
             yield return new WaitForSeconds(10f);
             isPlaying = false;
         }
+    }
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
     }
 }
