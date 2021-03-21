@@ -14,7 +14,6 @@ public class HelloThereAI : MonoBehaviour
     private bool TurnWaiting = false;
     private bool turnCooldown = false;
     [SerializeField] private AnimationCurve sMagToSpeedCurve;
-    [SerializeField] private float wallPrevention = 0;
 
     [Header("Cosmetic")]
     [SerializeField] private CarBody carBody;
@@ -50,18 +49,14 @@ public class HelloThereAI : MonoBehaviour
 
     private void Update()
     {
-        StandardMovement();
+        float wallPreventionMultiplier = WallPrevention();
+        StandardMovement(wallPreventionMultiplier);
         CheckLineCastCurrentTarget();
-        OffRoadPrevention();
 
-        if (FrontDirectionalRay(0, hazards, 5f, true)) // Hold if there's a hazard in front of you.
+        if (FrontDirectionalRay(0, hazards, 5f, true, true) ) // Hold if there's a hazard in front of you.
         {
             baseAI.SetDirection(Vector2.zero);
         }
-
-        // Have 3 rays in different angles in each direction.
-        // Each ray is worth a certain value (a float representing the directional value?)
-        // If a ray returns true, that value is added to a float that is added to the dir.x
 
         //debug lines
         if (debug)
@@ -70,9 +65,15 @@ public class HelloThereAI : MonoBehaviour
             Debug.DrawLine(transform.position, currentTarget.transform.position, Color.blue);
             Debug.DrawLine(transform.position, nextTarget.transform.position, Color.yellow);
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            print(Vector3.Angle((currentTarget.transform.position - transform.position), transform.forward));
+        }
     }
 
-    private void StandardMovement()
+    private void StandardMovement(float wallPreventionMultiplier)
     {
         // If the car can draw a line between itself and the upcoming node > Set that node as the current node
         if (LineCastNextTarget(nextTarget.transform.position, 1 << LayerMask.NameToLayer("Walls")))
@@ -102,7 +103,16 @@ public class HelloThereAI : MonoBehaviour
         Vector2 dir = transform.InverseTransformDirection((currentTarget.transform.position - transform.position).normalized);
         //Debug.DrawRay(transform.position, transform.TransformDirection(dir) * 3, Color.red);
         float forwardSpeed = sMagToSpeedCurve.Evaluate(Mathf.Clamp01(Mathf.Abs(dir.x)));
-        baseAI.SetDirection(new Vector2(dir.x, forwardSpeed));
+        baseAI.SetDirection(new Vector2(dir.x * Direction() + wallPreventionMultiplier, forwardSpeed * Direction()));
+
+        IEnumerator WaitForTurn()
+        {
+            TurnWaiting = true;
+            yield return new WaitForSeconds(waitingTime);
+            currentTarget = nextTarget;
+            nextTarget = currentTarget.nextNodes[0];
+            TurnWaiting = false;
+        }
     }
     IEnumerator TurningCooldown(float time)
     {
@@ -148,35 +158,63 @@ public class HelloThereAI : MonoBehaviour
         }
     }
 
-    private bool FrontDirectionalRay(float angle, int layer, float length, bool drawRay)
-    {        
-        Vector3 direction = Quaternion.AngleAxis(angle, transform.up) * transform.forward;
-        bool rayCastHit = Physics.Raycast(transform.position, direction * length, length, layer);
+    private bool FrontDirectionalRay(float angle, int layer, float length, bool drawRay, bool checkTag)
+    {
+        RaycastHit hit;
+        Vector3 direction = Quaternion.AngleAxis(angle, transform.up) * transform.forward * Direction();
+        bool hitting = Physics.Raycast(transform.position, direction * length, out hit, length, layer);
 
+        Color color = Color.green;
+        if (hitting)
+        {
+            color = Color.red;
+        }
         if (drawRay)
         {
-            Debug.DrawRay(transform.position, direction * length, Color.green);
+            Debug.DrawRay(transform.position, direction * length, color);
         }
-        return rayCastHit;
+        if (checkTag)
+        {
+            return hitting && hit.collider.CompareTag("Hazard");
+        }
+        else
+        {
+            return hitting;
+        }
     }
 
-    private void OffRoadPrevention()
+    private float WallPrevention()
     {
-        FrontDirectionalRay(-30, walls, 5f, true);
-        FrontDirectionalRay(-25, walls, 5f, true);
-        FrontDirectionalRay(-20, walls, 5f, true);
+        float multiplier = 0;
+        bool[] leftWallChecks = new bool[3];
+        leftWallChecks[0] = FrontDirectionalRay(-25, walls, 5f, true, false);
+        leftWallChecks[1] = FrontDirectionalRay(-20, walls, 5f, true, false);
+        leftWallChecks[2] = FrontDirectionalRay(-10, walls, 5f, true, false);
+        bool[] rightWallChecks = new bool[3];
+        rightWallChecks[0] = FrontDirectionalRay(20, walls, 5f, true, false);
+        rightWallChecks[1] = FrontDirectionalRay(25, walls, 5f, true, false);
+        rightWallChecks[2] = FrontDirectionalRay(30, walls, 5f, true, false);
 
-        FrontDirectionalRay(20, walls, 5f, true);
-        FrontDirectionalRay(25, walls, 5f, true);
-        FrontDirectionalRay(30, walls, 5f, true);
+        foreach (bool wallDetected in leftWallChecks)
+        {
+            if (wallDetected)
+            {
+                multiplier += 0.2f;
+            }
+        }
+        foreach (bool wallDetected in rightWallChecks)
+        {
+            if (wallDetected)
+            {
+                multiplier -= 0.2f;
+            }
+        }
+
+        return multiplier;
     }
 
-    IEnumerator WaitForTurn()
+    private float Direction()
     {
-        TurnWaiting = true;
-        yield return new WaitForSeconds(waitingTime);
-        currentTarget = nextTarget;
-        nextTarget = currentTarget.nextNodes[0];
-        TurnWaiting = false;
+        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 90f ? -1f : 1f;
     }
 }
