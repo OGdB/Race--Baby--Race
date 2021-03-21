@@ -55,7 +55,9 @@ public class HelloThereAI : MonoBehaviour
 
         if (FrontDirectionalRay(0, hazards, 5f, true, true) ) // Hold if there's a hazard in front of you.
         {
-            baseAI.SetDirection(Vector2.zero);
+            float slowDownSpeed = 0.4f * Direction();
+            print("slowing down");
+            baseAI.SetDirection(new Vector2(0, slowDownSpeed));
         }
 
         //debug lines
@@ -66,16 +68,23 @@ public class HelloThereAI : MonoBehaviour
             Debug.DrawLine(transform.position, nextTarget.transform.position, Color.yellow);
         }
 
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            print(Vector3.Angle((currentTarget.transform.position - transform.position), transform.forward));
+            print(Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward));
         }
     }
 
     private void StandardMovement(float wallPreventionMultiplier)
     {
-        // If the car can draw a line between itself and the upcoming node > Set that node as the current node
+        if (currentTarget.nextNodes.Length < 2)
+        {
+            nextTarget = currentTarget.nextNodes[0];
+        }
+        else
+        {
+            nextTarget = GetShortestPath();
+        }
+        // If the AI can draw a direct line between itself and the nextTarget, make that next Target the Current Target after a small buffer.
         if (LineCastNextTarget(nextTarget.transform.position, 1 << LayerMask.NameToLayer("Walls")))
         {
             if (!TurnWaiting)
@@ -83,14 +92,16 @@ public class HelloThereAI : MonoBehaviour
                 StartCoroutine(WaitForTurn());
             }
         }
+
         else if (Vector3.Distance(transform.position, currentTarget.transform.position) < confirmationDistance && !turnCooldown)
         {
-            print("within distance");
             StartCoroutine(TurningCooldown(0.75f));
-            if (currentTarget.nextNodes.Length > 1)
+            if (currentTarget.nextNodes.Length > 1) // if a branch
             {
-                int randomPath = Random.Range(0, currentTarget.nextNodes.Length);
+                /*int randomPath = Random.Range(0, currentTarget.nextNodes.Length);
                 currentTarget = currentTarget.nextNodes[randomPath];
+                nextTarget = currentTarget.nextNodes[0];*/
+                currentTarget = GetShortestPath();
                 nextTarget = currentTarget.nextNodes[0];
             }
             else
@@ -101,7 +112,6 @@ public class HelloThereAI : MonoBehaviour
         }
 
         Vector2 dir = transform.InverseTransformDirection((currentTarget.transform.position - transform.position).normalized);
-        //Debug.DrawRay(transform.position, transform.TransformDirection(dir) * 3, Color.red);
         float forwardSpeed = sMagToSpeedCurve.Evaluate(Mathf.Clamp01(Mathf.Abs(dir.x)));
         baseAI.SetDirection(new Vector2(dir.x * Direction() + wallPreventionMultiplier, forwardSpeed * Direction()));
 
@@ -110,7 +120,6 @@ public class HelloThereAI : MonoBehaviour
             TurnWaiting = true;
             yield return new WaitForSeconds(waitingTime);
             currentTarget = nextTarget;
-            nextTarget = currentTarget.nextNodes[0];
             TurnWaiting = false;
         }
     }
@@ -213,8 +222,39 @@ public class HelloThereAI : MonoBehaviour
         return multiplier;
     }
 
+    private Node GetShortestPath()
+    {
+        // The node which will send the AI on the shortest path
+        Node nodeToPick = null;
+        float shortestPathLength = Mathf.Infinity;
+
+        for (int i = 0; i < currentTarget.nextNodes.Length; i++) // For each branch of the upcoming node.
+        {
+            Node thisBranch = currentTarget.nextNodes[i];
+            Node currentNode = currentTarget.nextNodes[i]; // The branchnode we're currently checking. (moves on until another branch is reached).
+            Node nextNode = currentNode.nextNodes[0]; // The upcoming node.
+            float totalPathLength = 0f;
+
+            // Makes a path from the start of the branch until the next upcoming branch.
+            while (currentNode.nextNodes.Length < 2) // While no other branch has been reached...
+            {
+                totalPathLength += Vector3.Distance(currentNode.transform.position, nextNode.transform.position);
+                currentNode = currentNode.nextNodes[0];
+                nextNode = currentNode.nextNodes[0];
+            }
+
+            if (totalPathLength < shortestPathLength)
+            {
+                nodeToPick = thisBranch;
+                shortestPathLength = totalPathLength;
+            }
+        }
+
+        return nodeToPick;
+    }
+
     private float Direction()
     {
-        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 90f ? -1f : 1f;
+        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 95f ? -1f : 1f;
     }
 }
