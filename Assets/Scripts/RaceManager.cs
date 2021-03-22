@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 
 public class RaceManager : MonoBehaviour
 {
     [Header("Race settings")]
     public int laps;
+    public bool raceHasStarted = false;
+    public bool raceHasEnded = false;
 
     [Header("Checkpoints")]
     public Transform[] checkpoints;
@@ -14,6 +17,10 @@ public class RaceManager : MonoBehaviour
 
     [Header("Player stuff")]
     public List<PlayerScore> players = new List<PlayerScore>();
+
+    [Header("UI")]
+    public Text raceInfoText;
+    public Text scoreBoardText;
 
     [Header("Gizmos")]
     public Color color;
@@ -28,6 +35,38 @@ public class RaceManager : MonoBehaviour
         {
             this.players.Add(new PlayerScore(player.GetComponent<BaseAI>()));
         }
+
+        StartCoroutine("StartRace");
+    }
+
+    public IEnumerator StartRace()
+    {
+        raceInfoText.text = "3";
+        yield return new WaitForSeconds(1f);
+
+        raceInfoText.text = "2";
+        yield return new WaitForSeconds(1f);
+
+        raceInfoText.text = "1";
+        yield return new WaitForSeconds(1f);
+
+        raceInfoText.text = "GO!";
+        raceHasStarted = true;
+        yield return new WaitForSeconds(1f);
+
+        raceInfoText.text = "";
+        yield return null;
+    }
+
+    public IEnumerator EndRace()
+    {
+        yield return new WaitForEndOfFrame();
+
+        raceHasEnded = true;
+        yield return new WaitForSeconds(5f);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        yield return null;
     }
 
     private void FixedUpdate()
@@ -86,10 +125,28 @@ public class RaceManager : MonoBehaviour
         players = players.OrderByDescending(x => x.currentLap).ThenByDescending(y => y.currentCheckPoint).ThenBy(z => z.distanceToNextCheckPoint).ToList();
 
         //assign positions to the baseAI
-        for(int p = 0; p < players.Count; p++)
+        if (!raceHasEnded)
+        {
+            scoreBoardText.text = "";
+        }
+
+        for (int p = 0; p < players.Count; p++)
         {
             players[p].AI.position = p + 1;
             players[p].AI.lap = players[p].currentLap;
+
+            //add text to scoreboard
+            if (!raceHasEnded)
+            {
+                scoreBoardText.text += BaseAIHelper.AddOrdinal(players[p].AI.position) + " - " + players[p].AI.GetName().Replace("\n", " ") + "\n";
+            }
+
+            //check if someone finished
+            if (players[p].currentLap >= laps && !raceHasEnded)
+            {
+                raceInfoText.text = players[p].AI.GetName().Replace("\n", " ") + " Won!";
+                StartCoroutine("EndRace");
+            }
         }
     }
 
