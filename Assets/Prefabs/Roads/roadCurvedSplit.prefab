@@ -42,6 +42,59 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7970856604713271688, guid: 0d64add2516999e44bb475eae73500f7, type: 3}
+--- !u!1 &4887807086932557022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1348804572016892845}
+  - component: {fileID: 5663423377795622415}
+  - component: {fileID: 3582226081731793219}
+  m_Layer: 13
+  m_Name: middlewall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1348804572016892845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887807086932557022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5, y: 2.351, z: 18.451}
+  m_LocalScale: {x: 1.0000005, y: 5.702152, z: 3.3020382}
+  m_Children: []
+  m_Father: {fileID: 6790523658632307439}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &5663423377795622415
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887807086932557022}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &3582226081731793219
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887807086932557022}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6158419494124025941
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +108,7 @@ GameObject:
   - component: {fileID: 5654240291804535168}
   - component: {fileID: 6464477698022917383}
   m_Layer: 0
-  m_Name: roadCurvedSplit (2)
+  m_Name: roadCurvedSplit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,6 +129,7 @@ Transform:
   - {fileID: 2564275989585671180}
   - {fileID: 8242679099262654343}
   - {fileID: 929452906111000258}
+  - {fileID: 1348804572016892845}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

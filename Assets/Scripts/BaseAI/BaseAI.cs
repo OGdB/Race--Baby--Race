@@ -86,7 +86,7 @@ public class BaseAI : MonoBehaviour
 
     //fully private
     private float currentSpeed;
-    private float currentSteeringAngle;
+    public float currentSteeringAngle;
     private Vector3 velocity;
     private float currentDownForce;
 

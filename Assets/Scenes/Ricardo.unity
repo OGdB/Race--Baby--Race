@@ -1216,7 +1216,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_Name
-      value: Player1 (5)
+      value: Ricardo
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -1240,11 +1240,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 45429792}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 618e0fe7063b45c4184a87a5abd87ce7, type: 3}
+  m_Script: {fileID: 11500000, guid: 4337c973f7f8fa042966c11f8f775488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confirmationDistance: 6
-  currentNode: {fileID: 0}
+  dodging: 0
+  seesItem: 0
+  died: 0
+  NodeList: []
+  currentTargetNode: {fileID: 0}
+  nextTargetNode: {fileID: 0}
+  confirmationDistance: 5
+  maxDodgingAngle: 45
+  direction: {x: 0, y: 0, z: 0}
+  distanceToNextNode: 0
+  frontRaycastPos: {x: 0, y: 0.2, z: 0.5}
+  sensorsLength: 6
+  frontSideSensorPos: 0.2
+  frontAngleSensor1: 30
+  frontAngleSensor2: 15
+  wallOnLeft: 0
+  wallOnRight: 0
+  carBody: 0
+  carName: 
 --- !u!4 &45429797 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
@@ -20220,6 +20237,14 @@ MonoBehaviour:
   pullAmount: 0
   normalizePull: 0
   pullColor: {r: 1, g: 0, b: 1, a: 1}
+  avoidanceBoxOffset: {x: 0, y: 0, z: 0}
+  avoidanceBoxSize: {x: 0, y: 0, z: 0}
+  avoidanceBoxLayermask:
+    serializedVersion: 2
+    m_Bits: 0
+  avoidanceAmount: 0
+  normalizeAvoidance: 0
+  avoidanceColor: {r: 1, g: 0, b: 1, a: 1}
   itemRaycastOffset: {x: 0, y: 0, z: 0}
   itemRaycasts: []
   itemLayermask:
@@ -20237,6 +20262,7 @@ MonoBehaviour:
   nameHueSpeed: 0
   hueLetterSpace: 0
   speedBarSize: 0
+  backwardsBaller: 0
   steeringDir: 0
   steeringMag: 0
 --- !u!1 &989930715
