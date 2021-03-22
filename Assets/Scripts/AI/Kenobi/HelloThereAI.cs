@@ -6,22 +6,25 @@ using UnityEngine;
 public class HelloThereAI : MonoBehaviour
 {
     private BaseAI baseAI;
-    public Node currentTarget;
-    public Node nextTarget;
-    [SerializeField] private float confirmationDistance = 2f;
-    [SerializeField] private List<Node> allNodes = new List<Node>();
-    [SerializeField] private float waitingTime = 0.2f;
+    private Transform currentCheckpoint;
+    private Node currentTarget;
+    private Node nextTarget;
     private bool TurnWaiting = false;
     private bool turnCooldown = false;
+    private List<Node> allNodes = new List<Node>();
+
+    [Header("Variables")]
+    [SerializeField] private float confirmationDistance = 2f;
+    [SerializeField] private float waitingTime = 0.2f;
     [SerializeField] private AnimationCurve sMagToSpeedCurve;
+    [SerializeField] private float pushWallMultiplier = 0.125f;
 
     [Header("Cosmetic")]
     [SerializeField] private CarBody carBody;
 
     [Header("Layers")]
-    [SerializeField] private LayerMask walls;
-    [SerializeField] private LayerMask hazards;
-    [SerializeField] private LayerMask items;
+    private LayerMask walls;
+    private LayerMask hazards;
 
     [Space(20)]
     [SerializeField] private bool debug = false;
@@ -35,7 +38,6 @@ public class HelloThereAI : MonoBehaviour
         nextTarget = currentTarget.GetComponent<Node>().nextNodes[0];
         // Layers
         walls = 1 << LayerMask.NameToLayer("Walls");
-        items = 1 << LayerMask.NameToLayer("Items");
         hazards = 1 << LayerMask.NameToLayer("Hazards");
 
         foreach (Transform child in currentTarget.transform.parent)
@@ -49,15 +51,31 @@ public class HelloThereAI : MonoBehaviour
 
     private void Update()
     {
-        float wallPreventionMultiplier = WallPrevention();
-        StandardMovement(wallPreventionMultiplier);
+        StandardMovement();
+        // Detect whether the AI can draw an uninterrupted line between itself and the current target. If not, it finds a new target which within in sight.
         CheckLineCastCurrentTarget();
 
         if (FrontDirectionalRay(0, hazards, 5f, true, true) ) // Hold if there's a hazard in front of you.
         {
             float slowDownSpeed = 0.4f * Direction();
-            print("slowing down");
             baseAI.SetDirection(new Vector2(0, slowDownSpeed));
+        }
+
+        if (baseAI.checkpoint != currentCheckpoint)
+        {
+            currentCheckpoint = baseAI.checkpoint;
+            if (baseAI.GetCurrentItem() != Item.None)
+            {
+                baseAI.UseItem();
+            }
+        }
+        else if (Vector3.Angle(currentTarget.transform.position - nextTarget.transform.position, transform.forward) > 50f)
+        {
+            print(Vector3.Angle(currentTarget.transform.position - nextTarget.transform.position, transform.forward));
+            if (baseAI.GetCurrentItem() != Item.None)
+            {
+                baseAI.UseItem();
+            }
         }
 
         //debug lines
@@ -74,18 +92,11 @@ public class HelloThereAI : MonoBehaviour
         }
     }
 
-    private void StandardMovement(float wallPreventionMultiplier)
+    private void StandardMovement()
     {
-        if (currentTarget.nextNodes.Length < 2)
-        {
-            nextTarget = currentTarget.nextNodes[0];
-        }
-        else
-        {
-            nextTarget = GetShortestPath();
-        }
+        nextTarget = currentTarget.nextNodes.Length < 2 ? currentTarget.nextNodes[0] : GetShortestPath();
         // If the AI can draw a direct line between itself and the nextTarget, make that next Target the Current Target after a small buffer.
-        if (LineCastNextTarget(nextTarget.transform.position, 1 << LayerMask.NameToLayer("Walls")))
+        if (LineCastNextTarget(nextTarget.transform.position, walls))
         {
             if (!TurnWaiting)
             {
@@ -98,9 +109,6 @@ public class HelloThereAI : MonoBehaviour
             StartCoroutine(TurningCooldown(0.75f));
             if (currentTarget.nextNodes.Length > 1) // if a branch
             {
-                /*int randomPath = Random.Range(0, currentTarget.nextNodes.Length);
-                currentTarget = currentTarget.nextNodes[randomPath];
-                nextTarget = currentTarget.nextNodes[0];*/
                 currentTarget = GetShortestPath();
                 nextTarget = currentTarget.nextNodes[0];
             }
@@ -113,7 +121,7 @@ public class HelloThereAI : MonoBehaviour
 
         Vector2 dir = transform.InverseTransformDirection((currentTarget.transform.position - transform.position).normalized);
         float forwardSpeed = sMagToSpeedCurve.Evaluate(Mathf.Clamp01(Mathf.Abs(dir.x)));
-        baseAI.SetDirection(new Vector2(dir.x * Direction() + wallPreventionMultiplier, forwardSpeed * Direction()));
+        baseAI.SetDirection(new Vector2(dir.x + WallPrevention(), forwardSpeed) * Direction());
 
         IEnumerator WaitForTurn()
         {
@@ -122,16 +130,16 @@ public class HelloThereAI : MonoBehaviour
             currentTarget = nextTarget;
             TurnWaiting = false;
         }
-    }
-    IEnumerator TurningCooldown(float time)
-    {
-        turnCooldown = true;
-        yield return new WaitForSeconds(time);
-        turnCooldown = false;
+        IEnumerator TurningCooldown(float time)
+        {
+            turnCooldown = true;
+            yield return new WaitForSeconds(time);
+            turnCooldown = false;
+        }
     }
     private void CheckLineCastCurrentTarget()
     {
-        if (!LineCastNextTarget(currentTarget.transform.position, 1 << 13)) // If there's no direct line between the AI and its target, the AI probably died.
+        if (!LineCastNextTarget(currentTarget.transform.position, walls)) // If there's no direct line between the AI and its target, the AI probably died.
         {
             ResetTarget();
         }
@@ -139,7 +147,6 @@ public class HelloThereAI : MonoBehaviour
 
     private void ResetTarget()
     {
-        // print("reset target!");
         float closestNodeDistance = Mathf.Infinity;
         Node closestNode = null;
         for (int i = 0; i < allNodes.Count; i++)
@@ -157,14 +164,7 @@ public class HelloThereAI : MonoBehaviour
 
     private bool LineCastNextTarget(Vector3 target, int layer)
     {
-        if (!Physics.Linecast(transform.position, target, layer))     
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return !Physics.Linecast(transform.position, target, layer);
     }
 
     private bool FrontDirectionalRay(float angle, int layer, float length, bool drawRay, bool checkTag)
@@ -182,14 +182,7 @@ public class HelloThereAI : MonoBehaviour
         {
             Debug.DrawRay(transform.position, direction * length, color);
         }
-        if (checkTag)
-        {
-            return hitting && hit.collider.CompareTag("Hazard");
-        }
-        else
-        {
-            return hitting;
-        }
+        return checkTag ? hitting && hit.collider.CompareTag("Hazard") : hitting;
     }
 
     private float WallPrevention()
@@ -208,14 +201,14 @@ public class HelloThereAI : MonoBehaviour
         {
             if (wallDetected)
             {
-                multiplier += 0.2f;
+                multiplier += pushWallMultiplier;
             }
         }
         foreach (bool wallDetected in rightWallChecks)
         {
             if (wallDetected)
             {
-                multiplier -= 0.2f;
+                multiplier -= pushWallMultiplier;
             }
         }
 
@@ -255,6 +248,6 @@ public class HelloThereAI : MonoBehaviour
 
     private float Direction()
     {
-        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 95f ? -1f : 1f;
+        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 100f ? -1f : 1f;
     }
 }
