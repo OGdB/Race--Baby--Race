@@ -115,8 +115,10 @@ public class StupidAI : MonoBehaviour
     private float currentNameHue;
     private Vector3 lastPos;
 
-    [Header("Misc")]
-    public bool backwardsBaller = false;
+    [Header("Misc (WARNING: EXPERIMENTAL)")]
+    public bool goBackwards = false;
+    [Range(0f, 181f)]
+    public float backwardsAngleTreshold;
 
     [Header("Debug")]
     [SerializeField, Range(-1f, 1f), Tooltip("The current steering direction.")]
@@ -124,7 +126,8 @@ public class StupidAI : MonoBehaviour
     [SerializeField, Range(0f, 1f), Tooltip("The current steering magnitude.")]
     private float steeringMag;
 
-    private BaseAI baseAI;
+    [HideInInspector]
+    public BaseAI baseAI;
     private Vector3[] nodes;
     private Vector3 targetPos;
     private int lastLap;
@@ -300,6 +303,9 @@ public class StupidAI : MonoBehaviour
         //calculate direction
         Vector3 dir = transform.InverseTransformDirection((targetPos - transform.position));
 
+        //decide if we want to go backwards
+        goBackwards = (Vector3.Angle(new Vector3(dir.x, 0, dir.z).normalized, new Vector3(Vector3.forward.x, 0, Vector3.forward.z).normalized) > backwardsAngleTreshold);
+
         //non-directional steering
         Vector3 pushSteer = Vector3.zero;
         foreach (Vector3 push in pushRaycasts)
@@ -377,13 +383,15 @@ public class StupidAI : MonoBehaviour
         //drive
         baseAI.SetDirection(new Vector2(steer, intendedSpeed));
 
+        //aim for items
+        baseAI.AimBack(!goBackwards);
+
         //override if backwards ballin
-        if (backwardsBaller)
+        if (goBackwards)
         {
             baseAI.SetDirection(new Vector2(-steer, -intendedSpeed));
             if (baseAI.GetCurrentItem() != Item.None)
             {
-                baseAI.AimBack(false);
                 baseAI.UseItem();
             }
         }
