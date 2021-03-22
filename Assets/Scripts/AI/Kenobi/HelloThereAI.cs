@@ -71,7 +71,7 @@ public class HelloThereAI : MonoBehaviour
         }
         else if (Vector3.Angle(currentTarget.transform.position - nextTarget.transform.position, transform.forward) > 50f)
         {
-            print(Vector3.Angle(currentTarget.transform.position - nextTarget.transform.position, transform.forward));
+            //print(Vector3.Angle(currentTarget.transform.position - nextTarget.transform.position, transform.forward));
             if (baseAI.GetCurrentItem() != Item.None)
             {
                 baseAI.UseItem();
