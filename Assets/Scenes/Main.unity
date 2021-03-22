@@ -22553,10 +22553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7f617921e052f479c6cda098a3d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTarget: {fileID: 0}
-  nextTarget: {fileID: 0}
   confirmationDistance: 5
-  allNodes: []
   waitingTime: 0.25
   sMagToSpeedCurve:
     serializedVersion: 2
@@ -22591,16 +22588,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  pushWallMultiplier: 0.125
   carBody: 8
-  walls:
-    serializedVersion: 2
-    m_Bits: 0
-  hazards:
-    serializedVersion: 2
-    m_Bits: 0
-  items:
-    serializedVersion: 2
-    m_Bits: 0
   debug: 0
 --- !u!1001 &1049109278
 PrefabInstance:
@@ -26582,7 +26571,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  sendIt: 1
+  sendIt: 0
   normalizeSteeringDir: 1
   steerMode: 5
   steeringCurve:
@@ -36989,10 +36978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7f617921e052f479c6cda098a3d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTarget: {fileID: 0}
-  nextTarget: {fileID: 0}
   confirmationDistance: 5
-  allNodes: []
   waitingTime: 0.25
   sMagToSpeedCurve:
     serializedVersion: 2
@@ -37027,16 +37013,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  pushWallMultiplier: 0.125
   carBody: 8
-  walls:
-    serializedVersion: 2
-    m_Bits: 0
-  hazards:
-    serializedVersion: 2
-    m_Bits: 0
-  items:
-    serializedVersion: 2
-    m_Bits: 0
   debug: 0
 --- !u!1 &1677919095
 GameObject:
