@@ -173,12 +173,15 @@ public class RicardoAI : MonoBehaviour
 
         Debug.DrawLine(raycastStartPos, currentTargetNode.transform.position, Color.red);
 
-        if (!Physics.Linecast(raycastStartPos, nextTargetNode.transform.position, 13))
+        if (Physics.Linecast(raycastStartPos, nextTargetNode.transform.position, out hit))
         {
-            currentTargetNode = nextTargetNode;
-            //print("no walls");
+            if(hit.collider.gameObject.layer == 13)
+            {
+                //currentTargetNode = nextTargetNode;
+                print("walls probably");
+            }
         }
-        Debug.DrawLine(raycastStartPos, nextTargetNode.transform.position, Color.yellow);
+            Debug.DrawLine(raycastStartPos, nextTargetNode.transform.position, Color.yellow);
 
         //front middle sensor
         if (Physics.Raycast(raycastStartPos, transform.forward, out hit, sensorsLength))
@@ -357,6 +360,8 @@ public class RicardoAI : MonoBehaviour
 
 
     }
+
+    //create 3 raycasts that check for walls
     private void CheckWalls()
     {
         Vector3 raycastStartPos = transform.position;
@@ -431,7 +436,7 @@ public class RicardoAI : MonoBehaviour
 
     IEnumerator DeathTimer()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         died = false;
     }
 
@@ -440,6 +445,7 @@ public class RicardoAI : MonoBehaviour
     //is called whenever the player has died
     private void TargetClosestNode()
     {
+        RaycastHit hit;
         float closestNodeDis = float.MaxValue;
         Node closestNode;
             foreach (Node node in NodeList)
@@ -452,6 +458,19 @@ public class RicardoAI : MonoBehaviour
                     currentTargetNode = closestNode;
                 }
             }
+
+            if(Physics.Linecast(transform.position, nextTargetNode.transform.position, out hit))
+        {
+            if(hit.collider.gameObject.layer == 13)
+            {
+                print("wall hit");
+            }
+            else
+            {
+                currentTargetNode = nextTargetNode;
+                print("wall not hit");
+            }
+        }
         
     }
 }
