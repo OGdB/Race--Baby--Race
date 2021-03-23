@@ -9,27 +9,36 @@ public class CameraStateChanger : MonoBehaviour
     private CinemachineBrain mainBrain;
     private CinemachineVirtualCamera mainCam;
     public CinemachineVirtualCamera newCam;
-    public bool firstOnly = true;
+    public int priority = 0;
+    public bool onDollyCart = false;
+    private CinemachineDollyCart cart;
     // Start is called before the first frame update
     void Start()
     {
         mainBrain = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CinemachineBrain>();
         collider = gameObject.GetComponent<Collider>();
+        if(onDollyCart)
+        {
+            cart = newCam.GetComponentInParent<CinemachineDollyCart>();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if (other.tag == "Player")
         {
-            if (firstOnly)
+            if (priority > mainBrain.ActiveVirtualCamera.Priority)
             {
-                if(other.GetComponent<BaseAI>().position == 1)
+                if (onDollyCart)
                 {
-                    mainBrain.ActiveVirtualCamera.Priority = 0;
-                    newCam.Priority = 1;
+                    cart.enabled = true;
+                    cart.m_Position = 0;
                 }
+                mainBrain.ActiveVirtualCamera.Priority = 0;
+                newCam.Priority = priority;
             }
-            else
+            // Reserved for the first/start camera
+            else if (priority == 100)
             {
                 mainBrain.ActiveVirtualCamera.Priority = 0;
                 newCam.Priority = 1;
