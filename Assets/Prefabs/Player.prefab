@@ -9400,7 +9400,7 @@ MonoBehaviour:
   steeringAcceleration: 8
   direction: {x: 0, y: 0}
   uprightForce: 250
-  maxDownForce: 1000
+  maxDownForce: 1500
   isGrounded: 0
   groundedCheckPos: {fileID: 7500577264836820317}
   groundCheckDistance: 0.5
@@ -9449,7 +9449,7 @@ Rigidbody:
   m_GameObject: {fileID: 7528923958841352988}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0.1
+  m_Drag: 0.25
   m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0

@@ -162,7 +162,7 @@ public class BaseAI : MonoBehaviour
         float actualSteeringAngle = Mathf.Lerp(0, currentSteeringAngle, Mathf.Abs(currentSpeed / maxSpeed)); //only steer when driving
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, actualSteeringAngle * Time.fixedDeltaTime, 0));
 
-        //rotate rigidbody velocity with the car
+        //rotate rigidbody velocity with the car and align it to driving direction
         rb.velocity = Quaternion.Euler(0, actualSteeringAngle * Time.fixedDeltaTime, 0) * rb.velocity;
 
         //stay upright

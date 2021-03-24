@@ -163,7 +163,13 @@ public class StupidAI : MonoBehaviour
                                 openSet = openSet.OrderBy(r => Random.value).ToList();
                                 break;
 
-                            default:
+                            case StupidSearchMode.WorstFirst:
+                            case StupidSearchMode.WorstFirstVertical:
+                                openSet = openSet.OrderByDescending(r => r.cost).ToList();
+                                break;
+
+                            case StupidSearchMode.BestFirst:
+                            case StupidSearchMode.BestFirstVertical:
                                 openSet = openSet.OrderBy(r => r.cost).ToList();
                                 break;
                         }
@@ -212,7 +218,11 @@ public class StupidAI : MonoBehaviour
                                 switch (searchMode)
                                 {
                                     case StupidSearchMode.WorstFirst:
-                                        neighbour.cost = -newMovementCostToNeighbour;
+                                        neighbour.cost = newMovementCostToNeighbour;
+                                        break;
+
+                                    case StupidSearchMode.WorstFirstVertical:
+                                        neighbour.cost = newMovementCostToNeighbour + Vector3.Distance(new Vector3(0, currentNode.transform.position.y, 0), new Vector3(0, neighbour.transform.position.y, 0)) * 10;
                                         break;
 
                                     case StupidSearchMode.BestFirstVertical:
@@ -573,6 +583,7 @@ public enum StupidSearchMode
     BestFirst,
     BestFirstVertical, //prefers vertical paths (significantly)
     WorstFirst,
+    WorstFirstVertical,
     Random
 }
 
