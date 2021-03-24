@@ -12,11 +12,11 @@ public class ItemBox : MonoBehaviour
     public float floatSpeed;
 
     private float cooldownTimer;
-    private BoxCollider collider;
+    private BoxCollider itemCollider;
 
     private void Start()
     {
-        collider = GetComponent<BoxCollider>();
+        itemCollider = GetComponent<BoxCollider>();
     }
 
     private void Update()
@@ -28,7 +28,7 @@ public class ItemBox : MonoBehaviour
             if(cooldownTimer > cooldown)
             {
                 visual.SetActive(true);
-                collider.enabled = true;
+                itemCollider.enabled = true;
             }
         }
 
@@ -44,7 +44,7 @@ public class ItemBox : MonoBehaviour
     public Item GetItem()
     {
         visual.SetActive(false);
-        collider.enabled = false;
+        itemCollider.enabled = false;
         cooldownTimer = 0;
 
         return (Item)Random.Range(1, System.Enum.GetNames(typeof(Item)).Length);

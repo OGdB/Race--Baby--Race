@@ -10,6 +10,12 @@ public class LookAtAI : MonoBehaviour
     private Vector3[] playerPositions;
     private void FixedUpdate()
     {
+        float closestDistance = 0;
+        playerPositions = baseAI.GetPlayerPositions();
+        if (playerPositions.Length > 0)
+        {
+            closestDistance = Vector3.Distance(transform.position, playerPositions[0]);
+        }
         playerPositions = baseAI.GetPlayerPositions();
         float closestDistance = Vector3.Distance(transform.position, playerPositions[0]);
 
