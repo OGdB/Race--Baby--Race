@@ -6,18 +6,19 @@ using UnityEngine;
 public class HelloThereAI : MonoBehaviour
 {
     private BaseAI baseAI;
-    private Transform currentCheckpoint;
     private Node currentTarget;
     private Node nextTarget;
     private bool TurnWaiting = false;
     private bool turnCooldown = false;
     private List<Node> allNodes = new List<Node>();
+    [SerializeField] private Vector2 dir;
 
     [Header("Variables")]
-    [SerializeField] private float confirmationDistance = 2f;
-    [SerializeField] private float waitingTime = 0.2f;
+    [SerializeField] private float confirmationDistance = 10f;
+    [SerializeField] private float waitingTime = 0.15f;
+    [SerializeField] private float hazardSlowDown = 0.6f;
     [SerializeField] private AnimationCurve sMagToSpeedCurve;
-    [SerializeField] private float pushWallMultiplier = 0.125f;
+    [SerializeField] private float pushWallMultiplier = 0.1f;
 
     [Header("Cosmetic")]
     [SerializeField] private CarBody carBody;
@@ -25,6 +26,7 @@ public class HelloThereAI : MonoBehaviour
     [Header("Layers")]
     private LayerMask walls;
     private LayerMask hazards;
+    private LayerMask players;
 
     [Space(20)]
     [SerializeField] private bool debug = false;
@@ -36,10 +38,13 @@ public class HelloThereAI : MonoBehaviour
         baseAI.SetName("Kenobi");
         currentTarget = baseAI.GetFirstNode();
         nextTarget = currentTarget.GetComponent<Node>().nextNodes[0];
+        baseAI.AimBack(true);
         // Layers
         walls = 1 << LayerMask.NameToLayer("Walls");
         hazards = 1 << LayerMask.NameToLayer("Hazards");
+        players = 1 << LayerMask.NameToLayer("Players");
 
+        // Get list of all nodes
         foreach (Transform child in currentTarget.transform.parent)
         {
             if (child.TryGetComponent(out Node node))
@@ -51,31 +56,24 @@ public class HelloThereAI : MonoBehaviour
 
     private void Update()
     {
-        StandardMovement();
+        Movement();
         // Detect whether the AI can draw an uninterrupted line between itself and the current target. If not, it finds a new target which within in sight.
         CheckLineCastCurrentTarget();
 
-        if (FrontDirectionalRay(0, hazards, 5f, true, true) ) // Hold if there's a hazard in front of you.
+        // (hazards & walls)
+        if (DirectionalRay(0, hazards | walls, 5f, true, false) || DirectionalRay(-3f, hazards | walls, 5f, true, false) || DirectionalRay(3f, hazards | walls, 5f, true, false)) // Hold if there's a hazard in front of you.
         {
-            float slowDownSpeed = 0.4f * Direction();
-            baseAI.SetDirection(new Vector2(0, slowDownSpeed));
+            float slowDownSpeed = hazardSlowDown * Direction();
+            baseAI.SetDirection(new Vector2(dir.x, slowDownSpeed));
         }
 
-        if (baseAI.checkpoint != currentCheckpoint)
+        if (DirectionalRay(180, players, 25f, true, false) && baseAI.GetCurrentItem() != Item.None) // raycast if player is behind player &> use item
         {
-            currentCheckpoint = baseAI.checkpoint;
-            if (baseAI.GetCurrentItem() != Item.None)
-            {
-                baseAI.UseItem();
-            }
+            baseAI.AimBack(true);
         }
-        else if (Vector3.Angle(currentTarget.transform.position - nextTarget.transform.position, transform.forward) > 50f)
+        else if (DirectionalRay(0, players, 25f, true, false) && baseAI.GetCurrentItem() != Item.None) // raycast if player is in front of player &> use item
         {
-            print(Vector3.Angle(currentTarget.transform.position - nextTarget.transform.position, transform.forward));
-            if (baseAI.GetCurrentItem() != Item.None)
-            {
-                baseAI.UseItem();
-            }
+            baseAI.AimBack(false);
         }
 
         //debug lines
@@ -85,14 +83,9 @@ public class HelloThereAI : MonoBehaviour
             Debug.DrawLine(transform.position, currentTarget.transform.position, Color.blue);
             Debug.DrawLine(transform.position, nextTarget.transform.position, Color.yellow);
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            print(Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward));
-        }
     }
 
-    private void StandardMovement()
+    private void Movement()
     {
         nextTarget = currentTarget.nextNodes.Length < 2 ? currentTarget.nextNodes[0] : GetShortestPath();
         // If the AI can draw a direct line between itself and the nextTarget, make that next Target the Current Target after a small buffer.
@@ -103,10 +96,9 @@ public class HelloThereAI : MonoBehaviour
                 StartCoroutine(WaitForTurn());
             }
         }
-
         else if (Vector3.Distance(transform.position, currentTarget.transform.position) < confirmationDistance && !turnCooldown)
         {
-            StartCoroutine(TurningCooldown(0.75f));
+            StartCoroutine(TurningCooldown(0.75f)); // When the AI turns due to being within confirmation distance, there might actually still be a wall between the AI and its next node, causing it to 'reset' back to its previous node
             if (currentTarget.nextNodes.Length > 1) // if a branch
             {
                 currentTarget = GetShortestPath();
@@ -119,7 +111,7 @@ public class HelloThereAI : MonoBehaviour
             }
         }
 
-        Vector2 dir = transform.InverseTransformDirection((currentTarget.transform.position - transform.position).normalized);
+        dir = transform.InverseTransformDirection((currentTarget.transform.position - transform.position).normalized);
         float forwardSpeed = sMagToSpeedCurve.Evaluate(Mathf.Clamp01(Mathf.Abs(dir.x)));
         baseAI.SetDirection(new Vector2(dir.x + WallPrevention(), forwardSpeed) * Direction());
 
@@ -167,18 +159,21 @@ public class HelloThereAI : MonoBehaviour
         return !Physics.Linecast(transform.position, target, layer);
     }
 
-    private bool FrontDirectionalRay(float angle, int layer, float length, bool drawRay, bool checkTag)
+    private bool DirectionalRay(float angle, int layer, float length, bool drawRay, bool checkTag)
     {
         RaycastHit hit;
         Vector3 direction = Quaternion.AngleAxis(angle, transform.up) * transform.forward * Direction();
         bool hitting = Physics.Raycast(transform.position, direction * length, out hit, length, layer);
-
+        if (hitting && hit.collider.GetInstanceID() == GetInstanceID())
+        {
+            hitting = false;
+        }
         Color color = Color.green;
         if (hitting)
         {
             color = Color.red;
         }
-        if (drawRay)
+        if (drawRay && debug)
         {
             Debug.DrawRay(transform.position, direction * length, color);
         }
@@ -188,14 +183,19 @@ public class HelloThereAI : MonoBehaviour
     private float WallPrevention()
     {
         float multiplier = 0;
-        bool[] leftWallChecks = new bool[3];
-        leftWallChecks[0] = FrontDirectionalRay(-25, walls, 5f, true, false);
-        leftWallChecks[1] = FrontDirectionalRay(-20, walls, 5f, true, false);
-        leftWallChecks[2] = FrontDirectionalRay(-10, walls, 5f, true, false);
-        bool[] rightWallChecks = new bool[3];
-        rightWallChecks[0] = FrontDirectionalRay(20, walls, 5f, true, false);
-        rightWallChecks[1] = FrontDirectionalRay(25, walls, 5f, true, false);
-        rightWallChecks[2] = FrontDirectionalRay(30, walls, 5f, true, false);
+        bool[] leftWallChecks = new bool[5];
+        leftWallChecks[0] = DirectionalRay(-50, walls, 5f, true, false);
+        leftWallChecks[1] = DirectionalRay(-40, walls, 5f, true, false);
+        leftWallChecks[2] = DirectionalRay(-30, walls, 5f, true, false);
+        leftWallChecks[3] = DirectionalRay(-20, walls, 5f, true, false);
+        leftWallChecks[4] = DirectionalRay(-10, walls, 5f, true, false);
+
+        bool[] rightWallChecks = new bool[5];
+        rightWallChecks[0] = DirectionalRay(10, walls, 5f, true, false);
+        rightWallChecks[1] = DirectionalRay(20, walls, 5f, true, false);
+        rightWallChecks[2] = DirectionalRay(30, walls, 5f, true, false);
+        rightWallChecks[3] = DirectionalRay(40, walls, 5f, true, false);
+        rightWallChecks[4] = DirectionalRay(50, walls, 5f, true, false);
 
         foreach (bool wallDetected in leftWallChecks)
         {
@@ -248,6 +248,6 @@ public class HelloThereAI : MonoBehaviour
 
     private float Direction()
     {
-        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 100f ? -1f : 1f;
+        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 95f ? -1f : 1f;
     }
 }
