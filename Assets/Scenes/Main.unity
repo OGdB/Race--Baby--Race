@@ -22738,34 +22738,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7f617921e052f479c6cda098a3d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confirmationDistance: 5
-  waitingTime: 0.25
+  dir: {x: 0, y: 0}
+  confirmationDistance: 10
+  waitingTime: 0.15
+  hazardSlowDown: 0.6
   sMagToSpeedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: -0.19246145
-      outSlope: -0.19246145
-      tangentMode: 34
+      value: 1.0047117
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.24999696
-      value: 0.9518852
-      inSlope: -0.02739531
-      outSlope: -0.02739531
+      time: 0.25
+      value: 1
+      inSlope: -0.017949514
+      outSlope: -0.017949514
       tangentMode: 0
       weightedMode: 0
       inWeight: 1
-      outWeight: 1
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0.4
-      inSlope: -0.735844
-      outSlope: -0.735844
+      value: 0.3
+      inSlope: -0.93333334
+      outSlope: -0.93333334
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -22773,9 +22775,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  pushWallMultiplier: 0.125
+  pushWallMultiplier: 0.1
   carBody: 8
-  debug: 0
+  debug: 1
 --- !u!1001 &1049109278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37173,34 +37175,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7f617921e052f479c6cda098a3d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confirmationDistance: 5
-  waitingTime: 0.25
+  dir: {x: 0, y: 0}
+  confirmationDistance: 10
+  waitingTime: 0.15
+  hazardSlowDown: 0.6
   sMagToSpeedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: -0.19246145
-      outSlope: -0.19246145
-      tangentMode: 34
+      value: 1.0047117
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.24999696
-      value: 0.9518852
-      inSlope: -0.02739531
-      outSlope: -0.02739531
+      time: 0.25
+      value: 1
+      inSlope: -0.017949514
+      outSlope: -0.017949514
       tangentMode: 0
       weightedMode: 0
       inWeight: 1
-      outWeight: 1
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0.4
-      inSlope: -0.735844
-      outSlope: -0.735844
+      value: 0.3
+      inSlope: -0.93333334
+      outSlope: -0.93333334
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -37208,9 +37212,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  pushWallMultiplier: 0.125
+  pushWallMultiplier: 0.1
   carBody: 8
-  debug: 0
+  debug: 1
 --- !u!1 &1677919095
 GameObject:
   m_ObjectHideFlags: 0
