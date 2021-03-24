@@ -6989,7 +6989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 076923bf697b5774887cfef5bb989b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedObject: {fileID: 1212289999}
+  trackedObject: {fileID: 1861287787}
   maxDistance: 5
   updateSpeed: 20
   currentDistance: 4
@@ -7110,7 +7110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c8d76155f53cfc45b4f02922de468b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pointOfFocus: {fileID: 1212289999}
+  _pointOfFocus: {fileID: 1861287787}
   _focusDistance: 7.5
   _fNumber: 0.15
   _useCameraFov: 1
@@ -27014,12 +27014,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7152488124722418786, guid: c165e8129062fcb4094bb5d42cb19194, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c165e8129062fcb4094bb5d42cb19194, type: 3}
---- !u!4 &1212289999 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
-    type: 3}
-  m_PrefabInstance: {fileID: 1212289998}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1212290000 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
@@ -37151,7 +37145,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c165e8129062fcb4094bb5d42cb19194, type: 3}
@@ -43598,6 +43592,12 @@ MonoBehaviour:
   wallInFront: 0
   carBody: 1
   carName: Ricardo-sama
+--- !u!4 &1861287787 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
+    type: 3}
+  m_PrefabInstance: {fileID: 1861287781}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1863825094
 GameObject:
   m_ObjectHideFlags: 0
