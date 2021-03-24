@@ -74,6 +74,10 @@ public class HelloThereAI : MonoBehaviour
         else if (DirectionalRay(0, players, 25f, true, false) && baseAI.GetCurrentItem() != Item.None) // raycast if player is in front of player &> use item
         {
             baseAI.AimBack(false);
+            if (baseAI.GetCurrentItem() != Item.None)
+            {
+                baseAI.UseItem();
+            }
         }
 
         //debug lines

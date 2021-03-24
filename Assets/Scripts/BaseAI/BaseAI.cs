@@ -86,7 +86,7 @@ public class BaseAI : MonoBehaviour
 
     //fully private
     private float currentSpeed;
-    private float currentSteeringAngle;
+    public float currentSteeringAngle;
     private Vector3 velocity;
     private float currentDownForce;
 
@@ -94,11 +94,12 @@ public class BaseAI : MonoBehaviour
 
     //references
     private Rigidbody rb;
+    private RaceManager raceManager;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        //SetBody((CarBody)Random.Range(0, bodies.Length));
+        raceManager = FindObjectOfType<RaceManager>();
     }
 
     private void Update()
@@ -138,6 +139,9 @@ public class BaseAI : MonoBehaviour
 
     private void Locomotion()
     {
+        //only drive if race has started
+        if (raceManager.raceHasStarted == false) return;
+
         //check if grounded
         Collider[] colliders = Physics.OverlapSphere(groundedCheckPos.position, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
         isGrounded = colliders.Length > 0;
@@ -322,6 +326,14 @@ public class BaseAI : MonoBehaviour
     public void SetName(string name)
     {
         nameText.text = name;
+    }
+
+    /// <summary>
+    /// Gets the name of the AI.
+    /// </summary>
+    public string GetName()
+    {
+        return nameText.text;
     }
 
     /// <summary>
