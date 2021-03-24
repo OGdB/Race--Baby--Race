@@ -173,14 +173,7 @@ public class RicardoAI : MonoBehaviour
 
         Debug.DrawLine(raycastStartPos, currentTargetNode.transform.position, Color.red);
 
-        if (Physics.Linecast(raycastStartPos, nextTargetNode.transform.position, out hit))
-        {
-            if(hit.collider.gameObject.layer == 13)
-            {
-                //currentTargetNode = nextTargetNode;
-                print("walls probably");
-            }
-        }
+
             Debug.DrawLine(raycastStartPos, nextTargetNode.transform.position, Color.yellow);
 
         //front middle sensor
@@ -194,24 +187,24 @@ public class RicardoAI : MonoBehaviour
                 Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
             }
         }
-/*        //front right sensor
+        //front right sensor
         raycastStartPos += transform.right * frontSideSensorPos;
         if (Physics.Raycast(raycastStartPos, Quaternion.AngleAxis(0, transform.up) * transform.forward, out hit, sensorsLength))
         {
-            if (hit.collider.CompareTag("Hazard") || hit.collider.gameObject.layer == 14)
+/*           if (hit.collider.CompareTag("Hazard") || hit.collider.gameObject.layer == 14)
             {
                 dodging = true;
                 dodgeMultiplier -= 1f;
 
                 Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
-            }
+            }*/
             if (hit.collider.CompareTag("ItemBox"))
             {
                 seesItem = true;
                 dodgeMultiplier += 0f;
                 Debug.DrawLine(raycastStartPos, hit.point, Color.cyan);
             }
-        }*/
+        }
 
         //first front right angle sensor
         else if (Physics.Raycast(raycastStartPos, Quaternion.AngleAxis(frontAngleSensor2, transform.up) * transform.forward, out hit, sensorsLength))
@@ -252,17 +245,17 @@ public class RicardoAI : MonoBehaviour
         }
 
 
-/*        //front left sensor
+        //front left sensor
         raycastStartPos -= transform.right * frontSideSensorPos * 2;
         if (Physics.Raycast(raycastStartPos, Quaternion.AngleAxis(-4, transform.up) * transform.forward, out hit, sensorsLength))
         {
-            if (hit.collider.CompareTag("Hazard") || hit.collider.gameObject.layer == 14)
+/*            if (hit.collider.CompareTag("Hazard") || hit.collider.gameObject.layer == 14)
             {
                 dodging = true;
                 dodgeMultiplier += 1f;
 
                 Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
-            }
+            }*/
 
             if (hit.collider.CompareTag("ItemBox"))
             {
@@ -270,7 +263,7 @@ public class RicardoAI : MonoBehaviour
                 dodgeMultiplier -= 0f;
                 Debug.DrawLine(raycastStartPos, hit.point, Color.cyan);
             }
-        }*/
+        }
 
         //first front left angle sensor
         else if (Physics.Raycast(raycastStartPos, Quaternion.AngleAxis(-frontAngleSensor2, transform.up) * transform.forward, out hit, sensorsLength))
@@ -436,7 +429,7 @@ public class RicardoAI : MonoBehaviour
 
     IEnumerator DeathTimer()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
         died = false;
     }
 
@@ -459,18 +452,11 @@ public class RicardoAI : MonoBehaviour
                 }
             }
 
-            if(Physics.Linecast(transform.position, nextTargetNode.transform.position, out hit))
+        if (!Physics.Linecast(transform.position, nextTargetNode.transform.position, 1 << 13))
         {
-            if(hit.collider.gameObject.layer == 13)
-            {
-                print("wall hit");
-            }
-            else
-            {
-                currentTargetNode = nextTargetNode;
-                print("wall not hit");
-            }
+            currentTargetNode = nextTargetNode;
+            print("walls probably");
+
         }
-        
     }
 }
