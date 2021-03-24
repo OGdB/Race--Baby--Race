@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class FirstPlaceTracker : MonoBehaviour
 {
+    public float playerUpdateDelay = 3;
+    public GameObject firstPlayer;
+
     private GameObject[] players;
     private BaseAI[] playerAI;
-    public GameObject firstPlayer;
+
+    private bool updating;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,15 +30,37 @@ public class FirstPlaceTracker : MonoBehaviour
     {
         for (int i = 0; i < players.Length; i++)
         {
-            if(playerAI[i].position == 1)
+            if (playerAI[i].position == 1)
+            {
+                if(firstPlayer != playerAI[i] && !updating)
+                {
+                    StartCoroutine("UpdatePlayer");
+                    updating = true;
+                }
+                break;
+            }
+        }
+
+        if (firstPlayer != null)
+        {
+            transform.position = firstPlayer.transform.position;
+        }
+    }
+
+    public IEnumerator UpdatePlayer()
+    {
+        yield return new WaitForSeconds(playerUpdateDelay);
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (playerAI[i].position == 1)
             {
                 firstPlayer = players[i];
                 break;
             }
         }
-        if (firstPlayer != null)
-        {
-            transform.position = firstPlayer.transform.position;
-        }
+
+        updating = false;
+        yield return null;
     }
 }

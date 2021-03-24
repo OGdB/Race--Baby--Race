@@ -74,6 +74,10 @@ public class HelloThereAI : MonoBehaviour
         else if (DirectionalRay(0, players, 25f, true, false) && baseAI.GetCurrentItem() != Item.None) // raycast if player is in front of player &> use item
         {
             baseAI.AimBack(false);
+            if (baseAI.GetCurrentItem() != Item.None)
+            {
+                baseAI.UseItem();
+            }
         }
 
         //debug lines
@@ -96,7 +100,7 @@ public class HelloThereAI : MonoBehaviour
                 StartCoroutine(WaitForTurn());
             }
         }
-        else if (Vector3.Distance(transform.position, currentTarget.transform.position) < confirmationDistance && !turnCooldown)
+        else if (Vector3.Distance(transform.position, currentTarget.transform.position) < confirmationDistance)
         {
             StartCoroutine(TurningCooldown(0.75f)); // When the AI turns due to being within confirmation distance, there might actually still be a wall between the AI and its next node, causing it to 'reset' back to its previous node
             if (currentTarget.nextNodes.Length > 1) // if a branch
@@ -248,6 +252,6 @@ public class HelloThereAI : MonoBehaviour
 
     private float Direction()
     {
-        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 95f ? -1f : 1f;
+        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 105f ? -1f : 1f;
     }
 }
