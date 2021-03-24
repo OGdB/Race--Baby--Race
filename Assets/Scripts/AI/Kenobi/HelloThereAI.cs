@@ -14,9 +14,9 @@ public class HelloThereAI : MonoBehaviour
     [SerializeField] private Vector2 dir;
 
     [Header("Variables")]
-    [SerializeField] private float confirmationDistance = 10f;
+    [SerializeField] private float confirmationDistance = 5f;
     [SerializeField] private float waitingTime = 0.15f;
-    [SerializeField] private float hazardSlowDown = 0.6f;
+    [SerializeField] private float hazardSlowDown = 0.5f;
     [SerializeField] private AnimationCurve sMagToSpeedCurve;
     [SerializeField] private float pushWallMultiplier = 0.1f;
 

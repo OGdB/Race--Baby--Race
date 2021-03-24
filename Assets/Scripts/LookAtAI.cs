@@ -17,7 +17,6 @@ public class LookAtAI : MonoBehaviour
             closestDistance = Vector3.Distance(transform.position, playerPositions[0]);
         }
         playerPositions = baseAI.GetPlayerPositions();
-        float closestDistance = Vector3.Distance(transform.position, playerPositions[0]);
 
         if (playerPositions.Length > 0)
         {
