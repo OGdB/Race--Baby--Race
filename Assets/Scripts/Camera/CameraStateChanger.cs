@@ -12,6 +12,13 @@ public class CameraStateChanger : MonoBehaviour
     public int priority = 0;
     public bool onDollyCart = false;
     private CinemachineDollyCart cart;
+    private GameObject[] players;
+    private BaseAI[] AIs;
+    [SerializeField]
+    private int currentLap;
+    [SerializeField]
+    private bool execute;
+    private CameraStateChanger[] cameraDetectors;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +27,18 @@ public class CameraStateChanger : MonoBehaviour
         if(onDollyCart)
         {
             cart = newCam.GetComponentInParent<CinemachineDollyCart>();
+        }
+        players = GameObject.FindGameObjectsWithTag("Player");
+        System.Array.Resize(ref AIs, players.Length);
+        for (var i = 0; i < players.Length; i++)
+        {
+            AIs[i] = players[i].GetComponent<BaseAI>();
+        }
+        GameObject[] helpCameras = GameObject.FindGameObjectsWithTag("CameraDetector");
+        System.Array.Resize(ref cameraDetectors, helpCameras.Length);
+        for (var i = 0; i < helpCameras.Length; i++)
+        {
+            cameraDetectors[i] = helpCameras[i].GetComponent<CameraStateChanger>();
         }
     }
 
@@ -30,30 +49,46 @@ public class CameraStateChanger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            // Only switch the camera if the priority is higher, & the priorities are on the same branch or one of the priorities is on the main branch.
-            if (priority / 10 > mainBrain.ActiveVirtualCamera.Priority / 10 &&
-                (priority % 10 == mainBrain.ActiveVirtualCamera.Priority % 10
-                || priority % 10 == 0
-                || mainBrain.ActiveVirtualCamera.Priority % 10 == 0))
+            execute = false;
+            // Makes sure the player toggling things is on the highest lap in the race.
+            for (var i = 0; i < players.Length; i++)
             {
-                if (onDollyCart)
+                if(AIs[i].lap > currentLap)
                 {
-                    cart.enabled = true;
-                    cart.m_Position = 0;
+                    foreach (CameraStateChanger camDetector in cameraDetectors)
+                    {
+                        camDetector.currentLap = AIs[i].lap;
+                    }
+                    i = 0;
                 }
-                mainBrain.ActiveVirtualCamera.Priority = 0;
-                newCam.Priority = priority;
+                if(players[i] == other.gameObject && AIs[i].lap == currentLap)
+                {
+                    Debug.Log(players[i] + " is on lap " + AIs[i].lap + " and the race is on lap " + currentLap);
+                    execute = true;
+                }
             }
-            // Reserved for the first/start camera
-            else if (priority % 1000 == 100)
+            if (execute)
             {
-                //// Increases the priority of all the Camera Detectors by 1000, so... Wait no that doesn't help anyone
-                //foreach (GameObject cameraDetector in GameObject.FindGameObjectsWithTag("CameraDetector"))
-                //{
-                //    cameraDetector.GetComponent<CameraStateChanger>().priority += 1000;
-                //}
-                mainBrain.ActiveVirtualCamera.Priority = 0;
-                newCam.Priority = 1;
+                // Only switch the camera if the priority is higher, & the priorities are on the same branch or one of the priorities is on the main branch.
+                if (priority / 10 > mainBrain.ActiveVirtualCamera.Priority / 10 &&
+                    (priority % 10 == mainBrain.ActiveVirtualCamera.Priority % 10
+                    || priority % 10 == 0
+                    || mainBrain.ActiveVirtualCamera.Priority % 10 == 0))
+                {
+                    if (onDollyCart)
+                    {
+                        cart.enabled = true;
+                        cart.m_Position = 0;
+                    }
+                    mainBrain.ActiveVirtualCamera.Priority = 0;
+                    newCam.Priority = priority;
+                }
+                // Reserved for the first/start camera
+                if (priority == 100)
+                {
+                    mainBrain.ActiveVirtualCamera.Priority = 0;
+                    newCam.Priority = 10;
+                }
             }
         }
     }
