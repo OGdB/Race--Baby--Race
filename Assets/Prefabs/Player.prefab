@@ -466,7 +466,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAI: {fileID: 7528923958841352991}
-  audioSource: {fileID: 766010133214783545}
   rotationSpeed: 5
 --- !u!1 &551096065353993271
 GameObject:
@@ -9440,6 +9439,7 @@ MonoBehaviour:
   - {fileID: 1289615879025567129}
   - {fileID: 5416783149905871825}
   overrideControl: 0
+  currentSteeringAngle: 0
 --- !u!54 &7528923958841352990
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9449,7 +9449,7 @@ Rigidbody:
   m_GameObject: {fileID: 7528923958841352988}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0.25
+  m_Drag: 0.1
   m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
