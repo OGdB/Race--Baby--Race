@@ -371,7 +371,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: pushLayermask.m_Bits
-    value: 24576
+    value: 57344
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: pushAmount
@@ -451,6 +451,58 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: pullColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceBoxOffset.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceBoxOffset.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceBoxOffset.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceBoxSize.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceBoxSize.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceBoxSize.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceBoxLayermask.m_Bits
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceAmount
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: normalizeAvoidance
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceColor.r
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceColor.g
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceColor.b
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: avoidanceColor.a
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -594,10 +646,22 @@ Preset:
     value: 7
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: goBackwards
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: backwardsAngleTreshold
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: steeringDir
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: steeringMag
     value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: baseAI
+    value: 
     objectReference: {fileID: 0}
