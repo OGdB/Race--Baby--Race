@@ -6,7 +6,7 @@ Preset:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HelloThereAI
+  m_Name: CurrentParameters
   m_TargetType:
     m_NativeTypeID: 114
     m_ManagedTypePPtr: {fileID: 11500000, guid: fc7f617921e052f479c6cda098a3d027,
@@ -35,7 +35,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: confirmationDistance
-    value: 10
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: waitingTime
@@ -83,7 +83,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: sMagToSpeedCurve.m_Curve.Array.data[1].time
-    value: 0.25
+    value: 0.75
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: sMagToSpeedCurve.m_Curve.Array.data[1].value
@@ -123,11 +123,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: sMagToSpeedCurve.m_Curve.Array.data[2].inSlope
-    value: -0.93333334
+    value: -2.8
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: sMagToSpeedCurve.m_Curve.Array.data[2].outSlope
-    value: -0.93333334
+    value: -2.8
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: sMagToSpeedCurve.m_Curve.Array.data[2].tangentMode
@@ -167,5 +167,5 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: debug
-    value: 1
+    value: 0
     objectReference: {fileID: 0}

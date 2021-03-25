@@ -10,17 +10,18 @@ public class HelloThereAI : MonoBehaviour
     private Node nextTarget;
     private bool TurnWaiting = false;
     private bool turnCooldown = false;
+    private float offTargetTimer = 0;
     private List<Node> allNodes = new List<Node>();
     [SerializeField] private Vector2 dir;
 
     [Header("Variables")]
-    [SerializeField] private float confirmationDistance = 10f;
+    [SerializeField] private float confirmationDistance = 5f;
     [SerializeField] private float waitingTime = 0.15f;
-    [SerializeField] private float hazardSlowDown = 0.6f;
+    [SerializeField] private float hazardSlowDown = 0.5f;
     [SerializeField] private AnimationCurve sMagToSpeedCurve;
     [SerializeField] private float pushWallMultiplier = 0.1f;
 
-    [Header("Cosmetic")]
+    [Header("Cosmetics")]
     [SerializeField] private CarBody carBody;
 
     [Header("Layers")]
@@ -57,16 +58,29 @@ public class HelloThereAI : MonoBehaviour
     private void Update()
     {
         Movement();
-        // Detect whether the AI can draw an uninterrupted line between itself and the current target. If not, it finds a new target which within in sight.
-        CheckLineCastCurrentTarget();
 
-        // (hazards & walls)
+        // Check whether the current target is still viable.
+        if (!LineCastTarget(currentTarget.transform.position, walls))
+        {
+            offTargetTimer += Time.deltaTime;
+            print(offTargetTimer);
+            if (offTargetTimer > 1f)
+            {
+                ResetTarget();
+            }
+        }
+        else
+        {
+            offTargetTimer = 0;
+        }
+
         if (DirectionalRay(0, hazards | walls, 5f, true, false) || DirectionalRay(-3f, hazards | walls, 5f, true, false) || DirectionalRay(3f, hazards | walls, 5f, true, false)) // Hold if there's a hazard in front of you.
         {
             float slowDownSpeed = hazardSlowDown * Direction();
             baseAI.SetDirection(new Vector2(dir.x, slowDownSpeed));
         }
 
+        // 
         if (DirectionalRay(180, players, 25f, true, false) && baseAI.GetCurrentItem() != Item.None) // raycast if player is behind player &> use item
         {
             baseAI.AimBack(true);
@@ -80,7 +94,7 @@ public class HelloThereAI : MonoBehaviour
             }
         }
 
-        //debug lines
+        // debug lines
         if (debug)
         {
             Debug.DrawLine(currentTarget.transform.position, nextTarget.transform.position, Color.red);
@@ -88,19 +102,29 @@ public class HelloThereAI : MonoBehaviour
             Debug.DrawLine(transform.position, nextTarget.transform.position, Color.yellow);
         }
     }
-
+    /// <summary>
+    /// 2 methods of pathfinding:
+    /// 
+    /// LINECAST: The AI constantly linecasts to the next node of its current target-node. 
+    /// If it can do so without hitting the invisible walls, that next node will become the current target. 
+    /// There is a short timebuffer until it starts steering.
+    ///
+    /// DISTANCE: If the AI gets close enough to the current target, it will also start targeting the next node. A cooldown will ensure it doesn't
+    /// immediately 'reset' the current target due to the linecast method.
+    /// 
+    /// </summary>
     private void Movement()
     {
         nextTarget = currentTarget.nextNodes.Length < 2 ? currentTarget.nextNodes[0] : GetShortestPath();
         // If the AI can draw a direct line between itself and the nextTarget, make that next Target the Current Target after a small buffer.
-        if (LineCastNextTarget(nextTarget.transform.position, walls))
+        if (LineCastTarget(nextTarget.transform.position, walls))
         {
             if (!TurnWaiting)
             {
                 StartCoroutine(WaitForTurn());
             }
         }
-        else if (Vector3.Distance(transform.position, currentTarget.transform.position) < confirmationDistance && !turnCooldown)
+        else if (Vector3.Distance(transform.position, currentTarget.transform.position) < confirmationDistance)
         {
             StartCoroutine(TurningCooldown(0.75f)); // When the AI turns due to being within confirmation distance, there might actually still be a wall between the AI and its next node, causing it to 'reset' back to its previous node
             if (currentTarget.nextNodes.Length > 1) // if a branch
@@ -133,16 +157,14 @@ public class HelloThereAI : MonoBehaviour
             turnCooldown = false;
         }
     }
-    private void CheckLineCastCurrentTarget()
-    {
-        if (!LineCastNextTarget(currentTarget.transform.position, walls)) // If there's no direct line between the AI and its target, the AI probably died.
-        {
-            ResetTarget();
-        }
-    }
 
+    /// <summary>
+    /// A linecast is drawn to the current node-target. If this linecast is interrupted by a wall, the target is reset to the nearest node that is
+    /// in sight (uninterrupted by walls). The 
+    /// </summary>
     private void ResetTarget()
     {
+        print("reset");
         float closestNodeDistance = Mathf.Infinity;
         Node closestNode = null;
         for (int i = 0; i < allNodes.Count; i++)
@@ -158,17 +180,32 @@ public class HelloThereAI : MonoBehaviour
         nextTarget = closestNode.nextNodes[0];
     }
 
-    private bool LineCastNextTarget(Vector3 target, int layer)
+    /// <summary>
+    /// Linecast to a target, detecting only 1 specific layer.
+    /// </summary>
+    /// <param name="target"></param> WorldPosition to cast towards.
+    /// <param name="layer"></param> Layer to detect.
+    /// <returns> Return whether the layer was hit </returns>
+    private bool LineCastTarget(Vector3 target, int layer)
     {
         return !Physics.Linecast(transform.position, target, layer);
     }
 
+    /// <summary>
+    /// Raycast in a certain angle to detect objects from a specific layer.
+    /// </summary>
+    /// <param name="angle"></param> The angle relative to the AI's forward direction to raycast towards.
+    /// <param name="layer"></param> The layer to detect.
+    /// <param name="length"></param> The length of the raycast.
+    /// <param name="drawRay"></param> Do you want to visualize this raycast?
+    /// <param name="checkTag"></param> Tag to filter on as well.
+    /// <returns> Return whether an object of the layer was hit by the raycast. </returns>
     private bool DirectionalRay(float angle, int layer, float length, bool drawRay, bool checkTag)
     {
         RaycastHit hit;
         Vector3 direction = Quaternion.AngleAxis(angle, transform.up) * transform.forward * Direction();
         bool hitting = Physics.Raycast(transform.position, direction * length, out hit, length, layer);
-        if (hitting && hit.collider.GetInstanceID() == GetInstanceID())
+        if (hitting && hit.collider.gameObject.GetInstanceID() == GetInstanceID())
         {
             hitting = false;
         }
@@ -184,6 +221,10 @@ public class HelloThereAI : MonoBehaviour
         return checkTag ? hitting && hit.collider.CompareTag("Hazard") : hitting;
     }
 
+    /// <summary>
+    /// Draw multiple rays detecting walls. Steer in the corresponding direction if the AI gets too close to the wall.
+    /// </summary>
+    /// <returns> Returns a multiplier that is applied to the steering direction of the AI; a direction steering away from the walls </returns>
     private float WallPrevention()
     {
         float multiplier = 0;
@@ -219,6 +260,16 @@ public class HelloThereAI : MonoBehaviour
         return multiplier;
     }
 
+    /// <summary>
+    /// Called when the next target node contains 2 nextnodes thus is a branch.
+    /// When a branch is detected, loop through both branches until the next branch is detected as an endpoint.
+    /// The next upcoming branch is chosen as an endpoint because there is no other way of detecting the endpoint of a branch, to reliably
+    /// check which branch is shorter, you need the same reference point for each branch calculation, therefore the next upcoming path is chosen,
+    /// which can be detected because it contains more than 1 'next nodes'.
+    /// 
+    /// The distance of each path towards the next branch is calculated and compared.
+    /// </summary>
+    /// <returns> Returns the node that leads to the shortest path. </returns>
     private Node GetShortestPath()
     {
         // The node which will send the AI on the shortest path
@@ -249,9 +300,12 @@ public class HelloThereAI : MonoBehaviour
 
         return nodeToPick;
     }
-
+    /// <summary>
+    /// Detect whether the front or the back of the AI-car is closest to facing the current target node.
+    /// </summary>
+    /// <returns> Return a float which acts as a multiplier. The AI will drive in reverse if the back is closer facing the curren target </returns>
     private float Direction()
     {
-        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 95f ? -1f : 1f;
+        return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 100f ? -1f : 1f;
     }
 }
