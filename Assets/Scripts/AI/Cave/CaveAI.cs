@@ -15,10 +15,15 @@ public class CaveAI : MonoBehaviour
     public int nodesAhead = 3;
     [Tooltip("How close a node should be")]
     public float confirmationDistance = 5.0f;
-    private Node currentNode;
+    private List<Node> allNodes = new List<Node>();
+    // The current node being travelled towards
+    public Vector3 currentDestination;
+    private float currentDistance;
+    public float respawnDistance = 10.0f;
+    public Node currentNode;
 
     [Header("Movement")]
-    private float maxSpeed = 1.0f;
+    public float maxSpeed = 1.0f;
 
     [Header("Raycasting")]
     [Range(0.1f, 2.0f), Tooltip("How close each angle should be, lower values for higher precision")]
@@ -39,10 +44,15 @@ public class CaveAI : MonoBehaviour
     void Start()
     {
         baseAI = gameObject.GetComponent<BaseAI>();
-        currentNode = baseAI.GetFirstNode();
         baseAI.SetName(carName);
         baseAI.SetBody(carBody);
-        
+
+        currentNode = baseAI.GetFirstNode();
+        currentDestination = currentNode.transform.position;
+        foreach(Transform child in currentNode.transform.parent)
+        {
+            allNodes.Add(child.GetComponent<Node>());
+        }
     }
 
     // Update is called once per frame
@@ -52,8 +62,26 @@ public class CaveAI : MonoBehaviour
         {
             currentNode = currentNode.nextNodes[0];
         }
-        Vector3 destination = FindFurthest().transform.position;
-        SteerTowards(destination, maxSpeed);
+        //currentDistance = Mathf.Infinity;
+        //if(Vector3.Distance)
+        if (Physics.Linecast(transform.position, currentDestination, walls))
+        {
+            float closestDistance = Mathf.Infinity;
+            Node possibleNode = new Node();
+            // The car has probably died and so it can't find a line to the destination node
+            foreach(Node tryNode in allNodes)
+            {
+                float tryDistance = Vector3.Distance(tryNode.transform.position, transform.position);
+                if(tryDistance < closestDistance)
+                {
+                    closestDistance = tryDistance;
+                    possibleNode = tryNode;
+                }
+            }
+            currentNode = possibleNode;
+        }
+        currentDestination = FindFurthest().transform.position;
+        SteerTowards(currentDestination, maxSpeed);
         baseAI.GetDirection();
 
         
