@@ -115,9 +115,9 @@ public class RicardoAI : MonoBehaviour
 
         bool[] playersCheckBack = new bool[100];
         //creates 3 backwards raycasts that check for players in the back to throw items backwards
-        playersCheckBack[0] = CheckPlayersRaycasts(raycastStartPos, 180, 6, true, true);
-        playersCheckBack[1] = CheckPlayersRaycasts(raycastStartPos, 160, 6, true, true);
-        playersCheckBack[2] = CheckPlayersRaycasts(raycastStartPos, 200, 6, true, true);
+        playersCheckBack[0] = CheckPlayersRaycasts(raycastStartPos, 180, 6, false, true);
+        playersCheckBack[1] = CheckPlayersRaycasts(raycastStartPos, 160, 6, false, true);
+        playersCheckBack[2] = CheckPlayersRaycasts(raycastStartPos, 200, 6, false, true);
 
         bool[] playersCheckFront = new bool[100];
         raycastStartPos += transform.forward * 1.6f;
@@ -338,9 +338,9 @@ public class RicardoAI : MonoBehaviour
         raycastStartPos += transform.forward * 0.2f;
 
         bool[] wallRaycasts = new bool[100];
-        wallRaycasts[0] = CheckWallsRaycasts(raycastStartPos, 0, 3, true , false, false, true);//front
-        wallRaycasts[1] = CheckWallsRaycasts(raycastStartPos, 90, 2.5f, true, true, false, false);//right
-        wallRaycasts[2] = CheckWallsRaycasts(raycastStartPos, 270, 2.5f, true, false, true, false);//left
+        wallRaycasts[0] = CheckWallsRaycasts(raycastStartPos, 0, 3, false , false, false, true);//front
+        wallRaycasts[1] = CheckWallsRaycasts(raycastStartPos, 90, 2.5f, false, true, false, false);//right
+        wallRaycasts[2] = CheckWallsRaycasts(raycastStartPos, 270, 2.5f, false, false, true, false);//left
 
     }
     //this function creates raycasts that uses items if it sees other players
