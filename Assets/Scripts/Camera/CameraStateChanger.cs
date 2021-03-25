@@ -12,13 +12,13 @@ public class CameraStateChanger : MonoBehaviour
     public int priority = 0;
     public bool onDollyCart = false;
     private CinemachineDollyCart cart;
-    private GameObject[] players;
-    private BaseAI[] AIs;
-    [SerializeField]
-    private int currentLap;
+
     [SerializeField]
     private bool execute;
     private CameraStateChanger[] cameraDetectors;
+
+    private RaceManager raceManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,18 +28,14 @@ public class CameraStateChanger : MonoBehaviour
         {
             cart = newCam.GetComponentInParent<CinemachineDollyCart>();
         }
-        players = GameObject.FindGameObjectsWithTag("Player");
-        System.Array.Resize(ref AIs, players.Length);
-        for (var i = 0; i < players.Length; i++)
-        {
-            AIs[i] = players[i].GetComponent<BaseAI>();
-        }
         GameObject[] helpCameras = GameObject.FindGameObjectsWithTag("CameraDetector");
         System.Array.Resize(ref cameraDetectors, helpCameras.Length);
         for (var i = 0; i < helpCameras.Length; i++)
         {
             cameraDetectors[i] = helpCameras[i].GetComponent<CameraStateChanger>();
         }
+
+        raceManager = FindObjectOfType<RaceManager>();
     }
 
     // To keep track of branching paths and not switch between cams dedicated to different paths,
@@ -50,22 +46,13 @@ public class CameraStateChanger : MonoBehaviour
         if (other.tag == "Player")
         {
             execute = false;
+
             // Makes sure the player toggling things is on the highest lap in the race.
-            for (var i = 0; i < players.Length; i++)
+            if(other.gameObject.GetComponent<BaseAI>() == raceManager.players[0].AI)
             {
-                if(AIs[i].lap > currentLap)
-                {
-                    foreach (CameraStateChanger camDetector in cameraDetectors)
-                    {
-                        camDetector.currentLap = AIs[i].lap;
-                    }
-                    i = 0;
-                }
-                if(players[i] == other.gameObject && AIs[i].lap == currentLap)
-                {
-                    execute = true;
-                }
+                execute = true;
             }
+
             if (execute)
             {
                 // Only switch the camera if the priority is higher, & the priorities are on the same branch or one of the priorities is on the main branch.
