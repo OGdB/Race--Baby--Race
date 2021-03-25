@@ -22980,7 +22980,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   pushWallMultiplier: 0.1
   carBody: 8
-  debug: 1
+  debug: 0
 --- !u!1001 &1049109278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33539,7 +33539,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 58
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -33549,7 +33549,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 179
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -33589,7 +33589,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_Name
-      value: ExampleAI0
+      value: CaveAI0
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -33613,11 +33613,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1476504211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 618e0fe7063b45c4184a87a5abd87ce7, type: 3}
+  m_Script: {fileID: 11500000, guid: 95efd7524bab64c4ebcfb705d3252cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confirmationDistance: 6
+  debug: 1
+  PelleSkip: 0
+  nodesAhead: 3
+  confirmationDistance: 10
+  currentDestination: {x: 0, y: 0, z: 0}
+  respawnDistance: 10
   currentNode: {fileID: 0}
+  maxSpeed: 1
+  precision: 0.1
+  coneSpread: 16.4
+  rayDistance: 10.01
+  walls:
+    serializedVersion: 2
+    m_Bits: 8192
+  carBody: 4
+  carName: CaveTalesZ
 --- !u!1 &1478759587
 GameObject:
   m_ObjectHideFlags: 0
@@ -37763,7 +37777,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   pushWallMultiplier: 0.1
   carBody: 8
-  debug: 1
+  debug: 0
 --- !u!1 &1677919095
 GameObject:
   m_ObjectHideFlags: 0
@@ -44404,7 +44418,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 56
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -44414,7 +44428,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 179
+      value: 177.1
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352961, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -44454,7 +44468,7 @@ PrefabInstance:
     - target: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
       propertyPath: m_Name
-      value: ExampleAI1
+      value: CaveAI1
       objectReference: {fileID: 0}
     - target: {fileID: 7528923958841352988, guid: c165e8129062fcb4094bb5d42cb19194,
         type: 3}
@@ -44478,11 +44492,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1887317215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 618e0fe7063b45c4184a87a5abd87ce7, type: 3}
+  m_Script: {fileID: 11500000, guid: 95efd7524bab64c4ebcfb705d3252cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confirmationDistance: 6
+  debug: 1
+  PelleSkip: 0
+  nodesAhead: 3
+  confirmationDistance: 10
+  currentDestination: {x: 0, y: 0, z: 0}
+  respawnDistance: 10
   currentNode: {fileID: 0}
+  maxSpeed: 1
+  precision: 0.1
+  coneSpread: 16.4
+  rayDistance: 10.01
+  walls:
+    serializedVersion: 2
+    m_Bits: 8192
+  carBody: 4
+  carName: CaveTalesZ
 --- !u!1001 &1890677950
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48606,17 +48634,17 @@ PrefabInstance:
     - target: {fileID: 8900934254114524636, guid: e5d91ccbbfae8344f87c8170534f6617,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.013025181
+      value: 0.013025104
       objectReference: {fileID: 0}
     - target: {fileID: 8900934254114524636, guid: e5d91ccbbfae8344f87c8170534f6617,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.11287738
+      value: -0.112877466
       objectReference: {fileID: 0}
     - target: {fileID: 8900934254114524636, guid: e5d91ccbbfae8344f87c8170534f6617,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0014798243
+      value: 0.0014798378
       objectReference: {fileID: 0}
     - target: {fileID: 8900934254318770566, guid: e5d91ccbbfae8344f87c8170534f6617,
         type: 3}
