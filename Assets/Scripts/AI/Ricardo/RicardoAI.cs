@@ -52,18 +52,6 @@ public class RicardoAI : MonoBehaviour
         baseAI.SetBody(carBody);
     }
 
-    private void Update()
-    {
-        if (dodging)
-        {
-            print("I'm dodging bish");
-        }
-        if (seesItem)
-        {
-            print("catching Pokemons");
-        }
-    }
-
     private void FixedUpdate()
     {
         Pathfinding();
@@ -72,7 +60,6 @@ public class RicardoAI : MonoBehaviour
         CheckWalls();
         SensorCheck();
 
-        // LerpSteerAngle();
         if (died)
         {
             TargetClosestNode();
@@ -113,12 +100,6 @@ public class RicardoAI : MonoBehaviour
         {
             direction.y = 0.4f;
         }
-/*        //if the car is not steering too much then go at full speed
-        if(direction.y > 0.85)
-        {
-            direction.y = 1;
-        }*/
-        Debug.DrawRay(transform.position, transform.TransformDirection(direction) * 3, Color.black);
         if (!dodging)
         {
             baseAI.SetDirection(new Vector2(direction.x, direction.y));
@@ -164,7 +145,7 @@ public class RicardoAI : MonoBehaviour
         Vector3 raycastStartPos = transform.position;
         raycastStartPos += transform.forward * frontRaycastPos.z;
         raycastStartPos += transform.up * 0.2f;
-        float dodgeMultiplier = 0; // if it's <0 it means there are obstacles on the left || if it's >0 it means there are obstacles on the right
+        float dodgeMultiplier = 0; 
         dodging = false;
         seesItem = false;
         wallOnLeft = false;
@@ -320,27 +301,22 @@ public class RicardoAI : MonoBehaviour
                 {
                     //direction.y -= 0.4f;
                     dodgeMultiplier -= 1f;
-                    print("dodging left");
                 }
                 if (wallOnLeft)
                 {
                     //direction.y -= 0.4f;
                     dodgeMultiplier += 1f;
-                    print("dodging right");
                 }
                 if (!wallOnLeft && !wallOnRight)
                 {
                     //direction.y -= 0.4f;
                     dodgeMultiplier += 1f;
-                    print("idk");
                 }
 
             }
             //    targetSteerAngle = maxDodgingAngle * dodgeMultiplier;
             direction.x = maxDodgingAngle * dodgeMultiplier;
             baseAI.SetDirection(new Vector2(direction.x, direction.y));
-            //print("dodging at: " + dodgeMultiplier);
-           // print("current x: " + direction.x);
         }
 
         if (seesItem)
@@ -383,7 +359,6 @@ public class RicardoAI : MonoBehaviour
             {
                 baseAI.AimBack(aimBack);
                 baseAI.UseItem();
-                print("found player");
             }
         }
         return raycasting;
@@ -409,12 +384,6 @@ public class RicardoAI : MonoBehaviour
             }
         }
         return raycasting;
-    }
-
-    private void LerpSteerAngle()
-    {
-        direction.x = Mathf.Lerp(direction.x, targetSteerAngle, Time.deltaTime * turnSpeed);
-        baseAI.SetDirection(new Vector2(direction.x, 1));
     }
 
     //if the car has collided with the grass then turn died bool true for 1 sec
@@ -455,7 +424,6 @@ public class RicardoAI : MonoBehaviour
         if (!Physics.Linecast(transform.position, nextTargetNode.transform.position, 1 << 13))
         {
             currentTargetNode = nextTargetNode;
-            print("walls probably");
 
         }
     }
