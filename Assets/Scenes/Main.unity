@@ -17280,6 +17280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4337c973f7f8fa042966c11f8f775488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseAI: {fileID: 0}
   dodging: 0
   seesItem: 0
   died: 0
@@ -17461,7 +17462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathS: {fileID: 8300000, guid: 1ec7bd0102c0b6d40b7e5bef983c421b, type: 3}
   boosterS: {fileID: 8300000, guid: 3abb66739f89b924e9ed60033842814f, type: 3}
-  placedItemS: {fileID: 8300000, guid: 7e0b49f0977a50247b75dfb87c6ed1f1, type: 3}
+  itemUsedS: {fileID: 0}
   gotItemS: {fileID: 8300000, guid: 07f0bdc187cc034489dcd72b70bb93d2, type: 3}
   hazardHitS: {fileID: 8300000, guid: ddc7b07e309f5aa4dbc6d5a145aadc3a, type: 3}
   audioS: {fileID: 812692733}
@@ -17475,9 +17476,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4ead3be899908a849a9de758876a6999, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b64b42b3f6255ff47973d7cc10bb746f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -35236,6 +35237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4337c973f7f8fa042966c11f8f775488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseAI: {fileID: 0}
   dodging: 0
   seesItem: 0
   died: 0
@@ -35417,7 +35419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathS: {fileID: 8300000, guid: 1ec7bd0102c0b6d40b7e5bef983c421b, type: 3}
   boosterS: {fileID: 8300000, guid: 3abb66739f89b924e9ed60033842814f, type: 3}
-  placedItemS: {fileID: 8300000, guid: 7e0b49f0977a50247b75dfb87c6ed1f1, type: 3}
+  itemUsedS: {fileID: 0}
   gotItemS: {fileID: 8300000, guid: 07f0bdc187cc034489dcd72b70bb93d2, type: 3}
   hazardHitS: {fileID: 8300000, guid: ddc7b07e309f5aa4dbc6d5a145aadc3a, type: 3}
   audioS: {fileID: 1540328911}
@@ -35431,9 +35433,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4ead3be899908a849a9de758876a6999, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b64b42b3f6255ff47973d7cc10bb746f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
