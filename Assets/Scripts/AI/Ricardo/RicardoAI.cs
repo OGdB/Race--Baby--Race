@@ -7,7 +7,7 @@ using System.Linq;
 public class RicardoAI : MonoBehaviour
 {
 
-    private BaseAI baseAI;
+    public BaseAI baseAI;
 
     public bool dodging;
     public bool seesItem;
@@ -104,7 +104,7 @@ public class RicardoAI : MonoBehaviour
     {
         direction = transform.InverseTransformDirection((currentTargetNode.transform.position - transform.position).normalized);
 
-        direction.y = 1f - Mathf.Abs(direction.x);
+        direction.y = 1.4f - Mathf.Abs(direction.x);//the speed will go down the more you steer
         if (direction.y > 1)
         {
             direction.y = 1;
@@ -113,11 +113,11 @@ public class RicardoAI : MonoBehaviour
         {
             direction.y = 0.4f;
         }
-        //if the car is not steering too much then go at full speed
+/*        //if the car is not steering too much then go at full speed
         if(direction.y > 0.85)
         {
             direction.y = 1;
-        }
+        }*/
         Debug.DrawRay(transform.position, transform.TransformDirection(direction) * 3, Color.black);
         if (!dodging)
         {
@@ -318,19 +318,19 @@ public class RicardoAI : MonoBehaviour
                 //if no walls in any direction choose randomly between -1f and 1f
                 if (wallOnRight)
                 {
-                    direction.y -= 0.4f;
+                    //direction.y -= 0.4f;
                     dodgeMultiplier -= 1f;
                     print("dodging left");
                 }
                 if (wallOnLeft)
                 {
-                    direction.y -= 0.4f;
+                    //direction.y -= 0.4f;
                     dodgeMultiplier += 1f;
                     print("dodging right");
                 }
                 if (!wallOnLeft && !wallOnRight)
                 {
-                    direction.y -= 0.4f;
+                    //direction.y -= 0.4f;
                     dodgeMultiplier += 1f;
                     print("idk");
                 }

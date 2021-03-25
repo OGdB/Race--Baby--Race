@@ -8,6 +8,7 @@ TagManager:
   - ItemBox
   - Hazard
   - CameraDetector
+  - Booster
   layers:
   - Default
   - TransparentFX

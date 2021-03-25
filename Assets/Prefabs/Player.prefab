@@ -466,7 +466,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAI: {fileID: 7528923958841352991}
-  audioSource: {fileID: 766010133214783545}
   rotationSpeed: 5
 --- !u!1 &551096065353993271
 GameObject:
@@ -9401,7 +9400,7 @@ MonoBehaviour:
   steeringAcceleration: 8
   direction: {x: 0, y: 0}
   uprightForce: 250
-  maxDownForce: 1000
+  maxDownForce: 1500
   isGrounded: 0
   groundedCheckPos: {fileID: 7500577264836820317}
   groundCheckDistance: 0.5
@@ -9440,6 +9439,7 @@ MonoBehaviour:
   - {fileID: 1289615879025567129}
   - {fileID: 5416783149905871825}
   overrideControl: 0
+  currentSteeringAngle: 0
 --- !u!54 &7528923958841352990
 Rigidbody:
   m_ObjectHideFlags: 0
