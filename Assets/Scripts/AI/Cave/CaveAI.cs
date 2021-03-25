@@ -67,7 +67,7 @@ public class CaveAI : MonoBehaviour
         if (Physics.Linecast(transform.position, currentDestination, walls))
         {
             float closestDistance = Mathf.Infinity;
-            Node possibleNode = new Node();
+            Node possibleNode = null;
             // The car has probably died and so it can't find a line to the destination node
             foreach(Node tryNode in allNodes)
             {
