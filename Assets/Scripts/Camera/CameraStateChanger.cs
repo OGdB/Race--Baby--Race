@@ -63,7 +63,6 @@ public class CameraStateChanger : MonoBehaviour
                 }
                 if(players[i] == other.gameObject && AIs[i].lap == currentLap)
                 {
-                    Debug.Log(players[i] + " is on lap " + AIs[i].lap + " and the race is on lap " + currentLap);
                     execute = true;
                 }
             }
