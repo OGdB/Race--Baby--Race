@@ -5,13 +5,18 @@ using UnityEngine;
 [RequireComponent(typeof(BaseAI))]
 public class HelloThereAI : MonoBehaviour
 {
+    #region Variables
     private BaseAI baseAI;
     private Node currentTarget;
     private Node nextTarget;
     private bool TurnWaiting = false;
-    private bool turnCooldown = false;
     private float offTargetTimer = 0;
     private List<Node> allNodes = new List<Node>();
+
+    private LayerMask walls;
+    private LayerMask hazards;
+    private LayerMask players;
+
     [SerializeField] private Vector2 dir;
 
     [Header("Variables")]
@@ -24,13 +29,10 @@ public class HelloThereAI : MonoBehaviour
     [Header("Cosmetics")]
     [SerializeField] private CarBody carBody;
 
-    [Header("Layers")]
-    private LayerMask walls;
-    private LayerMask hazards;
-    private LayerMask players;
-
     [Space(20)]
     [SerializeField] private bool debug = false;
+    #endregion
+
     void Start()
     {
         // AI
@@ -71,16 +73,17 @@ public class HelloThereAI : MonoBehaviour
         }
         else
         {
-            offTargetTimer = 0;
+            offTargetTimer = 0; // reset timer
         }
 
+        // Slow down when there is a wall or hazard in front of the player to either wait for the hazard to move away or to provide space to rotate away from the wall
         if (DirectionalRay(0, hazards | walls, 5f, true, false) || DirectionalRay(-3f, hazards | walls, 5f, true, false) || DirectionalRay(3f, hazards | walls, 5f, true, false)) // Hold if there's a hazard in front of you.
         {
-            float slowDownSpeed = hazardSlowDown * Direction();
+            float slowDownSpeed = hazardSlowDown * RelativeDirectionToTarget();
             baseAI.SetDirection(new Vector2(dir.x, slowDownSpeed));
         }
 
-        // 
+        // Vanquish my opposition when they are in front- or behind the AI.
         if (DirectionalRay(180, players, 25f, true, false) && baseAI.GetCurrentItem() != Item.None) // raycast if player is behind player &> use item
         {
             baseAI.AimBack(true);
@@ -94,7 +97,7 @@ public class HelloThereAI : MonoBehaviour
             }
         }
 
-        // debug lines
+        // debug movement lines
         if (debug)
         {
             Debug.DrawLine(currentTarget.transform.position, nextTarget.transform.position, Color.red);
@@ -102,6 +105,7 @@ public class HelloThereAI : MonoBehaviour
             Debug.DrawLine(transform.position, nextTarget.transform.position, Color.yellow);
         }
     }
+
     /// <summary>
     /// 2 methods of pathfinding:
     /// 
@@ -116,6 +120,7 @@ public class HelloThereAI : MonoBehaviour
     private void Movement()
     {
         nextTarget = currentTarget.nextNodes.Length < 2 ? currentTarget.nextNodes[0] : GetShortestPath();
+
         // If the AI can draw a direct line between itself and the nextTarget, make that next Target the Current Target after a small buffer.
         if (LineCastTarget(nextTarget.transform.position, walls))
         {
@@ -126,7 +131,6 @@ public class HelloThereAI : MonoBehaviour
         }
         else if (Vector3.Distance(transform.position, currentTarget.transform.position) < confirmationDistance)
         {
-            StartCoroutine(TurningCooldown(0.75f)); // When the AI turns due to being within confirmation distance, there might actually still be a wall between the AI and its next node, causing it to 'reset' back to its previous node
             if (currentTarget.nextNodes.Length > 1) // if a branch
             {
                 currentTarget = GetShortestPath();
@@ -141,7 +145,7 @@ public class HelloThereAI : MonoBehaviour
 
         dir = transform.InverseTransformDirection((currentTarget.transform.position - transform.position).normalized);
         float forwardSpeed = sMagToSpeedCurve.Evaluate(Mathf.Clamp01(Mathf.Abs(dir.x)));
-        baseAI.SetDirection(new Vector2(dir.x + WallPrevention(), forwardSpeed) * Direction());
+        baseAI.SetDirection(new Vector2(dir.x + WallPrevention(), forwardSpeed) * RelativeDirectionToTarget());
 
         IEnumerator WaitForTurn()
         {
@@ -150,17 +154,11 @@ public class HelloThereAI : MonoBehaviour
             currentTarget = nextTarget;
             TurnWaiting = false;
         }
-        IEnumerator TurningCooldown(float time)
-        {
-            turnCooldown = true;
-            yield return new WaitForSeconds(time);
-            turnCooldown = false;
-        }
     }
 
     /// <summary>
-    /// A linecast is drawn to the current node-target. If this linecast is interrupted by a wall, the target is reset to the nearest node that is
-    /// in sight (uninterrupted by walls). The 
+    ///     /// A linecast is drawn to the current node-target. If this linecast is interrupted by a wall, the target is reset to the nearest node that is
+    /// in sight (uninterrupted by walls). 
     /// </summary>
     private void ResetTarget()
     {
@@ -203,7 +201,7 @@ public class HelloThereAI : MonoBehaviour
     private bool DirectionalRay(float angle, int layer, float length, bool drawRay, bool checkTag)
     {
         RaycastHit hit;
-        Vector3 direction = Quaternion.AngleAxis(angle, transform.up) * transform.forward * Direction();
+        Vector3 direction = Quaternion.AngleAxis(angle, transform.up) * transform.forward * RelativeDirectionToTarget();
         bool hitting = Physics.Raycast(transform.position, direction * length, out hit, length, layer);
         if (hitting && hit.collider.gameObject.GetInstanceID() == GetInstanceID())
         {
@@ -300,11 +298,12 @@ public class HelloThereAI : MonoBehaviour
 
         return nodeToPick;
     }
+
     /// <summary>
     /// Detect whether the front or the back of the AI-car is closest to facing the current target node.
     /// </summary>
     /// <returns> Return a float which acts as a multiplier. The AI will drive in reverse if the back is closer facing the curren target </returns>
-    private float Direction()
+    private float RelativeDirectionToTarget()
     {
         return Vector3.Angle(currentTarget.transform.position - transform.position, transform.forward) > 100f ? -1f : 1f;
     }
