@@ -17437,7 +17437,6 @@ MonoBehaviour:
   confirmationDistance: 6
   maxDodgingAngle: 1
   direction: {x: 0, y: 0, z: 0}
-  distanceToNextNode: 0
   frontRaycastPos: {x: 0, y: 0.2, z: 0.5}
   sensorsLength: 6
   frontSideSensorPos: 0.2
@@ -17462,9 +17461,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathS: {fileID: 8300000, guid: 1ec7bd0102c0b6d40b7e5bef983c421b, type: 3}
   boosterS: {fileID: 8300000, guid: 3abb66739f89b924e9ed60033842814f, type: 3}
-  itemUsedS: {fileID: 0}
-  gotItemS: {fileID: 8300000, guid: 07f0bdc187cc034489dcd72b70bb93d2, type: 3}
-  hazardHitS: {fileID: 8300000, guid: ddc7b07e309f5aa4dbc6d5a145aadc3a, type: 3}
+  itemUsedS: {fileID: 8300000, guid: 7e0b49f0977a50247b75dfb87c6ed1f1, type: 3}
+  gotItemS: {fileID: 8300000, guid: b3648eb8185f7d44a96d08541c96fe95, type: 3}
+  hazardHitS: {fileID: 8300000, guid: 7a5f497a8b7517c4c9634d1d246480d3, type: 3}
   audioS: {fileID: 812692733}
 --- !u!82 &812692733
 AudioSource:
@@ -35444,7 +35443,6 @@ MonoBehaviour:
   confirmationDistance: 6
   maxDodgingAngle: 1
   direction: {x: 0, y: 0, z: 0}
-  distanceToNextNode: 0
   frontRaycastPos: {x: 0, y: 0.2, z: 0.5}
   sensorsLength: 6
   frontSideSensorPos: 0.2
@@ -35469,9 +35467,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathS: {fileID: 8300000, guid: 1ec7bd0102c0b6d40b7e5bef983c421b, type: 3}
   boosterS: {fileID: 8300000, guid: 3abb66739f89b924e9ed60033842814f, type: 3}
-  itemUsedS: {fileID: 0}
-  gotItemS: {fileID: 8300000, guid: 07f0bdc187cc034489dcd72b70bb93d2, type: 3}
-  hazardHitS: {fileID: 8300000, guid: ddc7b07e309f5aa4dbc6d5a145aadc3a, type: 3}
+  itemUsedS: {fileID: 8300000, guid: 7e0b49f0977a50247b75dfb87c6ed1f1, type: 3}
+  gotItemS: {fileID: 8300000, guid: b3648eb8185f7d44a96d08541c96fe95, type: 3}
+  hazardHitS: {fileID: 8300000, guid: 7a5f497a8b7517c4c9634d1d246480d3, type: 3}
   audioS: {fileID: 1540328911}
 --- !u!82 &1540328911
 AudioSource:
