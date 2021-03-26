@@ -29,7 +29,6 @@ public class RicardoAI : MonoBehaviour
     private float targetSteerAngle = 0f;
 
     [Header("Raycasting")]
-    public float distanceToNextNode;
     public Vector3 frontRaycastPos = new Vector3(0f, 0.2f, 0.5f);
     public float sensorsLength = 6f;
     public float frontSideSensorPos = 0.2f;
@@ -51,7 +50,13 @@ public class RicardoAI : MonoBehaviour
         baseAI.SetName(carName);
         baseAI.SetBody(carBody);
     }
-
+    private void Update()
+    {
+        if (dodging)
+        {
+            print("dodging");
+        }
+    }
     private void FixedUpdate()
     {
         Pathfinding();
@@ -82,9 +87,6 @@ public class RicardoAI : MonoBehaviour
                 nextTargetNode = currentTargetNode.nextNodes[0];
             }
         }
-
-        //check distance between car and next node
-        distanceToNextNode = Vector3.Distance(transform.position, currentTargetNode.transform.position);
     }
 
     private void BasicDirection()
@@ -95,10 +97,6 @@ public class RicardoAI : MonoBehaviour
         if (direction.y > 1)
         {
             direction.y = 1;
-        }
-        else if (direction.y <= 0.4)
-        {
-            direction.y = 0.4f;
         }
         if (!dodging)
         {
@@ -167,19 +165,20 @@ public class RicardoAI : MonoBehaviour
 
                 Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
             }
+            if (hit.collider.CompareTag("ItemBox") && baseAI.GetCurrentItem() == Item.None)
+            {
+                seesItem = true;
+                dodgeMultiplier += 0f;
+                Debug.DrawLine(raycastStartPos, hit.point, Color.cyan);
+            }
         }
-        //front right sensor
+        //front right sensor 
+        //this raycast will look for an item box if it has no items
+        //if it finds one he will move towards it
         raycastStartPos += transform.right * frontSideSensorPos;
         if (Physics.Raycast(raycastStartPos, Quaternion.AngleAxis(0, transform.up) * transform.forward, out hit, sensorsLength))
         {
-/*           if (hit.collider.CompareTag("Hazard") || hit.collider.gameObject.layer == 14)
-            {
-                dodging = true;
-                dodgeMultiplier -= 1f;
-
-                Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
-            }*/
-            if (hit.collider.CompareTag("ItemBox"))
+            if (hit.collider.CompareTag("ItemBox") && baseAI.GetCurrentItem() == Item.None)
             {
                 seesItem = true;
                 dodgeMultiplier += 0f;
@@ -198,7 +197,7 @@ public class RicardoAI : MonoBehaviour
                 Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
             }
 
-            if (hit.collider.CompareTag("ItemBox"))
+            if (hit.collider.CompareTag("ItemBox") && baseAI.GetCurrentItem() == Item.None)
             {
                 seesItem = true;
                 dodgeMultiplier += 0.5f;
@@ -217,7 +216,7 @@ public class RicardoAI : MonoBehaviour
                 Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
             }
 
-            if (hit.collider.CompareTag("ItemBox"))
+            if (hit.collider.CompareTag("ItemBox") && baseAI.GetCurrentItem() == Item.None)
             {
                 seesItem = true;
                 dodgeMultiplier += 1f;
@@ -230,15 +229,7 @@ public class RicardoAI : MonoBehaviour
         raycastStartPos -= transform.right * frontSideSensorPos * 2;
         if (Physics.Raycast(raycastStartPos, Quaternion.AngleAxis(-4, transform.up) * transform.forward, out hit, sensorsLength))
         {
-/*            if (hit.collider.CompareTag("Hazard") || hit.collider.gameObject.layer == 14)
-            {
-                dodging = true;
-                dodgeMultiplier += 1f;
-
-                Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
-            }*/
-
-            if (hit.collider.CompareTag("ItemBox"))
+            if (hit.collider.CompareTag("ItemBox") && baseAI.GetCurrentItem() == Item.None)
             {
                 seesItem = true;
                 dodgeMultiplier -= 0f;
@@ -257,7 +248,7 @@ public class RicardoAI : MonoBehaviour
                 Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
             }
 
-            if (hit.collider.CompareTag("ItemBox"))
+            if (hit.collider.CompareTag("ItemBox") && baseAI.GetCurrentItem() == Item.None)
             {
                 seesItem = true;
                 dodgeMultiplier -= 0.5f;
@@ -276,7 +267,7 @@ public class RicardoAI : MonoBehaviour
                 Debug.DrawLine(raycastStartPos, hit.point, Color.blue);
             }
 
-            if (hit.collider.CompareTag("ItemBox"))
+            if (hit.collider.CompareTag("ItemBox") && baseAI.GetCurrentItem() == Item.None)
             {
                 seesItem = true;
                 dodgeMultiplier -= 1f;
@@ -407,7 +398,6 @@ public class RicardoAI : MonoBehaviour
     //is called whenever the player has died
     private void TargetClosestNode()
     {
-        RaycastHit hit;
         float closestNodeDis = float.MaxValue;
         Node closestNode;
             foreach (Node node in NodeList)
